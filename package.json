@@ -6,7 +6,9 @@
     "packages/*"
   ],
   "scripts": {
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test:core": "yarn workspace @moirae/core test",
+    "test:typeorm-store": "yarn workspace @moirae/typeorm-store test"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.21.0",

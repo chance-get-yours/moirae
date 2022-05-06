@@ -9,6 +9,7 @@
   "scripts": {
     "core": "yarn workspace @moirae/core",
     "demo": "yarn workspace demo-app",
+    "lint": "eslint --fix",
     "prepare": "husky install",
     "tystore": "yarn workspace @moirae/typeorm-store"
   },

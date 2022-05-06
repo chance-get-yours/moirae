@@ -2,16 +2,16 @@
   "name": "@moirae/typeorm-store",
   "packageManager": "yarn@3.2.0",
   "peerDependencies": {
-    "@nestjs/common": "^7",
-    "@nestjs/core": "^7"
+    "@nestjs/common": "^8.4.4",
+    "@nestjs/core": "^8.4.4"
   },
   "dependencies": {
     "class-transformer": "^0.5.1"
   },
   "devDependencies": {
-    "@nestjs/common": "^7",
-    "@nestjs/core": "^7",
-    "@nestjs/testing": "^7",
+    "@nestjs/common": "^8.4.4",
+    "@nestjs/core": "^8.4.4",
+    "@nestjs/testing": "^8.4.4",
     "@swc/core": "^1.2.174",
     "@swc/jest": "^0.2.20",
     "@types/jest": "^27.4.1",

@@ -3,14 +3,19 @@
   "packageManager": "yarn@3.2.0",
   "private": true,
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "demo-app"
   ],
   "scripts": {
     "core": "yarn workspace @moirae/core",
+    "demo": "yarn workspace demo-app",
+    "lint": "eslint --fix",
     "prepare": "husky install",
     "tystore": "yarn workspace @moirae/typeorm-store"
   },
   "devDependencies": {
+    "@nestjs/cli": "^8.2.5",
+    "@nestjs/schematics": "^8.0.11",
     "@typescript-eslint/eslint-plugin": "^5.21.0",
     "@typescript-eslint/parser": "^5.21.0",
     "eslint": "^8.14.0",

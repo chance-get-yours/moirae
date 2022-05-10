@@ -77,7 +77,7 @@ describe("AggregateFactory", () => {
 
       await aggregate.commit();
 
-      expect(saveSpy).toHaveBeenCalledWith(event.streamId, [event]);
+      expect(saveSpy).toHaveBeenCalledWith([event]);
     });
   });
 });

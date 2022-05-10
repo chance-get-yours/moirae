@@ -45,13 +45,14 @@ export abstract class AggregateRoot {
     );
     if (!handlerName) throw new UnhandledEventError(this, event);
     this[handlerName].call(this, event);
+    if (!event.streamId) event.streamId = this.streamId;
     const len = this._eventHistory.push(event);
     if (fromHistory) this._lastCommittedIndex = len - 1;
   }
 
   public async commit() {
     if (!this._commitFn) throw new UnavailableCommitError(this);
-    await this._commitFn(this.uncommittedEventHistory, this.streamId);
+    await this._commitFn(this.uncommittedEventHistory);
   }
 
   public setCommitFunction(fn: IEventCommitFn) {

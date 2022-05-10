@@ -11,11 +11,8 @@ export class AggregateFactory {
     @Inject(EVENT_SOURCE) private readonly eventSource: IEventSource,
   ) {}
 
-  public async commitEvents(
-    events: IEvent[],
-    streamId: IEvent["streamId"],
-  ): Promise<IEvent[]> {
-    return this.eventSource.appendToStream(streamId, events);
+  public async commitEvents(events: IEvent[]): Promise<IEvent[]> {
+    return this.eventSource.appendToStream(events);
   }
 
   public async mergeContext<TAgg extends AggregateRoot>(

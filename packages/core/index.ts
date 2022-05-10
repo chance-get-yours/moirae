@@ -13,7 +13,5 @@ export type { IEventSource } from "./lib/interfaces/event-source.interface";
 export type { IEvent } from "./lib/interfaces/event.interface";
 export type { IPublisher } from "./lib/interfaces/publisher.interface";
 export type { IQuery } from "./lib/interfaces/query.interface";
-// constants
-export { EVENT_SOURCE } from "./lib/moirae.constants";
 // modules
 export { MoiraeModule } from "./lib/moirae.module";

@@ -93,7 +93,7 @@ describe("AggregateRoot", () => {
 
       await testAggregate.commit();
 
-      expect(commitFn).toHaveBeenCalledWith([event], testAggregate.streamId);
+      expect(commitFn).toHaveBeenCalledWith([event]);
     });
 
     it("will throw a multiple set error if attempting to set the commitFn more than once", () => {

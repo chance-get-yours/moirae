@@ -1,5 +1,7 @@
 import { AggregateRoot } from "../classes/aggregate-root.class";
+import { RegisterType } from "../decorators/register-type.decorator";
 
+@RegisterType()
 export class InvalidMultipleSetError extends Error {
   constructor(aggregate: AggregateRoot, field: string) {
     super(

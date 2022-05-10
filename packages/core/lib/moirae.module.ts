@@ -1,4 +1,5 @@
 import { DynamicModule, Module } from "@nestjs/common";
+import { QueryBus } from "./busses/query.bus";
 import { ConstructorStorage } from "./classes/constructor-storage.class";
 import { AggregateFactory } from "./factories/aggregate.factory";
 import { ObservableFactory } from "./factories/observable.factory";
@@ -22,6 +23,7 @@ export class MoiraeModule {
       providers: [
         AggregateFactory,
         ObservableFactory,
+        QueryBus,
         {
           provide: PUBLISHER,
           useClass: publisher,

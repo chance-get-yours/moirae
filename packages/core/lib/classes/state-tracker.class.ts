@@ -9,12 +9,18 @@ export class StateTracker<T> {
 
   private readonly _ee: EventEmitter;
   private readonly _subscriptions: Map<string, SubscriptionFunction<T>>;
+  private readonly _uuid: string;
 
-  constructor(initialStatus: T) {
+  constructor(initialStatus: T, eventEmitter?: EventEmitter) {
     this._state = initialStatus;
 
-    this._ee = new EventEmitter();
+    this._ee = eventEmitter || new EventEmitter();
     this._subscriptions = new Map();
+    this._uuid = randomUUID();
+  }
+
+  private get _key(): string {
+    return `${this._uuid}:${STATE_UPDATED}`;
   }
 
   /**
@@ -41,14 +47,14 @@ export class StateTracker<T> {
 
   public set(newState: T): void {
     this._state = newState;
-    this._ee.emit(STATE_UPDATED, this._state);
+    this._ee.emit(this._key, this._state);
   }
 
   /**
    * Subscribe to all updates to the state
    */
   public subscribe(handler: SubscriptionFunction<T>): string {
-    this._ee.addListener(STATE_UPDATED, handler);
+    this._ee.addListener(this._key, handler);
     const key = randomUUID();
     this._subscriptions.set(key, handler);
     return key;
@@ -60,6 +66,6 @@ export class StateTracker<T> {
   public unsubscribe(key: string): void {
     const handler = this._subscriptions.get(key);
     if (!handler) return;
-    this._ee.removeListener(STATE_UPDATED, handler);
+    this._ee.removeListener(this._key, handler);
   }
 }

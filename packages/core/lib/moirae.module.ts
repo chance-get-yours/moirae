@@ -1,5 +1,6 @@
 import { DynamicModule, Module } from "@nestjs/common";
 import { AggregateFactory } from "./factories/aggregate.factory";
+import { ObservableFactory } from "./factories/observable.factory";
 import { IConfig } from "./interfaces/config.interface";
 
 @Module({})
@@ -8,7 +9,7 @@ export class MoiraeModule {
     return {
       global: true,
       module: MoiraeModule,
-      providers: [AggregateFactory],
+      providers: [AggregateFactory, ObservableFactory],
     };
   }
 }

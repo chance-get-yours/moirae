@@ -5,6 +5,7 @@ export { Event } from "./lib/classes/event.class";
 export { Apply } from "./lib/decorators/apply.decorator";
 // factories
 export { AggregateFactory } from "./lib/factories/aggregate.factory";
+export { ObservableFactory } from "./lib/factories/observable.factory";
 // interfaces
 export type { ICommand } from "./lib/interfaces/command.interface";
 export type { IEventSource } from "./lib/interfaces/event-source.interface";

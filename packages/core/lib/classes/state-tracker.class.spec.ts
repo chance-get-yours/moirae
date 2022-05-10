@@ -1,6 +1,6 @@
 import { StateTracker } from "./state-tracker.class";
 
-enum TestStatuses {
+export enum TestStatuses {
   hello,
   world,
 }

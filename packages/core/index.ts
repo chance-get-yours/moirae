@@ -1,16 +1,20 @@
 // busses
+export { CommandBus } from "./lib/busses/command.bus";
 export { QueryBus } from "./lib/busses/query.bus";
 // classes
 export { AggregateRoot } from "./lib/classes/aggregate-root.class";
+export { Command } from "./lib/classes/command.class";
 export { Event } from "./lib/classes/event.class";
 export { Query } from "./lib/classes/query.class";
 // decorators
 export { Apply } from "./lib/decorators/apply.decorator";
+export { CommandHandler } from "./lib/decorators/command-handler.decorator";
 export { QueryHandler } from "./lib/decorators/query-handler.decorator";
 export { RegisterType } from "./lib/decorators/register-type.decorator";
 // factories
 export { AggregateFactory } from "./lib/factories/aggregate.factory";
 export { ObservableFactory } from "./lib/factories/observable.factory";
+export type { ICommandHandler } from "./lib/interfaces/command-handler.interface";
 // interfaces
 export type { ICommand } from "./lib/interfaces/command.interface";
 export type { IEventSource } from "./lib/interfaces/event-source.interface";

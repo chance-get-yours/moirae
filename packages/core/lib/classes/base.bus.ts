@@ -3,23 +3,15 @@ import { ModulesContainer } from "@nestjs/core";
 import { randomUUID } from "crypto";
 import { HandlerNotFoundError } from "../exceptions/handler-not-found.error";
 import { ObservableFactory } from "../factories/observable.factory";
-import { IEventLike } from "../interfaces/event-like.interface";
 import { IHandler } from "../interfaces/handler.interface";
 import { IPublisher } from "../interfaces/publisher.interface";
-import {
-  COMMAND_METADATA,
-  ESState,
-  EVENT_METADATA,
-  QUERY_METADATA,
-} from "../moirae.constants";
+import { Respondable } from "../interfaces/respondable.interface";
+import { COMMAND_METADATA, ESState, QUERY_METADATA } from "../moirae.constants";
 import { StateTracker } from "./state-tracker.class";
 
-type MetadataConstant =
-  | typeof COMMAND_METADATA
-  | typeof EVENT_METADATA
-  | typeof QUERY_METADATA;
+type MetadataConstant = typeof COMMAND_METADATA | typeof QUERY_METADATA;
 
-export abstract class BaseBus<T extends IEventLike>
+export abstract class BaseBus<T extends Respondable>
   implements OnApplicationBootstrap
 {
   protected _handlerMap: Map<string, IHandler<T>>;
@@ -38,6 +30,9 @@ export abstract class BaseBus<T extends IEventLike>
     );
   }
 
+  /**
+   * Execute the provided command or query on a remote system
+   */
   public async execute<TRes>(event: T): Promise<TRes> {
     const _key = randomUUID();
     event.responseKey = _key;
@@ -46,6 +41,9 @@ export abstract class BaseBus<T extends IEventLike>
     return res.payload as TRes;
   }
 
+  /**
+   * @deprecated Should not be used outside of the context of the library
+   */
   protected async executeLocal(event: T): Promise<unknown> {
     const handler = this._handlerMap.get(event.name);
     if (!handler)
@@ -62,6 +60,9 @@ export abstract class BaseBus<T extends IEventLike>
     return res;
   }
 
+  /**
+   * Listen asynchronously to the bus
+   */
   public listen(handlerFn: (event: T) => void): string {
     return this._publisher.listen(handlerFn);
   }

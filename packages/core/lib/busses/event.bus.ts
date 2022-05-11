@@ -14,6 +14,9 @@ import {
 } from "../moirae.constants";
 import { CommandBus } from "./command.bus";
 
+/**
+ * Provide handling for an event based system
+ */
 @Injectable()
 export class EventBus {
   private readonly _handlerMap: Map<string, IEventHandler<IEvent>[]>;

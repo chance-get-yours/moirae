@@ -6,6 +6,10 @@ import { ICommand } from "../interfaces/command.interface";
 import { IPublisher } from "../interfaces/publisher.interface";
 import { COMMAND_METADATA, PUBLISHER } from "../moirae.constants";
 
+/**
+ * Provide the ability to run commands either locally or on remote systems
+ * given the correct publisher.
+ */
 @Injectable()
 export class CommandBus extends BaseBus<ICommand> {
   constructor(

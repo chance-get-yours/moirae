@@ -5,9 +5,7 @@ export enum EventType {
 }
 
 export interface IEventLike {
-  disableResponse?: boolean;
   readonly name: string;
-  responseKey?: string;
   readonly type: EventType;
   readonly version: number;
 }

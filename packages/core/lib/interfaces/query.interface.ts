@@ -1,5 +1,3 @@
-import { IEventLike } from "./event-like.interface";
+import { Respondable } from "./respondable.interface";
 
-export interface IQuery extends IEventLike {
-  responseKey?: string;
-}
+export type IQuery = Respondable;

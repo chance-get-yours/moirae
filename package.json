@@ -11,7 +11,8 @@
     "demo": "yarn workspace demo-app",
     "lint": "eslint --fix",
     "prepare": "husky install",
-    "tystore": "yarn workspace @moirae/typeorm-store"
+    "edb": "yarn workspace @moirae/eventstoredb",
+    "build": "yarn workspaces foreach --all --exclude=demo-app run build"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.2.5",

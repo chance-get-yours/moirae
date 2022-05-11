@@ -62,4 +62,4 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Test integrations
-        run: yarn workspace demo test:e2e
+        run: yarn workspace demo-app test:e2e

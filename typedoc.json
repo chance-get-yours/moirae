@@ -1,0 +1,6 @@
+{
+    "name": "Moirae",
+    "external-modulemap": ".*\/packages\/([^\/]+)\/.*",
+    "entryPoints": ["."],
+    "entryPointStrategy": "Packages"
+}

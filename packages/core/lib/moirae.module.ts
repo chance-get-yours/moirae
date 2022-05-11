@@ -19,6 +19,7 @@ export class MoiraeModule {
       store = MemoryStore,
     } = config;
     externalTypes.forEach((type) => ConstructorStorage.getInstance().set(type));
+    // TODO: separate public vs private deps
     return {
       global: true,
       module: MoiraeModule,
@@ -37,6 +38,7 @@ export class MoiraeModule {
           useClass: store,
         },
       ],
+      exports: [AggregateFactory, CommandBus, EventBus, QueryBus],
     };
   }
 }

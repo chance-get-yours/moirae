@@ -8,7 +8,12 @@ import { MemoryPublisher } from "./memory.publisher";
 describe("MemoryPublisher", () => {
   let publisher: MemoryPublisher<IEvent>;
 
+  afterAll(() => {
+    jest.useRealTimers();
+  });
+
   beforeAll(() => {
+    jest.useFakeTimers();
     const instance = ConstructorStorage.getInstance();
     instance.set(TestEvent);
   });

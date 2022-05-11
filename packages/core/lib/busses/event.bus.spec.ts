@@ -42,6 +42,13 @@ describe("EventBus", () => {
   let handler: TestHandler;
   let source: IEventSource;
 
+  afterAll(() => {
+    jest.useRealTimers();
+  });
+  beforeAll(() => {
+    jest.useFakeTimers();
+  });
+
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [
@@ -88,6 +95,7 @@ describe("EventBus", () => {
       class UnhandledEvent extends Event implements IEvent {
         streamId = "123456789";
         version = 1;
+        data = {};
       }
       const handlerSpy = jest.spyOn(handler, "execute");
 

@@ -48,7 +48,7 @@ describe("AggregateFactory", () => {
       expect(aggregate).toBeInstanceOf(TestAggregate);
       expect(aggregate.eventHistory).toHaveLength(1);
       expect(aggregate.uncommittedEventHistory).toHaveLength(0);
-      expect(aggregate.foo).toEqual(persistedEvent.foo);
+      expect(aggregate.foo).toEqual(persistedEvent.data.foo);
     });
 
     it("will set a function to commit the aggregate", async () => {
@@ -71,7 +71,7 @@ describe("AggregateFactory", () => {
 
       aggregate.apply(event);
 
-      expect(aggregate.foo).toEqual(event.foo);
+      expect(aggregate.foo).toEqual(event.data.foo);
       expect(aggregate.eventHistory).toHaveLength(1);
       expect(aggregate.uncommittedEventHistory).toHaveLength(1);
 

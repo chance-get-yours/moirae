@@ -4,12 +4,15 @@ export { EventBus } from "./lib/busses/event.bus";
 export { QueryBus } from "./lib/busses/query.bus";
 // classes
 export { AggregateRoot } from "./lib/classes/aggregate-root.class";
+export { CommandResponse } from "./lib/classes/command-response.class";
 export { Command } from "./lib/classes/command.class";
 export { Event } from "./lib/classes/event.class";
 export { Query } from "./lib/classes/query.class";
 // decorators
 export { Apply } from "./lib/decorators/apply.decorator";
 export { CommandHandler } from "./lib/decorators/command-handler.decorator";
+export { EventHandler } from "./lib/decorators/event-handler.decorator";
+export { Projection } from "./lib/decorators/projection.decorator";
 export { QueryHandler } from "./lib/decorators/query-handler.decorator";
 export { RegisterType } from "./lib/decorators/register-type.decorator";
 export { Saga } from "./lib/decorators/saga.decorator";
@@ -28,3 +31,5 @@ export type { IQuery } from "./lib/interfaces/query.interface";
 export type { SagaHandler } from "./lib/interfaces/saga-handler.interface";
 // modules
 export { MoiraeModule } from "./lib/moirae.module";
+// testing
+export { mockAggregateFactory } from "./lib/testing/aggregate-factory.mock";

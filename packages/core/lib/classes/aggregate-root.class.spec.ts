@@ -1,6 +1,7 @@
 import { faker } from "@faker-js/faker";
 import "reflect-metadata";
 import { Apply } from "../decorators/apply.decorator";
+import { RegisterType } from "../decorators/register-type.decorator";
 import { UnavailableCommitError } from "../exceptions/commit-unavailable.error";
 import { InvalidMultipleSetError } from "../exceptions/invalid-mutliple-set.error";
 import { UnhandledEventError } from "../exceptions/unhandled-event.error";
@@ -12,21 +13,22 @@ export interface ITestEntity {
   foo: string;
 }
 
-export class TestEvent
-  extends Event
-  implements IEvent, Pick<ITestEntity, "foo">
-{
+@RegisterType()
+export class TestEvent extends Event implements IEvent<ITestEntity> {
   public streamId = "12345";
   public readonly version: number = 1;
-  public readonly foo: string = "bar";
+  public readonly data: ITestEntity = { foo: "bar" };
 }
 
-export class TestAggregate extends AggregateRoot implements ITestEntity {
+export class TestAggregate
+  extends AggregateRoot<ITestEntity>
+  implements ITestEntity
+{
   public foo: string;
 
   @Apply(TestEvent)
   protected onTestEvent(event: TestEvent): void {
-    this.foo = event.foo;
+    this.foo = event.data.foo;
   }
 }
 

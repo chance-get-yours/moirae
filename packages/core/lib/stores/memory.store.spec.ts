@@ -9,6 +9,13 @@ import { MemoryStore } from "./memory.store";
 describe("MemoryStore", () => {
   let store: IEventSource;
 
+  afterAll(() => {
+    jest.useRealTimers();
+  });
+  beforeAll(() => {
+    jest.useFakeTimers();
+  });
+
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [MemoryPublisher, MemoryStore, ObservableFactory],

@@ -4,7 +4,7 @@ import { IEvent } from "../interfaces/event.interface";
 
 @RegisterType()
 export class UnhandledEventError extends Error {
-  constructor(aggregate: AggregateRoot, event: IEvent) {
+  constructor(aggregate: AggregateRoot<unknown>, event: IEvent) {
     super(
       `Aggregate ${aggregate.constructor.name} cannot handle event: ${event.name}`,
     );

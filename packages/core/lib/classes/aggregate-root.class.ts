@@ -1,19 +1,24 @@
+import { instanceToPlain } from "class-transformer";
 import { UnavailableCommitError } from "../exceptions/commit-unavailable.error";
 import { InvalidMultipleSetError } from "../exceptions/invalid-mutliple-set.error";
 import { UnhandledEventError } from "../exceptions/unhandled-event.error";
 import { AggregateFactory } from "../factories/aggregate.factory";
 import { IEvent } from "../interfaces/event.interface";
-import { APPLY_METADATA } from "../moirae.constants";
+import { APPLY_METADATA, PROJECTION_METADATA } from "../moirae.constants";
 
 type IEventCommitFn = typeof AggregateFactory.prototype.commitEvents;
 
-export abstract class AggregateRoot {
+export abstract class AggregateRoot<Projection = Record<string, unknown>> {
   protected _commitFn: IEventCommitFn;
   /**
    * History of all events applied to this aggregate in order
    */
   protected _eventHistory: IEvent[];
   protected _lastCommittedIndex: number;
+  /**
+   * Timestamp of the last applied event
+   */
+  public updatedAt: Date;
 
   constructor(public readonly streamId: string) {
     this._eventHistory = new Array<IEvent>();
@@ -48,6 +53,7 @@ export abstract class AggregateRoot {
     if (!event.streamId) event.streamId = this.streamId;
     const len = this._eventHistory.push(event);
     if (fromHistory) this._lastCommittedIndex = len - 1;
+    this.updatedAt = event.timestamp;
   }
 
   public async commit() {
@@ -58,5 +64,15 @@ export abstract class AggregateRoot {
   public setCommitFunction(fn: IEventCommitFn) {
     if (this._commitFn) throw new InvalidMultipleSetError(this, "_commitFn");
     this._commitFn = fn;
+  }
+
+  /**
+   * Return a plain javascript object matching the projection interface
+   */
+  public toProjection(): Projection {
+    return instanceToPlain(this, {
+      groups: [PROJECTION_METADATA],
+      strategy: "excludeAll",
+    }) as Projection;
   }
 }

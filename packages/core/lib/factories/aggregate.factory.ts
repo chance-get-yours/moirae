@@ -15,7 +15,7 @@ export class AggregateFactory {
     return this.eventSource.appendToStream(events);
   }
 
-  public async mergeContext<TAgg extends AggregateRoot>(
+  public async mergeContext<TAgg extends AggregateRoot<unknown>>(
     streamId: IEvent["streamId"],
     Aggregate: ClassConstructor<TAgg>,
   ): Promise<TAgg> {

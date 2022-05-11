@@ -1,6 +1,5 @@
 import { Logger, OnApplicationBootstrap } from "@nestjs/common";
 import { ModulesContainer } from "@nestjs/core";
-import { InstanceWrapper } from "@nestjs/core/injector/instance-wrapper";
 import { randomUUID } from "crypto";
 import { HandlerNotFoundError } from "../exceptions/handler-not-found.error";
 import { ObservableFactory } from "../factories/observable.factory";
@@ -63,12 +62,6 @@ export abstract class BaseBus<T extends IEventLike>
     return res;
   }
 
-  protected handleProvider(
-    instance: InstanceWrapper<unknown>["instance"],
-  ): void {
-    // stub
-  }
-
   public listen(handlerFn: (event: T) => void): string {
     return this._publisher.listen(handlerFn);
   }
@@ -87,7 +80,6 @@ export abstract class BaseBus<T extends IEventLike>
         );
         this._handlerMap.set(command.name, instance as IHandler<T>);
       }
-      this.handleProvider(instance);
     });
     this._subId = this._publisher.subscribe(this.executeLocal.bind(this));
   }

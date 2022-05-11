@@ -8,12 +8,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  unittest:
+  test-packages:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [16.x]
-        package: [core, demo-app]
+        package: [core]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -38,6 +38,7 @@ jobs:
         run: yarn workspace @moirae/${{ matrix.package }} test
   integration:
     runs-on: ubuntu-latest
+    needs: test-packages
     strategy:
       matrix:
         node-version: [16.x]
@@ -61,5 +62,9 @@ jobs:
             ${{ runner.os }}-yarn-
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-      - name: Test integrations
+      - name: Build packages
+        run: yarn build
+      - name: Unittest demo-app
+        run: yarn workspace demo-app test
+      - name: E2E test demo-app
         run: yarn workspace demo-app test:e2e

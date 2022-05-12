@@ -19,5 +19,5 @@
     "noFallthroughCasesInSwitch": false,
     "allowJs": true
   },
-  "include": ["src", "migrations"]
+  "include": ["src"]
 }

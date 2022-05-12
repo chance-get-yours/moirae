@@ -42,7 +42,7 @@ export abstract class BaseBus<T extends Respondable>
   }
 
   /**
-   * @deprecated Should not be used outside of the context of the library
+   * @internal Should not be used outside of the context of the library
    */
   protected async executeLocal(event: T): Promise<unknown> {
     const handler = this._handlerMap.get(event.name);

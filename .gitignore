@@ -47,3 +47,6 @@ lerna-debug.log*
 
 # typedoc
 docs
+
+# sqlite
+*/**/*.db

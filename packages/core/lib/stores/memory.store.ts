@@ -1,14 +1,19 @@
-import { Injectable, Scope } from "@nestjs/common";
-import { IEvent } from "packages/core";
+import { Injectable } from "@nestjs/common";
+import { ObservableFactory } from "../factories/observable.factory";
 import { IEventSource } from "../interfaces/event-source.interface";
+import { IEvent } from "../interfaces/event.interface";
 import { MemoryPublisher } from "../publishers/memory.publisher";
 
-@Injectable({ scope: Scope.TRANSIENT })
+@Injectable()
 export class MemoryStore
   extends MemoryPublisher<IEvent>
   implements IEventSource
 {
   private _streams: Map<string, IEvent[]>;
+
+  constructor(observableFactory: ObservableFactory) {
+    super(observableFactory);
+  }
 
   public async appendToStream(eventList: IEvent[]): Promise<IEvent[]> {
     await Promise.allSettled(

@@ -1,4 +1,4 @@
-name: PR - Main
+name: Main
 
 on:
   push:
@@ -89,6 +89,8 @@ jobs:
             ${{ runner.os }}-yarn-
       - name: Install dependencies
         run: yarn install --frozen-lockfile
+      - name: Build packages
+        run: yarn build
       - name: Document
         run: yarn document
       - name: Deploy

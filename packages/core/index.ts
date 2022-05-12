@@ -4,10 +4,12 @@ export { EventBus } from "./lib/busses/event.bus";
 export { QueryBus } from "./lib/busses/query.bus";
 // classes
 export { AggregateRoot } from "./lib/classes/aggregate-root.class";
+export { BasePublisher } from "./lib/classes/base.publisher";
 export { CommandResponse } from "./lib/classes/command-response.class";
 export { Command } from "./lib/classes/command.class";
 export { Event } from "./lib/classes/event.class";
 export { Query } from "./lib/classes/query.class";
+export { ResponseWrapper } from "./lib/classes/response.class";
 // decorators
 export { Apply } from "./lib/decorators/apply.decorator";
 export { CommandHandler } from "./lib/decorators/command-handler.decorator";
@@ -22,9 +24,12 @@ export { ObservableFactory } from "./lib/factories/observable.factory";
 export type { ICommandHandler } from "./lib/interfaces/command-handler.interface";
 // interfaces
 export type { ICommand } from "./lib/interfaces/command.interface";
+export type { IMoiraeConfig } from "./lib/interfaces/config.interface";
 export type { IEventHandler } from "./lib/interfaces/event-handler.interface";
+export type { IEventLike } from "./lib/interfaces/event-like.interface";
 export type { IEventSource } from "./lib/interfaces/event-source.interface";
 export type { IEvent } from "./lib/interfaces/event.interface";
+export type { IPublisherConfig } from "./lib/interfaces/publisher-config.interface";
 export type { IPublisher } from "./lib/interfaces/publisher.interface";
 export type { IQueryHandler } from "./lib/interfaces/query-handler.interface";
 export type { IQuery } from "./lib/interfaces/query.interface";

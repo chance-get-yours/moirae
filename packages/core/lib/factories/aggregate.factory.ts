@@ -15,6 +15,14 @@ export class AggregateFactory {
     return this.eventSource.appendToStream(events);
   }
 
+  /**
+   * Initialize a new instance of an aggregate based on the aggregate type
+   * and streamId. Will read the event store for all events matching the parameters
+   * and apply them to the aggregate in order.
+   *
+   * @param streamId
+   * @param Aggregate Constructor for the aggregate
+   */
   public async mergeContext<TAgg extends AggregateRoot<unknown>>(
     streamId: IEvent["streamId"],
     Aggregate: ClassConstructor<TAgg>,

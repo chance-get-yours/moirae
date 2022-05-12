@@ -3,6 +3,9 @@ import { EventEmitter } from "events";
 import { AsyncMap } from "../classes/async-map.class";
 import { StateTracker } from "../classes/state-tracker.class";
 
+/**
+ * Centralize the generation of event based observables
+ */
 @Injectable()
 export class ObservableFactory {
   private readonly _ee: EventEmitter;

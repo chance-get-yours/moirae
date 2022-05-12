@@ -1,6 +1,3 @@
-import { IEventLike } from "./event-like.interface";
+import { Respondable } from "./respondable.interface";
 
-export interface ICommand extends IEventLike {
-  disableResponse?: boolean;
-  responseKey?: string;
-}
+export type ICommand = Respondable;

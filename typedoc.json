@@ -1,0 +1,7 @@
+{
+    "entryPoints": [".", "packages/**/package.json"],
+    "entryPointStrategy": "Packages",
+    "external-modulemap": ".*\/packages\/([^\/]+)\/.*",
+    "includeVersion": true,
+    "name": "Moirae"
+}

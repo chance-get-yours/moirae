@@ -1,3 +1,4 @@
+import { RegisterType } from "@moirae/core";
 import {
   Column,
   CreateDateColumn,
@@ -6,6 +7,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
+@RegisterType()
 @Entity()
 export class Account {
   @PrimaryColumn("uuid")

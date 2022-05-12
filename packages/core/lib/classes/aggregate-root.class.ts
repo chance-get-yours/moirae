@@ -24,10 +24,16 @@ export abstract class AggregateRoot<Projection = Record<string, unknown>> {
     this._eventHistory = new Array<IEvent>();
   }
 
+  /**
+   * All events that have been applied to the aggregate
+   */
   public get eventHistory(): IEvent[] {
     return this._eventHistory;
   }
 
+  /**
+   * The list of all uncommitted events to be persisted
+   */
   public get uncommittedEventHistory(): IEvent[] {
     const uncommittedStart = this._lastCommittedIndex + 1;
     if (uncommittedStart >= this._eventHistory.length) return [];
@@ -56,6 +62,9 @@ export abstract class AggregateRoot<Projection = Record<string, unknown>> {
     this.updatedAt = event.timestamp;
   }
 
+  /**
+   * Commit all uncommitted events to the store
+   */
   public async commit() {
     if (!this._commitFn) throw new UnavailableCommitError(this);
     await this._commitFn(this.uncommittedEventHistory);
@@ -67,7 +76,8 @@ export abstract class AggregateRoot<Projection = Record<string, unknown>> {
   }
 
   /**
-   * Return a plain javascript object matching the projection interface
+   * Return a plain javascript object matching the projection interface. Useful
+   * in generating a projection from the current state of the aggregate.
    */
   public toProjection(): Projection {
     return instanceToPlain(this, {

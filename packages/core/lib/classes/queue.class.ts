@@ -18,11 +18,17 @@ export class Queue<T = any> {
     this._map = new Map();
   }
 
+  /**
+   * Empty the queue of all content
+   */
   public clear(): void {
     this._map.clear();
     this._lastKey = undefined;
   }
 
+  /**
+   * Dequeue the first element or undefined if none exists
+   */
   public dequeue(): T | undefined {
     if (!this._firstKey) return;
     const mapItem = this._map.get(this._firstKey);
@@ -33,6 +39,9 @@ export class Queue<T = any> {
     return mapItem.item;
   }
 
+  /**
+   * Add an item to the bottom of the queue
+   */
   public enqueue(item: T): void {
     const key = randomUUID();
     if (this.size === 0) this._firstKey = key;

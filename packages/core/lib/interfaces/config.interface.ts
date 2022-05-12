@@ -11,5 +11,8 @@ export interface IConfig {
    * Publisher provides messaging and communication for Commands and Queries
    */
   publisher?: ClassConstructor<IPublisher>;
+  /**
+   * Store provides an event store to persist all events processed in the system.
+   */
   store?: ClassConstructor<IEventSource>;
 }

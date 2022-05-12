@@ -2,13 +2,13 @@ import { BeforeApplicationShutdown, OnModuleInit } from "@nestjs/common";
 import { instanceToPlain, plainToInstance } from "class-transformer";
 import { AsyncMap } from "../classes/async-map.class";
 import { ObservableFactory } from "../factories/observable.factory";
-import { IEventLike } from "../interfaces/event-like.interface";
+import { Respondable } from "../interfaces/respondable.interface";
 import { ESState } from "../moirae.constants";
 import { ConstructorStorage } from "./constructor-storage.class";
 import { ResponseWrapper } from "./response.class";
 import { StateTracker } from "./state-tracker.class";
 
-export abstract class BasePublisher<Evt extends IEventLike>
+export abstract class BasePublisher<Evt extends Respondable>
   implements OnModuleInit, BeforeApplicationShutdown
 {
   protected readonly _observableFactory: ObservableFactory;

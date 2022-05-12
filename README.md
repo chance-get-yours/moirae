@@ -4,6 +4,8 @@ Moirae is a collection of packages designed to simplify event sourcing and CQRS 
 
 Moirae consists of a single [core](./packages/core/README.md) module and a series of plugins to support interaction with various messaging services and event stores.
 
+The name "Moiae" comes from the Fates of Greek mythology. https://en.wikipedia.org/wiki/Moirai
+
 ### Plugins
 Current and proposed plugins for Moirae. Always welcome to other suggestions/PRs to add functionality.
 

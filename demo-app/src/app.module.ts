@@ -8,7 +8,7 @@ import { AppService } from "./app.service";
 @Module({
   imports: [
     AccountModule,
-    MoiraeModule.forRoot({
+    MoiraeModule.forRootAsync({
       externalTypes: [NotFoundException],
     }),
     TypeOrmModule.forRoot({

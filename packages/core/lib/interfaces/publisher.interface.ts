@@ -22,6 +22,10 @@ export interface IPublisher<Evt = IEventLike> extends OnModuleInit {
    */
   publish(event: Evt): Promise<void>;
   /**
+   * Define the role of the publisher within the application. Set via the using class
+   */
+  role: string;
+  /**
    * Subscribe to the bus. Should only be called ONCE by the relevant
    * bus as will trigger acknowledgements.
    */

@@ -14,7 +14,7 @@ import { ObservableFactory } from "./factories/observable.factory";
 import { IMoiraeConfig } from "./interfaces/config.interface";
 import { MemoryPublisherConfig } from "./interfaces/memory-publisher-config.interface";
 import { IPublisherConfig } from "./interfaces/publisher-config.interface";
-import { EVENT_SOURCE, PUBLISHER } from "./moirae.constants";
+import { EVENT_SOURCE, PUBLISHER, PUBLISHER_OPTIONS } from "./moirae.constants";
 import { MemoryPublisher } from "./publishers/memory.publisher";
 import { MemoryStore } from "./stores/memory.store";
 
@@ -32,17 +32,18 @@ export class MoiraeModule {
     } = config;
     externalTypes.forEach((type) => ConstructorStorage.getInstance().set(type));
 
-    const publisherProviders: Provider[] = [];
-    const publisherExports: InjectionToken[] = [];
+    const publisherProviders: Provider[] = [
+      {
+        provide: PUBLISHER_OPTIONS,
+        useValue: publisher,
+      },
+    ];
+    const publisherExports: InjectionToken[] = [PUBLISHER_OPTIONS];
 
     switch (publisher.type) {
       case "rabbitmq":
-        const {
-          createConnection,
-          RABBITMQ_CONNECTION,
-          RABBITMQ_OPTIONS,
-          RabbitMQPublisher,
-        } = await import("@moirae/rabbitmq-publisher");
+        const { createConnection, RABBITMQ_CONNECTION, RabbitMQPublisher } =
+          await import("@moirae/rabbitmq-publisher");
 
         publisherProviders.push(
           {
@@ -50,14 +51,10 @@ export class MoiraeModule {
             useClass: RabbitMQPublisher,
           },
           {
-            provide: RABBITMQ_OPTIONS,
-            useValue: publisher,
-          },
-          {
             provide: RABBITMQ_CONNECTION,
             useFactory: (options: IRabbitMQConfig) =>
               createConnection(options.amqplib),
-            inject: [RABBITMQ_OPTIONS],
+            inject: [PUBLISHER_OPTIONS],
           },
         );
 

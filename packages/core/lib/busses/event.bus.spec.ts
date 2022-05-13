@@ -10,7 +10,11 @@ import { IEventHandler } from "../interfaces/event-handler.interface";
 import { IEventSource } from "../interfaces/event-source.interface";
 import { IEvent } from "../interfaces/event.interface";
 import { SagaHandler } from "../interfaces/saga-handler.interface";
-import { EVENT_SOURCE, PUBLISHER } from "../moirae.constants";
+import {
+  EVENT_SOURCE,
+  PUBLISHER,
+  PUBLISHER_OPTIONS,
+} from "../moirae.constants";
 import { MemoryPublisher } from "../publishers/memory.publisher";
 import { MemoryStore } from "../stores/memory.store";
 import { CommandBus } from "./command.bus";
@@ -63,6 +67,10 @@ describe("EventBus", () => {
           provide: PUBLISHER,
           useClass: MemoryPublisher,
         },
+        {
+          provide: PUBLISHER_OPTIONS,
+          useValue: {},
+        },
         TestHandler,
         TestSaga,
       ],
@@ -85,9 +93,10 @@ describe("EventBus", () => {
   describe("executeLocal", () => {
     it("will execute the handler if exists", async () => {
       const handlerSpy = jest.spyOn(handler, "execute");
+      const event = new TestEvent();
 
-      await bus["executeLocal"](new TestEvent());
-      expect(handlerSpy).toHaveBeenCalledWith(new TestEvent());
+      await bus["executeLocal"](event);
+      expect(handlerSpy).toHaveBeenCalledWith(event);
     });
 
     it("will not throw an error if handler does not exist", async () => {
@@ -107,7 +116,7 @@ describe("EventBus", () => {
       const commandSpy = jest.spyOn(commandBus, "publish");
 
       await bus["executeLocal"](new TestEvent());
-      expect(commandSpy).toHaveBeenCalledWith(new TestCommand());
+      expect(commandSpy).toHaveBeenCalledWith(expect.any(TestCommand));
     });
 
     it("will catch an error in a handler and still run sagas", async () => {
@@ -115,7 +124,7 @@ describe("EventBus", () => {
       const commandSpy = jest.spyOn(commandBus, "publish");
 
       await bus["executeLocal"](new TestEvent());
-      expect(commandSpy).toHaveBeenCalledWith(new TestCommand());
+      expect(commandSpy).toHaveBeenCalledWith(expect.any(TestCommand));
     });
   });
 });

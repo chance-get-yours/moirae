@@ -34,6 +34,8 @@ export type { IPublisher } from "./lib/interfaces/publisher.interface";
 export type { IQueryHandler } from "./lib/interfaces/query-handler.interface";
 export type { IQuery } from "./lib/interfaces/query.interface";
 export type { SagaHandler } from "./lib/interfaces/saga-handler.interface";
+// constants
+export { ESState, PUBLISHER_OPTIONS } from "./lib/moirae.constants";
 // modules
 export { MoiraeModule } from "./lib/moirae.module";
 // testing

@@ -1,27 +1,44 @@
 import { BeforeApplicationShutdown, OnModuleInit } from "@nestjs/common";
 import { instanceToPlain, plainToInstance } from "class-transformer";
+import { randomUUID } from "crypto";
+import { EventEmitter } from "events";
 import { AsyncMap } from "../classes/async-map.class";
 import { ObservableFactory } from "../factories/observable.factory";
+import { IPublisherConfig } from "../interfaces/publisher-config.interface";
 import { Respondable } from "../interfaces/respondable.interface";
 import { ESState } from "../moirae.constants";
 import { ConstructorStorage } from "./constructor-storage.class";
 import { ResponseWrapper } from "./response.class";
 import { StateTracker } from "./state-tracker.class";
 
+export const EVENT_KEY = "__event_key__";
+
 export abstract class BasePublisher<Evt extends Respondable>
   implements OnModuleInit, BeforeApplicationShutdown
 {
+  protected _ee: EventEmitter;
   protected readonly _observableFactory: ObservableFactory;
-  protected _responseMap: AsyncMap<string>;
+  protected _responseMap: AsyncMap<ResponseWrapper<unknown>>;
   protected _status: StateTracker<ESState>;
-  protected _subscriptions: Map<string, (eventString: string) => void>;
+  protected _subscriptions: Map<string, (event: Evt) => void>;
+  protected readonly _uuid: string;
 
-  constructor(observableFactory: ObservableFactory) {
+  public role: string;
+
+  constructor(
+    observableFactory: ObservableFactory,
+    protected readonly publisherOptions: IPublisherConfig,
+  ) {
     this._observableFactory = observableFactory;
     this._responseMap = this._observableFactory.generateAsyncMap();
     this._status = this._observableFactory.generateStateTracker<ESState>(
       ESState.NOT_READY,
     );
+    this._uuid = randomUUID();
+  }
+
+  protected get _key(): string {
+    return `${this._uuid}:${EVENT_KEY}`;
   }
 
   public async acknowledgeEvent(event: Evt): Promise<void> {
@@ -32,10 +49,9 @@ export abstract class BasePublisher<Evt extends Respondable>
   public async awaitResponse(
     responseKey: string,
   ): Promise<ResponseWrapper<unknown>> {
-    const responseString = await this._responseMap.waitGet(responseKey);
+    const response = await this._responseMap.waitGet(responseKey);
     this._responseMap.delete(responseKey);
-    const responsePlain = JSON.parse(responseString);
-    return ResponseWrapper.fromPlain(responsePlain);
+    return response;
   }
 
   public async beforeApplicationShutdown() {
@@ -47,23 +63,34 @@ export abstract class BasePublisher<Evt extends Respondable>
 
   protected abstract handleAcknowledge(event: Evt): Promise<void>;
   protected abstract handleBootstrap(): Promise<void>;
+  protected abstract handlePublish(eventString: string): Promise<void>;
+  /**
+   * Handle publishing the response outbound
+   */
   protected abstract handleResponse(
-    responseKey: string,
+    routingKey: string,
     responseJSON: string,
   ): Promise<void>;
   protected abstract handleShutdown(): Promise<void>;
-  protected abstract handleSubscribe(
-    handlerFn: (eventString: string) => void,
-  ): string;
-  protected abstract handleUnsubscribe(key: string): void;
+  protected handleSubscribe(handlerFn: (event: Evt) => void): string {
+    this._ee.addListener(this._key, handlerFn);
+    const key = randomUUID();
+    this._subscriptions.set(key, handlerFn);
+    return key;
+  }
+
+  protected handleUnsubscribe(key: string): void {
+    const sub = this._subscriptions.get(key);
+    if (!sub) return;
+    this._ee.removeListener(this._key, sub);
+  }
 
   /**
    * Listen to the publisher asynchronously without interacting with publisher state
    */
   public listen(handlerFn: (event: Evt) => void): string {
-    return this.handleSubscribe((eventString: string) => {
-      const parsedEvent = this.parseEvent(eventString);
-      handlerFn(parsedEvent);
+    return this.handleSubscribe((event: Evt) => {
+      handlerFn(event);
     });
   }
 
@@ -74,6 +101,9 @@ export abstract class BasePublisher<Evt extends Respondable>
     this._status.set(ESState.IDLE);
   }
 
+  /**
+   * Parse the raw event string into a useable event instance
+   */
   protected parseEvent(eventString: string): Evt {
     const plain: Evt = JSON.parse(eventString);
     const InstanceConstructor = ConstructorStorage.getInstance().get(
@@ -87,22 +117,43 @@ export abstract class BasePublisher<Evt extends Respondable>
     return JSON.stringify(plain);
   }
 
+  protected parseResponse(responseString: string): ResponseWrapper<unknown> {
+    const responsePlain = JSON.parse(responseString);
+    return ResponseWrapper.fromPlain(responsePlain);
+  }
+
+  /**
+   * Publish an event to the wider system
+   */
+  public async publish(event: Evt): Promise<void> {
+    event.routingKey = this.publisherOptions.nodeId;
+    const serialized = this.serializeEvent(event);
+    await this.handlePublish(serialized);
+  }
+
   /**
    * Subscribe to the publisher as a worker.
    */
   public subscribe(handlerFn: (event: Evt) => Promise<any> | any): string {
-    return this.handleSubscribe(async (eventString) => {
-      this._status.set(ESState.ACTIVE);
-      const parsedEvent = this.parseEvent(eventString);
-      const res = await handlerFn(parsedEvent);
-      if (!!res && !parsedEvent.disableResponse && !!parsedEvent.responseKey) {
-        const response = new ResponseWrapper(res);
+    return this.handleSubscribe(async (evt: Evt) => {
+      const res = await handlerFn(evt);
+      if (
+        !!res &&
+        !evt.disableResponse &&
+        !!evt.responseKey &&
+        !!evt.routingKey
+      ) {
+        const response = new ResponseWrapper(
+          res,
+          evt.responseKey,
+          evt.routingKey,
+        );
         await this.handleResponse(
-          parsedEvent.responseKey,
+          evt.routingKey,
           JSON.stringify(response.toPlain()),
         );
       }
-      await this.acknowledgeEvent(parsedEvent);
+      await this.acknowledgeEvent(evt);
     });
   }
 

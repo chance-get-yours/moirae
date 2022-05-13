@@ -3,6 +3,7 @@ import { Test } from "@nestjs/testing";
 import { TestEvent } from "../classes/aggregate-root.class.spec";
 import { ObservableFactory } from "../factories/observable.factory";
 import { IEventSource } from "../interfaces/event-source.interface";
+import { PUBLISHER_OPTIONS } from "../moirae.constants";
 import { MemoryPublisher } from "../publishers/memory.publisher";
 import { MemoryStore } from "./memory.store";
 
@@ -18,7 +19,12 @@ describe("MemoryStore", () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
-      providers: [MemoryPublisher, MemoryStore, ObservableFactory],
+      providers: [
+        MemoryPublisher,
+        MemoryStore,
+        ObservableFactory,
+        { provide: PUBLISHER_OPTIONS, useValue: {} },
+      ],
     }).compile();
 
     store = await module.resolve(MemoryStore);

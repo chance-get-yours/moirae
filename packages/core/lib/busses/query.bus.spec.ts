@@ -6,13 +6,15 @@ import { ObservableFactory } from "../factories/observable.factory";
 import { IPublisher } from "../interfaces/publisher.interface";
 import { IQueryHandler } from "../interfaces/query-handler.interface";
 import { IQuery } from "../interfaces/query.interface";
-import { PUBLISHER } from "../moirae.constants";
+import { PUBLISHER, PUBLISHER_OPTIONS } from "../moirae.constants";
 import { MemoryPublisher } from "../publishers/memory.publisher";
 import { QueryBus } from "./query.bus";
 
 @RegisterType()
 class TestQuery extends Query implements IQuery {
   version = 1;
+  responseKey = "hello";
+  routingKey = "world";
 }
 
 @RegisterType()
@@ -40,6 +42,10 @@ describe("QueryBus", () => {
         {
           provide: PUBLISHER,
           useClass: MemoryPublisher,
+        },
+        {
+          provide: PUBLISHER_OPTIONS,
+          useValue: {},
         },
         TestHandler,
       ],
@@ -73,12 +79,10 @@ describe("QueryBus", () => {
   describe("execute", () => {
     it("will call executeLocal on query and return a response", async () => {
       const publishSpy = jest.spyOn(publisher, "publish");
+      const query = new TestQuery();
 
-      expect(await bus.execute(new TestQuery())).toStrictEqual(
-        new QueryResponse(),
-      );
+      expect(await bus.execute(query)).toStrictEqual(new QueryResponse());
 
-      const query: IQuery = new TestQuery();
       query.responseKey = expect.any(String);
       expect(publishSpy).toHaveBeenCalledWith(query);
     });

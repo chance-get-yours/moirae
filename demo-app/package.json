@@ -23,7 +23,10 @@
     "test:e2e": "env NODE_ENV=test jest --config ./test/jest-e2e.json --runInBand"
   },
   "dependencies": {
+    "@moirae/core": "workspace:^",
+    "@moirae/rabbitmq-publisher": "workspace:^",
     "@nestjs/common": "^8.0.0",
+    "@nestjs/config": "^2.0.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/typeorm": "^8.0.3",

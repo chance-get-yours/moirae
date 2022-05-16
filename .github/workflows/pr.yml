@@ -50,7 +50,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: RabbitMQ in GitHub Actions
-        if: ${{ matrix.publisher == rabbitmq }}
+        if: ${{ matrix.publisher == 'rabbitmq' }}
         uses: Namoshek/rabbitmq-github-action@v1.1.0
         with:
           ports: 5672:5672

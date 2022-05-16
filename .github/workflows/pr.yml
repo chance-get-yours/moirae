@@ -32,6 +32,8 @@ jobs:
             ${{ runner.os }}-yarn-
       - name: Install dependencies
         run: yarn install --frozen-lockfile
+      - name: Build packages
+        run: yarn build
       - name: Test Package ${{ matrix.package }}
         run: yarn workspace @moirae/${{ matrix.package }} test
   integration:
@@ -41,9 +43,17 @@ jobs:
       matrix:
         node-version: [16.x]
         publisher: [memory, rabbitmq]
+    env:
+      RABBIT_MQ_PORT: 5672
+      RABBIT_MQ_HOST: localhost
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: RabbitMQ in GitHub Actions
+        if: ${{ matrix.publisher == rabbitmq }}
+        uses: Namoshek/rabbitmq-github-action@v1.1.0
+        with:
+          ports: 5672:5672
       - name: Setup Node
         uses: actions/setup-node@v3.1.1
         with:

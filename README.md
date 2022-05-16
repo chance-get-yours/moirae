@@ -15,5 +15,5 @@ Current and proposed plugins for Moirae. Always welcome to other suggestions/PRs
 - [ ] [PostgreSQL](https://www.postgresql.org/)
 #### Message Brokers
 - [ ] [Amazon SQS](https://aws.amazon.com/sqs/)
-- [ ] [Rabbit MQ](https://www.rabbitmq.com/)
+- [x] [Rabbit MQ](https://www.rabbitmq.com/)
 - [ ] [Redis](https://redis.io/)

@@ -1,8 +1,15 @@
 version: "3"
 services:
-  demo-pg:
-    image: postgres:14
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: moirae-rabbitmq
+    networks:
+      - moirae
     environment:
-      POSTGRES_PASSWORD: psql
+      RABBITMQ_DEFAULT_USER: ${RABBIT_MQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBIT_MQ_PASS}
     ports:
-      - 5432:5432
+      - ${RABBIT_MQ_PORT}:5672
+      - 15672:15672
+networks:
+  moirae:

@@ -35,7 +35,7 @@ describe("AccountCreatedHandler", () => {
     handler = module.get(AccountCreatedHandler);
     service = module.get(AccountService);
 
-    await factory["eventSource"].onModuleInit();
+    await factory["eventSource"].onApplicationBootstrap();
   });
 
   it("will be defined", () => {

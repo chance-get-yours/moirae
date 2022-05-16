@@ -29,7 +29,7 @@ describe("ResponseWrapper", () => {
     it.each(primitives)(
       "will function with a primitive payload (%s)",
       (payload) => {
-        const responseClass = new ResponseWrapper(payload);
+        const responseClass = new ResponseWrapper(payload, "", "");
         expect(responseClass.payload).toEqual(payload);
 
         const output = responseClass.toPlain();
@@ -41,7 +41,7 @@ describe("ResponseWrapper", () => {
 
     it("will function with a primitive array payload", () => {
       const payload = [1, 2, 3, 4, 5, 6];
-      const pubResponse = new ResponseWrapper(payload);
+      const pubResponse = new ResponseWrapper(payload, "", "");
 
       expect(pubResponse.payload).toEqual(payload);
 
@@ -56,7 +56,7 @@ describe("ResponseWrapper", () => {
 
     it("will function with a class payload", () => {
       const payload = new TestClass();
-      const pubResponse = new ResponseWrapper(payload);
+      const pubResponse = new ResponseWrapper(payload, "", "");
 
       expect(pubResponse.payload).toEqual(payload);
 
@@ -71,7 +71,7 @@ describe("ResponseWrapper", () => {
 
     it("will function with a class array payload", () => {
       const payload = [new TestClass()];
-      const pubResponse = new ResponseWrapper(payload);
+      const pubResponse = new ResponseWrapper(payload, "", "");
 
       expect(pubResponse.payload).toEqual(payload);
 
@@ -88,7 +88,7 @@ describe("ResponseWrapper", () => {
 
     it("will function with an error payload", () => {
       const payload = new TestError();
-      const pubResponse = new ResponseWrapper(payload);
+      const pubResponse = new ResponseWrapper(payload, "", "");
 
       expect(pubResponse.payload).toEqual(payload);
 
@@ -106,7 +106,7 @@ describe("ResponseWrapper", () => {
     it.each(primitives)(
       "will function with a primitive payload (%s)",
       (payload) => {
-        const plain = new ResponseWrapper(payload).toPlain();
+        const plain = new ResponseWrapper(payload, "", "").toPlain();
         const deserialized = jsonify(plain);
 
         const output = ResponseWrapper.fromPlain<typeof payload>(deserialized);
@@ -118,7 +118,7 @@ describe("ResponseWrapper", () => {
 
     it("will function with an array payload", () => {
       const payload = [1, 2, 3, 4, 5, 6, 7];
-      const plain = new ResponseWrapper(payload).toPlain();
+      const plain = new ResponseWrapper(payload, "", "").toPlain();
       const deserialized = jsonify(plain);
 
       const output = ResponseWrapper.fromPlain<typeof payload>(deserialized);
@@ -130,7 +130,7 @@ describe("ResponseWrapper", () => {
     it("will function with a class payload", () => {
       const payload = new TestClass();
 
-      const plain = new ResponseWrapper(payload).toPlain();
+      const plain = new ResponseWrapper(payload, "", "").toPlain();
       const deserialized = jsonify(plain);
 
       const output = ResponseWrapper.fromPlain<typeof payload>(deserialized);
@@ -143,7 +143,7 @@ describe("ResponseWrapper", () => {
     it("will function with a class array payload", () => {
       const payload = [new TestClass()];
 
-      const plain = new ResponseWrapper(payload).toPlain();
+      const plain = new ResponseWrapper(payload, "", "").toPlain();
       const deserialized = jsonify(plain);
 
       const output = ResponseWrapper.fromPlain<typeof payload>(deserialized);
@@ -157,7 +157,7 @@ describe("ResponseWrapper", () => {
     it("will function with an error payload", () => {
       const payload = new TestError();
 
-      const plain = new ResponseWrapper(payload).toPlain();
+      const plain = new ResponseWrapper(payload, "", "").toPlain();
       const deserialized = jsonify(plain);
 
       const output = ResponseWrapper.fromPlain<typeof payload>(deserialized);

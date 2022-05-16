@@ -18,5 +18,6 @@ export class QueryBus extends BaseBus<IQuery> {
     @Inject(PUBLISHER) publisher: IPublisher,
   ) {
     super(QUERY_METADATA, moduleContainer, observableFactory, publisher);
+    this._publisher.role = "__query-bus__";
   }
 }

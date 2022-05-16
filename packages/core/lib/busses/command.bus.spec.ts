@@ -6,13 +6,15 @@ import { ObservableFactory } from "../factories/observable.factory";
 import { ICommandHandler } from "../interfaces/command-handler.interface";
 import { ICommand } from "../interfaces/command.interface";
 import { IPublisher } from "../interfaces/publisher.interface";
-import { PUBLISHER } from "../moirae.constants";
+import { PUBLISHER, PUBLISHER_OPTIONS } from "../moirae.constants";
 import { MemoryPublisher } from "../publishers/memory.publisher";
 import { CommandBus } from "./command.bus";
 
 @RegisterType()
 export class TestCommand extends Command implements ICommand {
   public version = 1;
+  responseKey = "hello";
+  routingKey = "world";
 }
 
 @CommandHandler(TestCommand)
@@ -36,6 +38,10 @@ describe("CommandBus", () => {
           provide: PUBLISHER,
           useClass: MemoryPublisher,
         },
+        {
+          provide: PUBLISHER_OPTIONS,
+          useValue: {},
+        },
         TestHandler,
       ],
     }).compile();
@@ -44,7 +50,7 @@ describe("CommandBus", () => {
     handler = module.get(TestHandler);
     publisher = bus["_publisher"];
 
-    await publisher.onModuleInit();
+    await publisher.onApplicationBootstrap();
     bus.onApplicationBootstrap();
   });
 
@@ -70,10 +76,10 @@ describe("CommandBus", () => {
   describe("execute", () => {
     it("will call executeLocal on command and return a response", async () => {
       const publishSpy = jest.spyOn(publisher, "publish");
+      const command = new TestCommand();
 
-      expect(await bus.execute(new TestCommand())).toEqual("hello world");
+      expect(await bus.execute(command)).toEqual("hello world");
 
-      const command: ICommand = new TestCommand();
       command.responseKey = expect.any(String);
       expect(publishSpy).toHaveBeenCalledWith(command);
     });

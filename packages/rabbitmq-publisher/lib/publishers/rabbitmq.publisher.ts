@@ -63,6 +63,7 @@ export class RabbitMQPublisher
 
     ({ consumerTag: this._responseConsumer } =
       await this._responseChannel.consume(this._RESPONSE_QUEUE, (msg) => {
+        // TODO: break into own function
         if (msg === null) return;
         const response = this.parseResponse(msg.content.toString());
         this._responseMap.set(response.responseKey, response);
@@ -76,6 +77,7 @@ export class RabbitMQPublisher
     ({ consumerTag: this._workConsumer } = await this._workChannel.consume(
       this._WORK_QUEUE,
       (msg) => {
+        // TODO: break into own function
         if (msg === null) return;
         if (
           this._ee.listenerCount(this._key) === 0 ||

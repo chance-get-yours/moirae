@@ -7,7 +7,6 @@ import {
 import { Test } from "@nestjs/testing";
 import { CreateAccountCommand } from "../commands/create-account.command";
 import { CreateAccountInput } from "../dto/create-account.input";
-import { AccountCreatedEvent } from "../events/account-created.event";
 import { CreateAccountHandler } from "./create-account.handler";
 
 describe("CreateAccountHandler", () => {
@@ -29,7 +28,7 @@ describe("CreateAccountHandler", () => {
     factory = module.get(AggregateFactory);
     handler = module.get(CreateAccountHandler);
 
-    await factory["eventSource"].onModuleInit();
+    await factory["eventSource"].onApplicationBootstrap();
   });
 
   it("will be defined", () => {
@@ -51,10 +50,12 @@ describe("CreateAccountHandler", () => {
       });
 
       expect(commitSpy).toHaveBeenCalledWith([
-        new AccountCreatedEvent(expect.any(String), {
-          balance: 0,
-          createdAt: expect.any(Date),
-          name: input.name,
+        expect.objectContaining({
+          data: {
+            balance: 0,
+            createdAt: expect.any(Date),
+            name: input.name,
+          },
         }),
       ]);
     });

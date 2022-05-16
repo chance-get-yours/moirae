@@ -7,8 +7,11 @@ export interface Respondable extends IEventLike {
    */
   disableResponse?: boolean;
   /**
-   * System property for a unique identifier for the requesting system. Used in routing
-   * responses back from other machines.
+   * Unique key to associate a response to a request
    */
   responseKey?: string;
+  /**
+   * System property to defined the requesting system
+   */
+  routingKey?: string;
 }

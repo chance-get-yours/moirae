@@ -50,3 +50,6 @@ docs
 
 # sqlite
 */**/*.db
+
+# env
+.env

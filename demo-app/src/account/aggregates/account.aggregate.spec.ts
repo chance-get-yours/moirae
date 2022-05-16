@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { AccountCreatedEvent } from "../events/account-created.event";
+import { FundsDepositedEvent } from "../events/funds-deposited.event";
 import { AccountAggregate } from "./account.aggregate";
 
 describe("AccountAggregate", () => {
@@ -22,6 +23,24 @@ describe("AccountAggregate", () => {
     expect(aggregate.createdAt).toEqual(event.data.createdAt);
     expect(aggregate.id).toEqual(streamId);
     expect(aggregate.name).toEqual(event.data.name);
+    expect(aggregate.updatedAt).toEqual(event.timestamp);
+  });
+
+  it("will apply a FundsDepositedEvent", () => {
+    const event = new FundsDepositedEvent(streamId, {
+      funds: 100,
+    });
+
+    aggregate.apply(
+      new AccountCreatedEvent(streamId, {
+        balance: 0,
+        name: faker.lorem.word(),
+        createdAt: new Date(),
+      }),
+    );
+
+    aggregate.apply(event);
+    expect(aggregate.balance).toEqual(event.data.funds);
     expect(aggregate.updatedAt).toEqual(event.timestamp);
   });
 });

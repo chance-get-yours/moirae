@@ -7,9 +7,9 @@ import {
   PUBLISHER_OPTIONS,
 } from "@moirae/core";
 import { Inject, Injectable, Scope } from "@nestjs/common";
-import { Channel, Connection, Message } from "amqplib";
+import { Channel, Message } from "amqplib";
 import { IRabbitMQConfig } from "../interfaces/rabbitmq.config";
-import { RABBITMQ_CONNECTION } from "../rabbitmq.constants";
+import { RabbitMQConnection } from "../providers/rabbitmq.connection";
 
 @Injectable({ scope: Scope.TRANSIENT })
 export class RabbitMQPublisher
@@ -28,9 +28,9 @@ export class RabbitMQPublisher
   protected publisherOptions: IRabbitMQConfig;
 
   constructor(
-    @Inject(RABBITMQ_CONNECTION) private _connection: Connection,
     observableFactory: ObservableFactory,
     @Inject(PUBLISHER_OPTIONS) publisherOptions: IRabbitMQConfig,
+    private readonly rabbitMQConnection: RabbitMQConnection,
   ) {
     super(observableFactory, publisherOptions);
   }
@@ -49,7 +49,8 @@ export class RabbitMQPublisher
     this._RESPONSE_QUEUE = `${this.publisherOptions.namespaceRoot}-responses-${this.role}-${this.publisherOptions.nodeId}`;
     this._WORK_QUEUE = `${this.publisherOptions.namespaceRoot}-work-${this.role}`;
 
-    this._responseChannel = await this._connection.createChannel();
+    this._responseChannel =
+      await this.rabbitMQConnection.connection.createChannel();
     await this._responseChannel.assertExchange(this._EXCHANGE, "direct");
     await this._responseChannel.assertQueue(this._RESPONSE_QUEUE, {
       exclusive: true,
@@ -68,7 +69,8 @@ export class RabbitMQPublisher
         this._responseChannel.ack(msg);
       }));
 
-    this._workChannel = await this._connection.createChannel();
+    this._workChannel =
+      await this.rabbitMQConnection.connection.createChannel();
     await this._workChannel.prefetch(1);
     await this._workChannel.assertQueue(this._WORK_QUEUE);
     ({ consumerTag: this._workConsumer } = await this._workChannel.consume(

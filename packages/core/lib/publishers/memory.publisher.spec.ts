@@ -29,7 +29,7 @@ describe("MemoryPublisher", () => {
     }).compile();
 
     publisher = await module.resolve(MemoryPublisher);
-    await publisher.onModuleInit();
+    await publisher.onApplicationBootstrap();
   });
 
   it("will be defined", () => {

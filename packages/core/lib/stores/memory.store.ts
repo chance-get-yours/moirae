@@ -33,9 +33,9 @@ export class MemoryStore
     return eventList;
   }
 
-  public async onModuleInit() {
+  public async onApplicationBootstrap() {
     this._streams = new Map();
-    await super.onModuleInit();
+    await super.onApplicationBootstrap();
   }
 
   public async readFromStream(streamId: string): Promise<IEvent[]> {

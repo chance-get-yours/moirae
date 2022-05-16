@@ -1,4 +1,7 @@
-import { BeforeApplicationShutdown, OnModuleInit } from "@nestjs/common";
+import {
+  BeforeApplicationShutdown,
+  OnApplicationBootstrap,
+} from "@nestjs/common";
 import { instanceToPlain, plainToInstance } from "class-transformer";
 import { randomUUID } from "crypto";
 import { EventEmitter } from "events";
@@ -14,7 +17,7 @@ import { StateTracker } from "./state-tracker.class";
 export const EVENT_KEY = "__event_key__";
 
 export abstract class BasePublisher<Evt extends Respondable>
-  implements OnModuleInit, BeforeApplicationShutdown
+  implements OnApplicationBootstrap, BeforeApplicationShutdown
 {
   protected _ee: EventEmitter;
   protected readonly _observableFactory: ObservableFactory;
@@ -30,11 +33,13 @@ export abstract class BasePublisher<Evt extends Respondable>
     protected readonly publisherOptions: IPublisherConfig,
   ) {
     this._observableFactory = observableFactory;
+    this._ee = this._observableFactory.emitter;
     this._responseMap = this._observableFactory.generateAsyncMap();
     this._status = this._observableFactory.generateStateTracker<ESState>(
       ESState.NOT_READY,
     );
     this._uuid = randomUUID();
+    this._subscriptions = new Map();
   }
 
   protected get _key(): string {
@@ -94,9 +99,8 @@ export abstract class BasePublisher<Evt extends Respondable>
     });
   }
 
-  public async onModuleInit() {
+  public async onApplicationBootstrap() {
     this._status.set(ESState.PREPARING);
-    this._subscriptions = new Map();
     await this.handleBootstrap();
     this._status.set(ESState.IDLE);
   }

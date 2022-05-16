@@ -28,7 +28,7 @@ describe("MemoryStore", () => {
     }).compile();
 
     store = await module.resolve(MemoryStore);
-    await store["onModuleInit"]();
+    await store["onApplicationBootstrap"]();
   });
 
   it("will be defined", () => {

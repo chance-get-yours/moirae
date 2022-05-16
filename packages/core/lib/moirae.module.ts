@@ -1,4 +1,3 @@
-import { IRabbitMQConfig } from "@moirae/rabbitmq-publisher";
 import {
   DynamicModule,
   InjectionToken,
@@ -42,23 +41,15 @@ export class MoiraeModule {
 
     switch (publisher.type) {
       case "rabbitmq":
-        const { createConnection, RABBITMQ_CONNECTION, RabbitMQPublisher } =
+        const { RABBITMQ_CONNECTION, RabbitMQConnection, RabbitMQPublisher } =
           await import("@moirae/rabbitmq-publisher");
 
-        publisherProviders.push(
-          {
-            provide: PUBLISHER,
-            useClass: RabbitMQPublisher,
-          },
-          {
-            provide: RABBITMQ_CONNECTION,
-            useFactory: (options: IRabbitMQConfig) =>
-              createConnection(options.amqplib),
-            inject: [PUBLISHER_OPTIONS],
-          },
-        );
+        publisherProviders.push(RabbitMQConnection, {
+          provide: PUBLISHER,
+          useClass: RabbitMQPublisher,
+        });
 
-        publisherExports.push(RABBITMQ_CONNECTION);
+        publisherExports.push(RabbitMQConnection);
         break;
       default:
         publisherProviders.push({

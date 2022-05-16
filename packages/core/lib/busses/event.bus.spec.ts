@@ -81,8 +81,8 @@ describe("EventBus", () => {
     handler = module.get(TestHandler);
     source = bus["eventSource"];
 
-    await source.onModuleInit();
-    await commandBus["_publisher"].onModuleInit();
+    await source.onApplicationBootstrap();
+    await commandBus["_publisher"].onApplicationBootstrap();
     bus.onApplicationBootstrap();
   });
 

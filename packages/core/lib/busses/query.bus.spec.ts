@@ -55,7 +55,7 @@ describe("QueryBus", () => {
     handler = module.get(TestHandler);
     publisher = bus["_publisher"];
 
-    await publisher.onModuleInit();
+    await publisher.onApplicationBootstrap();
     bus.onApplicationBootstrap();
   });
 

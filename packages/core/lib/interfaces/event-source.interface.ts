@@ -1,10 +1,10 @@
-import { OnModuleInit } from "@nestjs/common";
+import { OnApplicationBootstrap } from "@nestjs/common";
 import { IPublisher } from "packages/core";
 import { IEvent } from "./event.interface";
 
 export interface IEventSource
   extends Pick<IPublisher<IEvent>, "listen" | "subscribe" | "unsubscribe">,
-    OnModuleInit {
+    OnApplicationBootstrap {
   /**
    * Append the provided events to the event stream
    * @param eventList

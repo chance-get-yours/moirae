@@ -5,10 +5,12 @@ import { ObservableFactory } from "../factories/observable.factory";
 import { IEventHandler } from "../interfaces/event-handler.interface";
 import { IEventSource } from "../interfaces/event-source.interface";
 import { IEvent } from "../interfaces/event.interface";
+import { IPubSub } from "../interfaces/pub-sub.interface";
 import { SagaHandler } from "../interfaces/saga-handler.interface";
 import {
   ESState,
   EVENT_METADATA,
+  EVENT_PUBSUB_ENGINE,
   EVENT_SOURCE,
   SAGA_METADATA,
 } from "../moirae.constants";
@@ -29,6 +31,7 @@ export class EventBus {
     private readonly _moduleContainer: ModulesContainer,
     private readonly _observableFactory: ObservableFactory,
     @Inject(EVENT_SOURCE) private readonly eventSource: IEventSource,
+    @Inject(EVENT_PUBSUB_ENGINE) private readonly pubSub: IPubSub,
   ) {
     this._handlerMap = new Map();
     this._status = this._observableFactory.generateStateTracker<ESState>(
@@ -48,6 +51,7 @@ export class EventBus {
       this.commandBus.publish(command);
     });
     this._status.set(ESState.IDLE);
+    await this.pubSub.publish(event);
   }
 
   protected handleProvider(instance: unknown): void {
@@ -64,7 +68,7 @@ export class EventBus {
    * Listen to events post-processing
    */
   public listen(handlerFn: (event: IEvent) => void): string {
-    return this.eventSource.listen(handlerFn);
+    return this.pubSub.subscribe(handlerFn);
   }
 
   onApplicationBootstrap() {
@@ -97,6 +101,6 @@ export class EventBus {
    * Unsubscribe to events post-processing
    */
   public removeListener(subId: string): void {
-    this.eventSource.unsubscribe(subId);
+    this.pubSub.unsubscribe(subId);
   }
 }

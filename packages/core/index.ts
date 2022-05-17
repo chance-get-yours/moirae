@@ -26,11 +26,11 @@ export type { ICommandHandler } from "./lib/interfaces/command-handler.interface
 // interfaces
 export type { ICommand } from "./lib/interfaces/command.interface";
 export type { IMoiraeConfig } from "./lib/interfaces/config.interface";
-export type { IDistributor } from "./lib/interfaces/distributor.interface";
 export type { IEventHandler } from "./lib/interfaces/event-handler.interface";
 export type { IEventLike } from "./lib/interfaces/event-like.interface";
 export type { IEventSource } from "./lib/interfaces/event-source.interface";
 export type { IEvent } from "./lib/interfaces/event.interface";
+export type { IPubSub } from "./lib/interfaces/pub-sub.interface";
 export type { IPublisherConfig } from "./lib/interfaces/publisher-config.interface";
 export type { IPublisher } from "./lib/interfaces/publisher.interface";
 export type { IQueryHandler } from "./lib/interfaces/query-handler.interface";
@@ -39,6 +39,7 @@ export type { SagaHandler } from "./lib/interfaces/saga-handler.interface";
 // constants
 export {
   ESState,
+  EVENT_PUBSUB_ENGINE,
   EVENT_SOURCE,
   PUBLISHER_OPTIONS,
 } from "./lib/moirae.constants";

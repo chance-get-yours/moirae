@@ -31,9 +31,9 @@ export class Distributor<TPayload> {
   }
 
   /**
-   * Listen to the distributor and receive all payloads asynchronously
+   * Subscribe to the distributor and receive all payloads asynchronously
    */
-  public listen(handlerFn: (event: TPayload) => void): string {
+  public subscribe(handlerFn: (event: TPayload) => void): string {
     const _key = randomUUID();
     this._ee.addListener(this._key, handlerFn);
     this._subscriptions.set(_key, handlerFn);

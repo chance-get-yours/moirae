@@ -79,7 +79,7 @@ export abstract class BasePublisher<Evt extends Respondable>
    * Listen to the publisher asynchronously without interacting with publisher state
    */
   public listen(handlerFn: (event: Evt) => void): string {
-    return this._distributor.listen((event: Evt) => {
+    return this._distributor.subscribe((event: Evt) => {
       handlerFn(event);
     });
   }
@@ -124,7 +124,7 @@ export abstract class BasePublisher<Evt extends Respondable>
    * Subscribe to the publisher as a worker.
    */
   public subscribe(handlerFn: (event: Evt) => Promise<any> | any): string {
-    return this._distributor.listen(async (evt: Evt) => {
+    return this._distributor.subscribe(async (evt: Evt) => {
       const res = await handlerFn(evt);
       if (
         !!res &&

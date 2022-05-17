@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
+import { randomUUID } from "crypto";
 import { TestEvent } from "../classes/aggregate-root.class.spec";
 import { Event } from "../classes/event.class";
 import { EventHandler } from "../decorators/event-handler.decorator";
@@ -11,6 +12,7 @@ import { IEventSource } from "../interfaces/event-source.interface";
 import { IEvent } from "../interfaces/event.interface";
 import { SagaHandler } from "../interfaces/saga-handler.interface";
 import {
+  EVENT_PUBSUB_ENGINE,
   EVENT_SOURCE,
   PUBLISHER,
   PUBLISHER_OPTIONS,
@@ -70,6 +72,12 @@ describe("EventBus", () => {
         {
           provide: PUBLISHER_OPTIONS,
           useValue: {},
+        },
+        {
+          provide: EVENT_PUBSUB_ENGINE,
+          useFactory: (factory: ObservableFactory) =>
+            factory.generateDistributor(randomUUID()),
+          inject: [ObservableFactory],
         },
         TestHandler,
         TestSaga,

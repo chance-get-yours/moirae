@@ -13,7 +13,7 @@ describe("Distributor", () => {
     const sub = jest.fn();
     const payload = "hello world";
 
-    distributor.listen(sub);
+    distributor.subscribe(sub);
     distributor.publish(payload);
     expect(sub).toHaveBeenCalledTimes(1);
     expect(sub).toHaveBeenCalledWith(payload);
@@ -24,8 +24,8 @@ describe("Distributor", () => {
     const sub2 = jest.fn();
     const payload = "hello world";
 
-    distributor.listen(sub1);
-    distributor.listen(sub2);
+    distributor.subscribe(sub1);
+    distributor.subscribe(sub2);
     distributor.publish(payload);
     expect(sub1).toHaveBeenCalledTimes(1);
     expect(sub1).toHaveBeenCalledWith(payload);
@@ -38,8 +38,8 @@ describe("Distributor", () => {
     const sub2 = jest.fn();
     const payload = "hello world";
 
-    distributor.listen(sub1);
-    const id = distributor.listen(sub2);
+    distributor.subscribe(sub1);
+    const id = distributor.subscribe(sub2);
     distributor.publish(payload);
     expect(sub1).toHaveBeenCalledTimes(1);
     expect(sub2).toHaveBeenCalledTimes(1);

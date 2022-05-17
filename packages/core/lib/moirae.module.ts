@@ -4,6 +4,7 @@ import {
   Module,
   Provider,
 } from "@nestjs/common";
+import { randomUUID } from "crypto";
 import { CommandBus } from "./busses/command.bus";
 import { EventBus } from "./busses/event.bus";
 import { QueryBus } from "./busses/query.bus";
@@ -13,7 +14,12 @@ import { ObservableFactory } from "./factories/observable.factory";
 import { IMoiraeConfig } from "./interfaces/config.interface";
 import { MemoryPublisherConfig } from "./interfaces/memory-publisher-config.interface";
 import { IPublisherConfig } from "./interfaces/publisher-config.interface";
-import { EVENT_SOURCE, PUBLISHER, PUBLISHER_OPTIONS } from "./moirae.constants";
+import {
+  EVENT_PUBSUB_ENGINE,
+  EVENT_SOURCE,
+  PUBLISHER,
+  PUBLISHER_OPTIONS,
+} from "./moirae.constants";
 import { MemoryPublisher } from "./publishers/memory.publisher";
 import { MemoryStore } from "./stores/memory.store";
 
@@ -53,10 +59,18 @@ export class MoiraeModule {
         publisherExports.push(RabbitMQConnection);
         break;
       default:
-        publisherProviders.push({
-          provide: PUBLISHER,
-          useClass: MemoryPublisher,
-        });
+        publisherProviders.push(
+          {
+            provide: PUBLISHER,
+            useClass: MemoryPublisher,
+          },
+          {
+            provide: EVENT_PUBSUB_ENGINE,
+            inject: [ObservableFactory],
+            useFactory: (factory: ObservableFactory) =>
+              factory.generateDistributor(randomUUID()),
+          },
+        );
     }
 
     // TODO: separate public vs private deps

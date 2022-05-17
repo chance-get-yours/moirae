@@ -1,7 +1,7 @@
 export const APPLY_METADATA = "__apply_event_metadata__";
 export const COMMAND_METADATA = "__command_handler__";
-export const DISTRIBUTOR = "__event-distributor__";
 export const EVENT_METADATA = "__event_handler__";
+export const EVENT_PUBSUB_ENGINE = "__event-pubsub-engine__";
 export const EVENT_SOURCE = "__event_source__";
 export const PROJECTION_METADATA = "__aggregate_projection__";
 export const PUBLISHER = "__publisher__";

@@ -42,6 +42,11 @@ describe("Account", () => {
     });
   });
 
+  describe("deposit funds", () => {
+    it.todo("will deposit new funds in the account");
+    it.todo("will block depositing a negative amount");
+  });
+
   describe("find account by id", () => {
     let id: string;
 

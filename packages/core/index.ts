@@ -7,6 +7,7 @@ export { AggregateRoot } from "./lib/classes/aggregate-root.class";
 export { BasePublisher } from "./lib/classes/base.publisher";
 export { CommandResponse } from "./lib/classes/command-response.class";
 export { Command } from "./lib/classes/command.class";
+export { Distributor } from "./lib/classes/distributor.class";
 export { Event } from "./lib/classes/event.class";
 export { Query } from "./lib/classes/query.class";
 export { ResponseWrapper } from "./lib/classes/response.class";
@@ -25,6 +26,7 @@ export type { ICommandHandler } from "./lib/interfaces/command-handler.interface
 // interfaces
 export type { ICommand } from "./lib/interfaces/command.interface";
 export type { IMoiraeConfig } from "./lib/interfaces/config.interface";
+export type { IDistributor } from "./lib/interfaces/distributor.interface";
 export type { IEventHandler } from "./lib/interfaces/event-handler.interface";
 export type { IEventLike } from "./lib/interfaces/event-like.interface";
 export type { IEventSource } from "./lib/interfaces/event-source.interface";
@@ -35,7 +37,11 @@ export type { IQueryHandler } from "./lib/interfaces/query-handler.interface";
 export type { IQuery } from "./lib/interfaces/query.interface";
 export type { SagaHandler } from "./lib/interfaces/saga-handler.interface";
 // constants
-export { ESState, PUBLISHER_OPTIONS } from "./lib/moirae.constants";
+export {
+  ESState,
+  EVENT_SOURCE,
+  PUBLISHER_OPTIONS,
+} from "./lib/moirae.constants";
 // modules
 export { MoiraeModule } from "./lib/moirae.module";
 // testing

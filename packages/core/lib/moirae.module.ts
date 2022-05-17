@@ -41,8 +41,9 @@ export class MoiraeModule {
 
     switch (publisher.type) {
       case "rabbitmq":
-        const { RABBITMQ_CONNECTION, RabbitMQConnection, RabbitMQPublisher } =
-          await import("@moirae/rabbitmq-publisher");
+        const { RabbitMQConnection, RabbitMQPublisher } = await import(
+          "@moirae/rabbitmq-publisher"
+        );
 
         publisherProviders.push(RabbitMQConnection, {
           provide: PUBLISHER,

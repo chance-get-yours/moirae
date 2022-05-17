@@ -60,6 +60,9 @@ export class EventBus {
     }
   }
 
+  /**
+   * Listen to events post-processing
+   */
   public listen(handlerFn: (event: IEvent) => void): string {
     return this.eventSource.listen(handlerFn);
   }
@@ -90,6 +93,9 @@ export class EventBus {
     await this.eventSource.appendToStream([event]);
   }
 
+  /**
+   * Unsubscribe to events post-processing
+   */
   public removeListener(subId: string): void {
     this.eventSource.unsubscribe(subId);
   }

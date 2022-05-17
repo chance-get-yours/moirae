@@ -66,13 +66,6 @@ export abstract class BaseBus<T extends Respondable>
     return res;
   }
 
-  /**
-   * Listen asynchronously to the bus
-   */
-  public listen(handlerFn: (event: T) => void): string {
-    return this._publisher.listen(handlerFn);
-  }
-
   onApplicationBootstrap() {
     const providers = [...this._moduleContainer.values()].flatMap((module) => [
       ...module.providers.values(),
@@ -93,9 +86,5 @@ export abstract class BaseBus<T extends Respondable>
 
   public publish(event: T): Promise<void> {
     return this._publisher.publish(event);
-  }
-
-  public removeListener(subId: string): void {
-    this._publisher.unsubscribe(subId);
   }
 }

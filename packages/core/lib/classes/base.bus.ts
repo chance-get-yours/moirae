@@ -3,6 +3,7 @@ import { ModulesContainer } from "@nestjs/core";
 import { randomUUID } from "crypto";
 import { HandlerNotFoundError } from "../exceptions/handler-not-found.error";
 import { ObservableFactory } from "../factories/observable.factory";
+import { ExecuteOptions } from "../interfaces/execute-options.interface";
 import { IHandler } from "../interfaces/handler.interface";
 import { IPublisher } from "../interfaces/publisher.interface";
 import { Respondable } from "../interfaces/respondable.interface";
@@ -33,11 +34,16 @@ export abstract class BaseBus<T extends Respondable>
   /**
    * Execute the provided command or query on a remote system
    */
-  public async execute<TRes>(event: T): Promise<TRes> {
+  public async execute<TRes>(
+    event: T,
+    options: ExecuteOptions = {},
+  ): Promise<TRes> {
+    const { throwError = false } = options;
     const _key = randomUUID();
     event.responseKey = _key;
     await this._publisher.publish(event);
     const res = await this._publisher.awaitResponse(_key);
+    if (res.payload instanceof Error && throwError) throw res.payload;
     return res.payload as TRes;
   }
 
@@ -60,13 +66,6 @@ export abstract class BaseBus<T extends Respondable>
     return res;
   }
 
-  /**
-   * Listen asynchronously to the bus
-   */
-  public listen(handlerFn: (event: T) => void): string {
-    return this._publisher.listen(handlerFn);
-  }
-
   onApplicationBootstrap() {
     const providers = [...this._moduleContainer.values()].flatMap((module) => [
       ...module.providers.values(),
@@ -87,9 +86,5 @@ export abstract class BaseBus<T extends Respondable>
 
   public publish(event: T): Promise<void> {
     return this._publisher.publish(event);
-  }
-
-  public removeListener(subId: string): void {
-    this._publisher.unsubscribe(subId);
   }
 }

@@ -1,4 +1,5 @@
 import { INestApplication } from "@nestjs/common";
+import { WsAdapter } from "@nestjs/platform-ws";
 import { Test, TestingModule } from "@nestjs/testing";
 import * as request from "supertest";
 import { AppModule } from "../src/app.module";
@@ -13,6 +14,7 @@ describe("AppController (e2e)", () => {
 
     app = moduleFixture.createNestApplication();
     app.enableShutdownHooks();
+    app.useWebSocketAdapter(new WsAdapter());
     await app.init();
   });
 

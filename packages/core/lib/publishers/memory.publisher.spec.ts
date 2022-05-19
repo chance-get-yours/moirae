@@ -3,6 +3,7 @@ import { TestEvent } from "../classes/aggregate-root.class.spec";
 import { ConstructorStorage } from "../classes/constructor-storage.class";
 import { ObservableFactory } from "../factories/observable.factory";
 import { IEvent } from "../interfaces/event.interface";
+import { PUBLISHER_OPTIONS } from "../moirae.constants";
 import { MemoryPublisher } from "./memory.publisher";
 
 describe("MemoryPublisher", () => {
@@ -20,11 +21,15 @@ describe("MemoryPublisher", () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
-      providers: [MemoryPublisher, ObservableFactory],
+      providers: [
+        MemoryPublisher,
+        ObservableFactory,
+        { provide: PUBLISHER_OPTIONS, useValue: {} },
+      ],
     }).compile();
 
     publisher = await module.resolve(MemoryPublisher);
-    await publisher.onModuleInit();
+    await publisher.onApplicationBootstrap();
   });
 
   it("will be defined", () => {
@@ -34,31 +39,31 @@ describe("MemoryPublisher", () => {
   describe("publish", () => {
     it("will serialize the event to JSON", async () => {
       const serializeSpy = jest.spyOn(publisher, "serializeEvent");
+      const evt = new TestEvent();
 
-      await publisher.publish(new TestEvent());
-      expect(serializeSpy).toHaveBeenCalledWith(new TestEvent());
+      await publisher.publish(evt);
+      expect(serializeSpy).toHaveBeenCalledWith(evt);
     });
 
     it("will publish the event to the queue", async () => {
       const queueSpy = jest.spyOn(publisher["_queue"], "enqueue");
+      const evt = new TestEvent();
 
-      await publisher.publish(new TestEvent());
-      expect(queueSpy).toHaveBeenCalledWith(JSON.stringify(new TestEvent()));
+      await publisher.publish(evt);
+      expect(queueSpy).toHaveBeenCalledWith(JSON.stringify(evt));
     });
 
     it("will emit an event if it is the first element in the queue", async () => {
-      const eeSpy = jest.spyOn(publisher["_ee"], "emit");
+      const eeSpy = jest.spyOn(publisher["_distributor"], "publish");
+      const evt = new TestEvent();
 
       publisher.subscribe(() => void 0);
-      await publisher.publish(new TestEvent());
-      expect(eeSpy).toHaveBeenCalledWith(
-        publisher["_key"],
-        publisher.serializeEvent(new TestEvent()),
-      );
+      await publisher.publish(evt);
+      expect(eeSpy).toHaveBeenCalledWith(evt);
     });
 
     it("will not emit any events if there are no subscribers", async () => {
-      const eeSpy = jest.spyOn(publisher["_ee"], "emit");
+      const eeSpy = jest.spyOn(publisher["_distributor"], "publish");
 
       await publisher.publish(new TestEvent());
       expect(eeSpy).not.toHaveBeenCalled();
@@ -68,18 +73,20 @@ describe("MemoryPublisher", () => {
   describe("subscribe", () => {
     it("will call subscriber function", async () => {
       const sub = jest.fn();
+      const evt = new TestEvent();
 
       publisher.subscribe(sub);
-      await publisher.publish(new TestEvent());
-      expect(sub).toHaveBeenCalledWith(new TestEvent());
+      await publisher.publish(evt);
+      expect(sub).toHaveBeenCalledWith(evt);
     });
 
     it("will allow unsubscribing", async () => {
       const sub = jest.fn();
 
       const subKey = publisher.subscribe(sub);
-      await publisher.publish(new TestEvent());
-      expect(sub).toHaveBeenCalledWith(new TestEvent());
+      const evt = new TestEvent();
+      await publisher.publish(evt);
+      expect(sub).toHaveBeenCalledWith(evt);
 
       publisher.unsubscribe(subKey);
       await publisher.publish(new TestEvent());

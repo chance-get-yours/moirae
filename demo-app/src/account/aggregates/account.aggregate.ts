@@ -23,7 +23,7 @@ export class AccountAggregate
   }
 
   @Apply(AccountCreatedEvent)
-  handleAccountCreated(event: AccountCreatedEvent): void {
+  protected handleAccountCreated(event: AccountCreatedEvent): void {
     this.balance = event.data.balance;
     this.createdAt = event.data.createdAt;
     this.name = event.data.name;

@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
+import { randomUUID } from "crypto";
 import { TestEvent } from "../classes/aggregate-root.class.spec";
 import { Event } from "../classes/event.class";
 import { EventHandler } from "../decorators/event-handler.decorator";
@@ -10,7 +11,12 @@ import { IEventHandler } from "../interfaces/event-handler.interface";
 import { IEventSource } from "../interfaces/event-source.interface";
 import { IEvent } from "../interfaces/event.interface";
 import { SagaHandler } from "../interfaces/saga-handler.interface";
-import { EVENT_SOURCE, PUBLISHER } from "../moirae.constants";
+import {
+  EVENT_PUBSUB_ENGINE,
+  EVENT_SOURCE,
+  PUBLISHER,
+  PUBLISHER_OPTIONS,
+} from "../moirae.constants";
 import { MemoryPublisher } from "../publishers/memory.publisher";
 import { MemoryStore } from "../stores/memory.store";
 import { CommandBus } from "./command.bus";
@@ -63,6 +69,16 @@ describe("EventBus", () => {
           provide: PUBLISHER,
           useClass: MemoryPublisher,
         },
+        {
+          provide: PUBLISHER_OPTIONS,
+          useValue: {},
+        },
+        {
+          provide: EVENT_PUBSUB_ENGINE,
+          useFactory: (factory: ObservableFactory) =>
+            factory.generateDistributor(randomUUID()),
+          inject: [ObservableFactory],
+        },
         TestHandler,
         TestSaga,
       ],
@@ -73,8 +89,8 @@ describe("EventBus", () => {
     handler = module.get(TestHandler);
     source = bus["eventSource"];
 
-    await source.onModuleInit();
-    await commandBus["_publisher"].onModuleInit();
+    await source.onApplicationBootstrap();
+    await commandBus["_publisher"].onApplicationBootstrap();
     bus.onApplicationBootstrap();
   });
 
@@ -85,9 +101,10 @@ describe("EventBus", () => {
   describe("executeLocal", () => {
     it("will execute the handler if exists", async () => {
       const handlerSpy = jest.spyOn(handler, "execute");
+      const event = new TestEvent();
 
-      await bus["executeLocal"](new TestEvent());
-      expect(handlerSpy).toHaveBeenCalledWith(new TestEvent());
+      await bus["executeLocal"](event);
+      expect(handlerSpy).toHaveBeenCalledWith(event);
     });
 
     it("will not throw an error if handler does not exist", async () => {
@@ -107,7 +124,7 @@ describe("EventBus", () => {
       const commandSpy = jest.spyOn(commandBus, "publish");
 
       await bus["executeLocal"](new TestEvent());
-      expect(commandSpy).toHaveBeenCalledWith(new TestCommand());
+      expect(commandSpy).toHaveBeenCalledWith(expect.any(TestCommand));
     });
 
     it("will catch an error in a handler and still run sagas", async () => {
@@ -115,7 +132,7 @@ describe("EventBus", () => {
       const commandSpy = jest.spyOn(commandBus, "publish");
 
       await bus["executeLocal"](new TestEvent());
-      expect(commandSpy).toHaveBeenCalledWith(new TestCommand());
+      expect(commandSpy).toHaveBeenCalledWith(expect.any(TestCommand));
     });
   });
 });

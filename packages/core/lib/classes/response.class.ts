@@ -5,7 +5,11 @@ export class ResponseWrapper<T = unknown> {
   public payload: T;
   private payloadType: string;
 
-  constructor(payload: T) {
+  constructor(
+    payload: T,
+    public readonly responseKey: string,
+    public readonly routingKey: string,
+  ) {
     this.payload = payload;
   }
 

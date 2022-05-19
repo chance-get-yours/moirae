@@ -18,5 +18,6 @@ export class CommandBus extends BaseBus<ICommand> {
     @Inject(PUBLISHER) publisher: IPublisher,
   ) {
     super(COMMAND_METADATA, modulesContainer, observableFactory, publisher);
+    this._publisher.role = "__command-bus__";
   }
 }

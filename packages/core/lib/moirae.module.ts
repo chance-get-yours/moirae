@@ -43,15 +43,22 @@ export class MoiraeModule {
         useValue: publisher,
       },
     ];
-    const publisherExports: InjectionToken[] = [PUBLISHER_OPTIONS];
+    const publisherExports: InjectionToken[] = [
+      PUBLISHER_OPTIONS,
+      EVENT_PUBSUB_ENGINE,
+    ];
 
     switch (publisher.type) {
       case "rabbitmq":
-        const { RabbitMQConnection, RabbitMQPublisher } = await import(
-          "@moirae/rabbitmq-publisher"
-        );
+        const { RabbitMQConnection, RabbitMQPublisher, RabbitPubSubEngine } =
+          await import("@moirae/rabbitmq-publisher");
 
-        publisherProviders.push(RabbitMQConnection, {
+        const pubSubProvider: Provider = {
+          provide: EVENT_PUBSUB_ENGINE,
+          useClass: RabbitPubSubEngine,
+        };
+
+        publisherProviders.push(RabbitMQConnection, pubSubProvider, {
           provide: PUBLISHER,
           useClass: RabbitMQPublisher,
         });

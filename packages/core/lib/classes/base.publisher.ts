@@ -2,22 +2,23 @@ import {
   BeforeApplicationShutdown,
   OnApplicationBootstrap,
 } from "@nestjs/common";
-import { instanceToPlain, plainToInstance } from "class-transformer";
 import { randomUUID } from "crypto";
 import { AsyncMap } from "../classes/async-map.class";
 import { ObservableFactory } from "../factories/observable.factory";
 import { IPublisherConfig } from "../interfaces/publisher-config.interface";
 import { Respondable } from "../interfaces/respondable.interface";
+import { EventProcessor } from "../mixins/event-processor.mixin";
 import { ESState } from "../moirae.constants";
-import { ConstructorStorage } from "./constructor-storage.class";
 import { Distributor } from "./distributor.class";
 import { ResponseWrapper } from "./response.class";
 import { StateTracker } from "./state-tracker.class";
 
 export const EVENT_KEY = "__event_key__";
 
+// @AddMixin(EventProcessor)
 export abstract class BasePublisher<Evt extends Respondable>
-  implements OnApplicationBootstrap, BeforeApplicationShutdown
+  extends EventProcessor<Evt>
+  implements OnApplicationBootstrap, BeforeApplicationShutdown, EventProcessor
 {
   protected _distributor: Distributor<Evt>;
   protected _responseMap: AsyncMap<ResponseWrapper<unknown>>;
@@ -30,6 +31,7 @@ export abstract class BasePublisher<Evt extends Respondable>
     observableFactory: ObservableFactory,
     protected readonly publisherOptions: IPublisherConfig,
   ) {
+    super();
     this._uuid = randomUUID();
 
     this._distributor = observableFactory.generateDistributor(this._uuid);
@@ -90,21 +92,21 @@ export abstract class BasePublisher<Evt extends Respondable>
     this._status.set(ESState.IDLE);
   }
 
-  /**
-   * Parse the raw event string into a useable event instance
-   */
-  protected parseEvent(eventString: string): Evt {
-    const plain: Evt = JSON.parse(eventString);
-    const InstanceConstructor = ConstructorStorage.getInstance().get(
-      plain.name,
-    );
-    return plainToInstance(InstanceConstructor, plain) as Evt;
-  }
+  // /**
+  //  * Parse the raw event string into a useable event instance
+  //  */
+  // protected parseEvent(eventString: string): Evt {
+  //   const plain: Evt = JSON.parse(eventString);
+  //   const InstanceConstructor = ConstructorStorage.getInstance().get(
+  //     plain.name,
+  //   );
+  //   return plainToInstance(InstanceConstructor, plain) as Evt;
+  // }
 
-  public serializeEvent(event: Evt): string {
-    const plain = instanceToPlain(event);
-    return JSON.stringify(plain);
-  }
+  // public serializeEvent(event: Evt): string {
+  //   const plain = instanceToPlain(event);
+  //   return JSON.stringify(plain);
+  // }
 
   protected parseResponse(responseString: string): ResponseWrapper<unknown> {
     const responsePlain = JSON.parse(responseString);

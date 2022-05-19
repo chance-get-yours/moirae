@@ -80,13 +80,13 @@ export class RabbitMQPublisher
         // TODO: break into own function
         if (msg === null) return;
         if (
-          this._ee.listenerCount(this._key) === 0 ||
+          this._distributor.listenerCount === 0 ||
           this._status.current !== ESState.IDLE
         )
           this._workChannel.reject(msg, true);
         const parsedEvent = this.parseEvent(msg.content.toString());
         this._activeInbound.set(parsedEvent.uuid, msg);
-        this._ee.emit(this._key, parsedEvent);
+        this._distributor.publish(parsedEvent);
       },
     ));
   }

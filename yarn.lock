@@ -1036,6 +1036,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nestjs/platform-ws@npm:^8.4.5":
+  version: 8.4.5
+  resolution: "@nestjs/platform-ws@npm:8.4.5"
+  dependencies:
+    tslib: 2.4.0
+    ws: 7.5.6
+  peerDependencies:
+    "@nestjs/common": ^8.0.0
+    "@nestjs/websockets": ^8.0.0
+    rxjs: ^7.1.0
+  checksum: 10e2d8742079c4952dfa133f4666c6fe3b404315853341626aafaa9b288b103f4051a1819196aeecaf49ea00e65322c498a02bb88a830f578b176da283cf06ff
+  languageName: node
+  linkType: hard
+
 "@nestjs/schematics@npm:^8.0.0, @nestjs/schematics@npm:^8.0.11, @nestjs/schematics@npm:^8.0.3":
   version: 8.0.11
   resolution: "@nestjs/schematics@npm:8.0.11"
@@ -1083,6 +1097,26 @@ __metadata:
     rxjs: ^7.2.0
     typeorm: ^0.2.34
   checksum: 01b1fc97f18010867805f8718a677d71bb4a757fd1e1625fd0303a356a0a32a0e7da3a7458e0a71766756f894aac8b24eaa74b7c4a625370328338c8ca3f4661
+  languageName: node
+  linkType: hard
+
+"@nestjs/websockets@npm:^8.4.5":
+  version: 8.4.5
+  resolution: "@nestjs/websockets@npm:8.4.5"
+  dependencies:
+    iterare: 1.2.1
+    object-hash: 3.0.0
+    tslib: 2.4.0
+  peerDependencies:
+    "@nestjs/common": ^8.0.0
+    "@nestjs/core": ^8.0.0
+    "@nestjs/platform-socket.io": ^8.0.0
+    reflect-metadata: ^0.1.12
+    rxjs: ^7.1.0
+  peerDependenciesMeta:
+    "@nestjs/platform-socket.io":
+      optional: true
+  checksum: f30f73110a1d69538ec3518f61a4e371111a7cbf2e1c3f7655b49534feb822f1d0451aea96e5861498c113758d9905dc390b29c053a85f99f2f970e2304da611
   languageName: node
   linkType: hard
 
@@ -1676,6 +1710,15 @@ __metadata:
   dependencies:
     "@types/superagent": "*"
   checksum: f0e2b44f86bec2f708d6a3d0cb209055b487922040773049b0f8c6b557af52d4b5fa904e17dfaa4ce6e610172206bbec7b62420d158fa57b6ffc2de37b1730d3
+  languageName: node
+  linkType: hard
+
+"@types/ws@npm:^8.5.3":
+  version: 8.5.3
+  resolution: "@types/ws@npm:8.5.3"
+  dependencies:
+    "@types/node": "*"
+  checksum: 0ce46f850d41383fcdc2149bcacc86d7232fa7a233f903d2246dff86e31701a02f8566f40af5f8b56d1834779255c04ec6ec78660fe0f9b2a69cf3d71937e4ae
   languageName: node
   linkType: hard
 
@@ -3325,13 +3368,16 @@ __metadata:
     "@nestjs/config": ^2.0.0
     "@nestjs/core": ^8.0.0
     "@nestjs/platform-express": ^8.0.0
+    "@nestjs/platform-ws": ^8.4.5
     "@nestjs/schematics": ^8.0.0
     "@nestjs/testing": ^8.0.0
     "@nestjs/typeorm": ^8.0.3
+    "@nestjs/websockets": ^8.4.5
     "@types/express": ^4.17.13
     "@types/jest": 27.5.0
     "@types/node": ^16.0.0
     "@types/supertest": ^2.0.11
+    "@types/ws": ^8.5.3
     "@typescript-eslint/eslint-plugin": ^5.0.0
     "@typescript-eslint/parser": ^5.0.0
     class-transformer: ^0.5.1
@@ -3354,6 +3400,7 @@ __metadata:
     tsconfig-paths: 4.0.0
     typeorm: ^0.2
     typescript: ^4.3.5
+    ws: ^8.6.0
   languageName: unknown
   linkType: soft
 
@@ -7799,17 +7846,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tslib@npm:2.4.0, tslib@npm:^2.1.0":
+  version: 2.4.0
+  resolution: "tslib@npm:2.4.0"
+  checksum: 8c4aa6a3c5a754bf76aefc38026134180c053b7bd2f81338cb5e5ebf96fefa0f417bff221592bf801077f5bf990562f6264fecbc42cd3309b33872cb6fc3b113
+  languageName: node
+  linkType: hard
+
 "tslib@npm:^1.8.1, tslib@npm:^1.9.0":
   version: 1.14.1
   resolution: "tslib@npm:1.14.1"
   checksum: dbe628ef87f66691d5d2959b3e41b9ca0045c3ee3c7c7b906cc1e328b39f199bb1ad9e671c39025bd56122ac57dfbf7385a94843b1cc07c60a4db74795829acd
-  languageName: node
-  linkType: hard
-
-"tslib@npm:^2.1.0":
-  version: 2.4.0
-  resolution: "tslib@npm:2.4.0"
-  checksum: 8c4aa6a3c5a754bf76aefc38026134180c053b7bd2f81338cb5e5ebf96fefa0f417bff221592bf801077f5bf990562f6264fecbc42cd3309b33872cb6fc3b113
   languageName: node
   linkType: hard
 
@@ -8324,6 +8371,36 @@ __metadata:
     imurmurhash: ^0.1.4
     signal-exit: ^3.0.7
   checksum: 8f780232533ca6223c63c9b9c01c4386ca8c625ebe5017a9ed17d037aec19462ae17109e0aa155bff5966ee4ae7a27b67a99f55caf3f32ffd84155e9da3929fc
+  languageName: node
+  linkType: hard
+
+"ws@npm:7.5.6":
+  version: 7.5.6
+  resolution: "ws@npm:7.5.6"
+  peerDependencies:
+    bufferutil: ^4.0.1
+    utf-8-validate: ^5.0.2
+  peerDependenciesMeta:
+    bufferutil:
+      optional: true
+    utf-8-validate:
+      optional: true
+  checksum: 0c2ffc9a539dd61dd2b00ff6cc5c98a3371e2521011fe23da4b3578bb7ac26cbdf7ca8a68e8e08023c122ae247013216dde2a20c908de415a6bcc87bdef68c87
+  languageName: node
+  linkType: hard
+
+"ws@npm:^8.6.0":
+  version: 8.6.0
+  resolution: "ws@npm:8.6.0"
+  peerDependencies:
+    bufferutil: ^4.0.1
+    utf-8-validate: ^5.0.2
+  peerDependenciesMeta:
+    bufferutil:
+      optional: true
+    utf-8-validate:
+      optional: true
+  checksum: e2fca82059f1e087d0c78e2f37135e1b8332bc804fce46f83c2db1cb8571685abf9d2c99b964bab3752536ad90b99b46fb8d1428899aed3e560684ab4641bffd
   languageName: node
   linkType: hard
 

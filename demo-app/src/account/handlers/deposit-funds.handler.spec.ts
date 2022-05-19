@@ -3,7 +3,6 @@ import { AggregateFactory, mockAggregateFactory } from "@moirae/core";
 import { Test } from "@nestjs/testing";
 import { DepositFundsCommand } from "../commands/deposit-funds.command";
 import { AccountCreatedEvent } from "../events/account-created.event";
-import { FundsDepositedEvent } from "../events/funds-deposited.event";
 import { DepositFundsHandler } from "./deposit-funds.handler";
 
 describe("DepositFundsHandler", () => {
@@ -25,7 +24,7 @@ describe("DepositFundsHandler", () => {
     factory = module.get(AggregateFactory);
     handler = module.get(DepositFundsHandler);
 
-    await factory["eventSource"].onModuleInit();
+    await factory["eventSource"].onApplicationBootstrap();
   });
 
   it("will be defined", () => {
@@ -59,8 +58,10 @@ describe("DepositFundsHandler", () => {
       });
 
       expect(commitSpy).toHaveBeenCalledWith([
-        new FundsDepositedEvent(expect.any(String), {
-          funds: command.input.funds,
+        expect.objectContaining({
+          data: {
+            funds: command.input.funds,
+          },
         }),
       ]);
     });

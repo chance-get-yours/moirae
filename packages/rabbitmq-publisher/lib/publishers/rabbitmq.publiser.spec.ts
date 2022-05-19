@@ -13,7 +13,7 @@ import { createMockChannel } from "../testing/channel.mock";
 import { createMockConnection } from "../testing/connection.mock";
 import { RabbitMQPublisher } from "./rabbitmq.publisher";
 
-class TestEvent extends Event implements IEvent {
+export class TestEvent extends Event implements IEvent {
   data = {};
   streamId = "q12345f";
   version = 1;

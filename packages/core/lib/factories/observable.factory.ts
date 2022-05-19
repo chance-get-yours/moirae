@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { EventEmitter } from "events";
 import { AsyncMap } from "../classes/async-map.class";
+import { Distributor } from "../classes/distributor.class";
 import { StateTracker } from "../classes/state-tracker.class";
 
 /**
@@ -20,6 +21,10 @@ export class ObservableFactory {
 
   public generateAsyncMap<T>(): AsyncMap<T> {
     return new AsyncMap(this._ee);
+  }
+
+  public generateDistributor<T>(uuid: string): Distributor<T> {
+    return new Distributor<T>(this._ee, uuid);
   }
 
   public generateStateTracker<T>(initialStatus: T): StateTracker<T> {

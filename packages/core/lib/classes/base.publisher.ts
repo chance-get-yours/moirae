@@ -2,28 +2,27 @@ import {
   BeforeApplicationShutdown,
   OnApplicationBootstrap,
 } from "@nestjs/common";
-import { instanceToPlain, plainToInstance } from "class-transformer";
 import { randomUUID } from "crypto";
-import { EventEmitter } from "events";
 import { AsyncMap } from "../classes/async-map.class";
 import { ObservableFactory } from "../factories/observable.factory";
 import { IPublisherConfig } from "../interfaces/publisher-config.interface";
 import { Respondable } from "../interfaces/respondable.interface";
+import { EventProcessor } from "../mixins/event-processor.mixin";
 import { ESState } from "../moirae.constants";
-import { ConstructorStorage } from "./constructor-storage.class";
+import { Distributor } from "./distributor.class";
 import { ResponseWrapper } from "./response.class";
 import { StateTracker } from "./state-tracker.class";
 
 export const EVENT_KEY = "__event_key__";
 
+// @AddMixin(EventProcessor)
 export abstract class BasePublisher<Evt extends Respondable>
-  implements OnApplicationBootstrap, BeforeApplicationShutdown
+  extends EventProcessor<Evt>
+  implements OnApplicationBootstrap, BeforeApplicationShutdown, EventProcessor
 {
-  protected _ee: EventEmitter;
-  protected readonly _observableFactory: ObservableFactory;
+  protected _distributor: Distributor<Evt>;
   protected _responseMap: AsyncMap<ResponseWrapper<unknown>>;
   protected _status: StateTracker<ESState>;
-  protected _subscriptions: Map<string, (event: Evt) => void>;
   protected readonly _uuid: string;
 
   public role: string;
@@ -32,14 +31,15 @@ export abstract class BasePublisher<Evt extends Respondable>
     observableFactory: ObservableFactory,
     protected readonly publisherOptions: IPublisherConfig,
   ) {
-    this._observableFactory = observableFactory;
-    this._ee = this._observableFactory.emitter;
-    this._responseMap = this._observableFactory.generateAsyncMap();
-    this._status = this._observableFactory.generateStateTracker<ESState>(
+    super();
+    this._uuid = randomUUID();
+
+    this._distributor = observableFactory.generateDistributor(this._uuid);
+    this._responseMap = observableFactory.generateAsyncMap();
+    this._status = observableFactory.generateStateTracker<ESState>(
       ESState.NOT_READY,
     );
     this._uuid = randomUUID();
-    this._subscriptions = new Map();
   }
 
   protected get _key(): string {
@@ -62,7 +62,7 @@ export abstract class BasePublisher<Evt extends Respondable>
   public async beforeApplicationShutdown() {
     this._status.set(ESState.SHUTTING_DOWN);
     await this.handleShutdown();
-    this._subscriptions.clear();
+    this._distributor.clear();
     this._status.set(ESState.NOT_READY);
   }
 
@@ -77,24 +77,12 @@ export abstract class BasePublisher<Evt extends Respondable>
     responseJSON: string,
   ): Promise<void>;
   protected abstract handleShutdown(): Promise<void>;
-  protected handleSubscribe(handlerFn: (event: Evt) => void): string {
-    this._ee.addListener(this._key, handlerFn);
-    const key = randomUUID();
-    this._subscriptions.set(key, handlerFn);
-    return key;
-  }
-
-  protected handleUnsubscribe(key: string): void {
-    const sub = this._subscriptions.get(key);
-    if (!sub) return;
-    this._ee.removeListener(this._key, sub);
-  }
 
   /**
    * Listen to the publisher asynchronously without interacting with publisher state
    */
   public listen(handlerFn: (event: Evt) => void): string {
-    return this.handleSubscribe((event: Evt) => {
+    return this._distributor.subscribe((event: Evt) => {
       handlerFn(event);
     });
   }
@@ -106,27 +94,6 @@ export abstract class BasePublisher<Evt extends Respondable>
   }
 
   /**
-   * Parse the raw event string into a useable event instance
-   */
-  protected parseEvent(eventString: string): Evt {
-    const plain: Evt = JSON.parse(eventString);
-    const InstanceConstructor = ConstructorStorage.getInstance().get(
-      plain.name,
-    );
-    return plainToInstance(InstanceConstructor, plain) as Evt;
-  }
-
-  public serializeEvent(event: Evt): string {
-    const plain = instanceToPlain(event);
-    return JSON.stringify(plain);
-  }
-
-  protected parseResponse(responseString: string): ResponseWrapper<unknown> {
-    const responsePlain = JSON.parse(responseString);
-    return ResponseWrapper.fromPlain(responsePlain);
-  }
-
-  /**
    * Publish an event to the wider system
    */
   public async publish(event: Evt): Promise<void> {
@@ -135,11 +102,16 @@ export abstract class BasePublisher<Evt extends Respondable>
     await this.handlePublish(serialized);
   }
 
+  protected parseResponse(responseString: string): ResponseWrapper<unknown> {
+    const responsePlain = JSON.parse(responseString);
+    return ResponseWrapper.fromPlain(responsePlain);
+  }
+
   /**
    * Subscribe to the publisher as a worker.
    */
   public subscribe(handlerFn: (event: Evt) => Promise<any> | any): string {
-    return this.handleSubscribe(async (evt: Evt) => {
+    return this._distributor.subscribe(async (evt: Evt) => {
       const res = await handlerFn(evt);
       if (
         !!res &&
@@ -162,7 +134,6 @@ export abstract class BasePublisher<Evt extends Respondable>
   }
 
   public unsubscribe(key: string): void {
-    this.handleUnsubscribe(key);
-    this._subscriptions.delete(key);
+    this._distributor.unsubscribe(key);
   }
 }

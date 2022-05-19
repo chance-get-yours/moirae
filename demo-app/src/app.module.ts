@@ -6,6 +6,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { AccountModule } from "./account/account.module";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
+import { MoiraeWsGateway } from "./moirae-ws.gateway";
 
 const moiraeConfigGenerator = (): IMoiraeConfig<IPublisherConfig> => {
   const config: IMoiraeConfig<IPublisherConfig> = {
@@ -48,6 +49,6 @@ const moiraeConfigGenerator = (): IMoiraeConfig<IPublisherConfig> => {
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, MoiraeWsGateway],
 })
 export class AppModule {}

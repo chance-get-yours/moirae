@@ -23,7 +23,7 @@ export class MemoryPublisher<Evt extends IEventLike>
 
   private advanceBus(): void {
     if (
-      this._ee.listenerCount(this._key) === 0 ||
+      this._distributor.listenerCount === 0 ||
       this._status.current !== ESState.IDLE
     )
       return;
@@ -31,7 +31,7 @@ export class MemoryPublisher<Evt extends IEventLike>
     if (!item) return;
     this._status.set(ESState.ACTIVE);
     const parsedEvent = this.parseEvent(item);
-    this._ee.emit(this._key, parsedEvent);
+    this._distributor.publish(parsedEvent);
   }
 
   protected async handleAcknowledge(event: Evt): Promise<void> {
@@ -39,7 +39,6 @@ export class MemoryPublisher<Evt extends IEventLike>
   }
 
   protected async handleBootstrap(): Promise<void> {
-    this._ee = this._observableFactory.emitter;
     this._queue = new Queue<string>();
   }
 
@@ -57,6 +56,6 @@ export class MemoryPublisher<Evt extends IEventLike>
   }
 
   protected async handleShutdown(): Promise<void> {
-    this._ee.removeAllListeners();
+    this._distributor.clear();
   }
 }

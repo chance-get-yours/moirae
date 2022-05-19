@@ -1,7 +1,9 @@
 import { CommandBus, CommandResponse, QueryBus } from "@moirae/core";
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Put } from "@nestjs/common";
 import { CreateAccountCommand } from "./commands/create-account.command";
+import { DepositFundsCommand } from "./commands/deposit-funds.command";
 import { CreateAccountInput } from "./dto/create-account.input";
+import { DepositFundsInput } from "./dto/deposit-funds.input";
 import { Account } from "./projections/account.entity";
 import { FindAccountByIdQuery } from "./queries/find-account-by-id.query";
 
@@ -12,6 +14,13 @@ export class AccountController {
     private readonly queryBus: QueryBus,
   ) {}
 
+  @Get(":id")
+  async findOne(@Param("id") id: string): Promise<Account> {
+    return this.queryBus.execute<Account>(new FindAccountByIdQuery(id), {
+      throwError: true,
+    });
+  }
+
   @Post()
   createAccount(
     @Body() createAccountInput: CreateAccountInput,
@@ -21,12 +30,10 @@ export class AccountController {
     );
   }
 
-  @Get(":id")
-  async findOne(@Param("id") id: string): Promise<Account> {
-    const res = await this.queryBus.execute<Account>(
-      new FindAccountByIdQuery(id),
-    );
-    if (res instanceof Error) throw res;
-    return res;
+  @Put("/deposit")
+  depositFunds(@Body() input: DepositFundsInput): Promise<CommandResponse> {
+    return this.commandBus.execute(new DepositFundsCommand(input), {
+      throwError: true,
+    });
   }
 }

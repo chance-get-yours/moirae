@@ -54,16 +54,16 @@ describe("MemoryPublisher", () => {
     });
 
     it("will emit an event if it is the first element in the queue", async () => {
-      const eeSpy = jest.spyOn(publisher["_ee"], "emit");
+      const eeSpy = jest.spyOn(publisher["_distributor"], "publish");
       const evt = new TestEvent();
 
       publisher.subscribe(() => void 0);
       await publisher.publish(evt);
-      expect(eeSpy).toHaveBeenCalledWith(publisher["_key"], evt);
+      expect(eeSpy).toHaveBeenCalledWith(evt);
     });
 
     it("will not emit any events if there are no subscribers", async () => {
-      const eeSpy = jest.spyOn(publisher["_ee"], "emit");
+      const eeSpy = jest.spyOn(publisher["_distributor"], "publish");
 
       await publisher.publish(new TestEvent());
       expect(eeSpy).not.toHaveBeenCalled();

@@ -13,5 +13,5 @@ export interface IEventSource
   /**
    * Read all events from the stream in order
    */
-  readFromStream(streamId: IEvent["streamId"]): Promise<IEvent[]>;
+  readFromStream(streamId: IEvent["$streamId"]): Promise<IEvent[]>;
 }

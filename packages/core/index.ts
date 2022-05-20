@@ -51,5 +51,7 @@ export {
 } from "./lib/moirae.constants";
 // modules
 export { MoiraeModule } from "./lib/moirae.module";
+// publishers
+export { MemoryPublisher } from "./lib/publishers/memory.publisher";
 // testing
 export { mockAggregateFactory } from "./lib/testing/aggregate-factory.mock";

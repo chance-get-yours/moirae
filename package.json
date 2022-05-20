@@ -13,6 +13,7 @@
     "demo": "yarn workspace demo-app",
     "document": "typedoc",
     "lint": "eslint --fix",
+    "orm": "yarn workspace @moirae/typeorm-store",
     "prepare": "husky install",
     "rmq": "yarn workspace @moirae/rabbitmq-publisher"
   },

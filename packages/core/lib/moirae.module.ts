@@ -85,9 +85,7 @@ export class MoiraeModule {
 
     switch (store.type) {
       case "typeorm":
-        const { TypeORMStore, EventStore, TypeOrmModule } = await import(
-          "@moirae/typeorm-store"
-        );
+        const { TypeORMStore } = await import("@moirae/typeorm-store");
         // imports.push(TypeOrmModule.forFeature([EventStore]))
         providers.push({
           provide: EVENT_SOURCE,

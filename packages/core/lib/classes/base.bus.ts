@@ -40,7 +40,7 @@ export abstract class BaseBus<T extends Respondable>
   ): Promise<TRes> {
     const { throwError = false } = options;
     const _key = randomUUID();
-    event.responseKey = _key;
+    event.$responseKey = _key;
     await this._publisher.publish(event);
     const res = await this._publisher.awaitResponse(_key);
     if (res.payload instanceof Error && throwError) throw res.payload;
@@ -51,10 +51,10 @@ export abstract class BaseBus<T extends Respondable>
    * @internal Should not be used outside of the context of the library
    */
   protected async executeLocal(event: T): Promise<unknown> {
-    const handler = this._handlerMap.get(event.name);
+    const handler = this._handlerMap.get(event.$name);
     if (!handler)
       throw new HandlerNotFoundError(
-        `Could not find handler for key ${event.name}`,
+        `Could not find handler for key ${event.$name}`,
       );
     let res: unknown;
     try {

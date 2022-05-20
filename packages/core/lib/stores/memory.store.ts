@@ -24,9 +24,9 @@ export class MemoryStore
   public async appendToStream(eventList: IEvent[]): Promise<IEvent[]> {
     await Promise.allSettled(
       eventList.map((event) => {
-        if (!this._streams.has(event.streamId))
-          this._streams.set(event.streamId, []);
-        this._streams.get(event.streamId).push(event);
+        if (!this._streams.has(event.$streamId))
+          this._streams.set(event.$streamId, []);
+        this._streams.get(event.$streamId).push(event);
         return this.publish(event);
       }),
     );

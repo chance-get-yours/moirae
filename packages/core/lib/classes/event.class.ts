@@ -4,11 +4,11 @@ import { Eventable } from "./eventable.class";
 
 export abstract class Event extends Eventable {
   @Type(() => Date)
-  public readonly timestamp: Date;
-  public readonly type = EventType.EVENT;
+  public readonly $timestamp: Date;
+  public readonly $type = EventType.EVENT;
 
   constructor() {
     super();
-    this.timestamp = new Date();
+    this.$timestamp = new Date();
   }
 }

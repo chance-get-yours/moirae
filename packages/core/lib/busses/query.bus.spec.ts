@@ -12,9 +12,9 @@ import { QueryBus } from "./query.bus";
 
 @RegisterType()
 class TestQuery extends Query implements IQuery {
-  version = 1;
-  responseKey = "hello";
-  routingKey = "world";
+  $version = 1;
+  $responseKey = "hello";
+  $routingKey = "world";
 }
 
 @RegisterType()
@@ -83,7 +83,7 @@ describe("QueryBus", () => {
 
       expect(await bus.execute(query)).toStrictEqual(new QueryResponse());
 
-      query.responseKey = expect.any(String);
+      query.$responseKey = expect.any(String);
       expect(publishSpy).toHaveBeenCalledWith(query);
     });
   });

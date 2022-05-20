@@ -4,7 +4,7 @@ import { DepositFundsInput } from "../dto/deposit-funds.input";
 
 @RegisterType()
 export class DepositFundsCommand extends Command implements ICommand {
-  public readonly version = 1;
+  public readonly $version = 1;
 
   @Type(() => DepositFundsInput)
   public readonly input: DepositFundsInput;

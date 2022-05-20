@@ -59,7 +59,7 @@ describe("DepositFundsHandler", () => {
 
       expect(commitSpy).toHaveBeenCalledWith([
         expect.objectContaining({
-          data: {
+          $data: {
             funds: command.input.funds,
           },
         }),

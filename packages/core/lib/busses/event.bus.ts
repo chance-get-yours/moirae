@@ -42,7 +42,7 @@ export class EventBus {
 
   protected async executeLocal(event: IEvent): Promise<void> {
     this._status.set(ESState.ACTIVE);
-    const handlers = this._handlerMap.get(event.name) || [];
+    const handlers = this._handlerMap.get(event.$name) || [];
     await Promise.allSettled(handlers.map((handler) => handler.execute(event)));
     const commands = this._sagas
       .flatMap((saga) => saga(event))

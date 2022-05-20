@@ -51,7 +51,7 @@ describe("CreateAccountHandler", () => {
 
       expect(commitSpy).toHaveBeenCalledWith([
         expect.objectContaining({
-          data: {
+          $data: {
             balance: 0,
             createdAt: expect.any(Date),
             name: input.name,

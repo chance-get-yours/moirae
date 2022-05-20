@@ -38,14 +38,14 @@ describe("MemoryStore", () => {
   describe("persistance", () => {
     it("will store events based on streamId", async () => {
       const event = new TestEvent();
-      event.streamId = faker.datatype.uuid();
+      event.$streamId = faker.datatype.uuid();
 
       expect(await store.appendToStream([event])).toStrictEqual([event]);
-      expect(store["_streams"].get(event.streamId)).toHaveLength(1);
+      expect(store["_streams"].get(event.$streamId)).toHaveLength(1);
     });
     it("will call the subscriber function for events", async () => {
       const event = new TestEvent();
-      event.streamId = faker.datatype.uuid();
+      event.$streamId = faker.datatype.uuid();
 
       const subFn = jest.fn();
       store.subscribe(subFn);
@@ -58,11 +58,13 @@ describe("MemoryStore", () => {
   describe("read from stream", () => {
     it("will read from the stream of events given a streamId", async () => {
       const event = new TestEvent();
-      event.streamId = faker.datatype.uuid();
+      event.$streamId = faker.datatype.uuid();
 
       await store.appendToStream([event]);
 
-      expect(await store.readFromStream(event.streamId)).toStrictEqual([event]);
+      expect(await store.readFromStream(event.$streamId)).toStrictEqual([
+        event,
+      ]);
     });
   });
 });

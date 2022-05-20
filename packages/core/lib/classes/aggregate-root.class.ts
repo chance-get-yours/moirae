@@ -51,15 +51,15 @@ export abstract class AggregateRoot<Projection = Record<string, unknown>> {
   public apply(event: IEvent, fromHistory: boolean): void;
   public apply(event: IEvent, fromHistory = false): void {
     const handlerName = Reflect.getMetadata(
-      `${APPLY_METADATA}:${event.name}`,
+      `${APPLY_METADATA}:${event.$name}`,
       this,
     );
     if (!handlerName) throw new UnhandledEventError(this, event);
     this[handlerName].call(this, event);
-    if (!event.streamId) event.streamId = this.streamId;
+    if (!event.$streamId) event.$streamId = this.streamId;
     const len = this._eventHistory.push(event);
     if (fromHistory) this._lastCommittedIndex = len - 1;
-    this.updatedAt = event.timestamp;
+    this.updatedAt = event.$timestamp;
   }
 
   /**

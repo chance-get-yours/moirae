@@ -27,7 +27,7 @@ export class MoiraeWsGateway {
   @SubscribeMessage("@moirae/events")
   handleEvents(@MessageBody("id") id: string): Observable<WsResponse<IEvent>> {
     return this.subject.pipe(
-      filter((event) => event.streamId === id),
+      filter((event) => event.$streamId === id),
       map((event) => ({ event: "@moirae/events", data: event })),
     );
   }

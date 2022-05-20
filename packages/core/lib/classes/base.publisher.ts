@@ -97,7 +97,7 @@ export abstract class BasePublisher<Evt extends Respondable>
    * Publish an event to the wider system
    */
   public async publish(event: Evt): Promise<void> {
-    event.routingKey = this.publisherOptions.nodeId;
+    event.$routingKey = this.publisherOptions.nodeId;
     const serialized = this.serializeEvent(event);
     await this.handlePublish(serialized);
   }
@@ -115,17 +115,17 @@ export abstract class BasePublisher<Evt extends Respondable>
       const res = await handlerFn(evt);
       if (
         !!res &&
-        !evt.disableResponse &&
-        !!evt.responseKey &&
-        !!evt.routingKey
+        !evt.$disableResponse &&
+        !!evt.$responseKey &&
+        !!evt.$routingKey
       ) {
         const response = new ResponseWrapper(
           res,
-          evt.responseKey,
-          evt.routingKey,
+          evt.$responseKey,
+          evt.$routingKey,
         );
         await this.handleResponse(
-          evt.routingKey,
+          evt.$routingKey,
           JSON.stringify(response.toPlain()),
         );
       }

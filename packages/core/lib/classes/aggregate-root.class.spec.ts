@@ -15,9 +15,9 @@ export interface ITestEntity {
 
 @RegisterType()
 export class TestEvent extends Event implements IEvent<ITestEntity> {
-  public streamId = "12345";
-  public readonly version: number = 1;
-  public readonly data: ITestEntity = { foo: "bar" };
+  public $streamId = "12345";
+  public readonly $version: number = 1;
+  public readonly $data: ITestEntity = { foo: "bar" };
 }
 
 export class TestAggregate
@@ -28,7 +28,7 @@ export class TestAggregate
 
   @Apply(TestEvent)
   protected onTestEvent(event: TestEvent): void {
-    this.foo = event.data.foo;
+    this.foo = event.$data.foo;
   }
 }
 

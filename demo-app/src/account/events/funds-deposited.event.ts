@@ -8,11 +8,11 @@ export class FundsDepositedEvent
   extends Event
   implements IEvent<FundsDepositedPayload>
 {
-  public readonly version: number = 1;
+  public readonly $version: number = 1;
 
   constructor(
-    public readonly streamId: string,
-    public readonly data: FundsDepositedPayload,
+    public readonly $streamId: string,
+    public readonly $data: FundsDepositedPayload,
   ) {
     super();
   }

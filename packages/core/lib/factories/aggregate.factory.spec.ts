@@ -34,26 +34,26 @@ describe("AggregateFactory", () => {
   describe("mergeContext", () => {
     it("will populate the aggregate with events from the database", async () => {
       const persistedEvent = new TestEvent();
-      persistedEvent.streamId = faker.datatype.uuid();
+      persistedEvent.$streamId = faker.datatype.uuid();
 
       jest
         .spyOn(eventSource, "readFromStream")
         .mockResolvedValue([persistedEvent]);
 
       const aggregate = await factory.mergeContext(
-        persistedEvent.streamId,
+        persistedEvent.$streamId,
         TestAggregate,
       );
 
       expect(aggregate).toBeInstanceOf(TestAggregate);
       expect(aggregate.eventHistory).toHaveLength(1);
       expect(aggregate.uncommittedEventHistory).toHaveLength(0);
-      expect(aggregate.foo).toEqual(persistedEvent.data.foo);
+      expect(aggregate.foo).toEqual(persistedEvent.$data.foo);
     });
 
     it("will set a function to commit the aggregate", async () => {
       const event = new TestEvent();
-      event.streamId = faker.datatype.uuid();
+      event.$streamId = faker.datatype.uuid();
 
       jest.spyOn(eventSource, "readFromStream").mockResolvedValue([]);
       const saveSpy = jest
@@ -61,7 +61,7 @@ describe("AggregateFactory", () => {
         .mockResolvedValue([event]);
 
       const aggregate = await factory.mergeContext(
-        event.streamId,
+        event.$streamId,
         TestAggregate,
       );
 
@@ -71,7 +71,7 @@ describe("AggregateFactory", () => {
 
       aggregate.apply(event);
 
-      expect(aggregate.foo).toEqual(event.data.foo);
+      expect(aggregate.foo).toEqual(event.$data.foo);
       expect(aggregate.eventHistory).toHaveLength(1);
       expect(aggregate.uncommittedEventHistory).toHaveLength(1);
 

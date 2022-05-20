@@ -9,7 +9,7 @@ export class EventProcessor<Evt = IEventLike> {
   public parseEvent(eventString: string): Evt {
     const plain: IEventLike = JSON.parse(eventString);
     const InstanceConstructor = ConstructorStorage.getInstance().get(
-      plain.name,
+      plain.$name,
     );
     return plainToInstance(InstanceConstructor, plain) as Evt;
   }

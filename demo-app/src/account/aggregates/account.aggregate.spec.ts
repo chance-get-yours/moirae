@@ -19,11 +19,11 @@ describe("AccountAggregate", () => {
     });
 
     aggregate.apply(event);
-    expect(aggregate.balance).toEqual(event.data.balance);
-    expect(aggregate.createdAt).toEqual(event.data.createdAt);
+    expect(aggregate.balance).toEqual(event.$data.balance);
+    expect(aggregate.createdAt).toEqual(event.$data.createdAt);
     expect(aggregate.id).toEqual(streamId);
-    expect(aggregate.name).toEqual(event.data.name);
-    expect(aggregate.updatedAt).toEqual(event.timestamp);
+    expect(aggregate.name).toEqual(event.$data.name);
+    expect(aggregate.updatedAt).toEqual(event.$timestamp);
   });
 
   it("will apply a FundsDepositedEvent", () => {
@@ -40,7 +40,7 @@ describe("AccountAggregate", () => {
     );
 
     aggregate.apply(event);
-    expect(aggregate.balance).toEqual(event.data.funds);
-    expect(aggregate.updatedAt).toEqual(event.timestamp);
+    expect(aggregate.balance).toEqual(event.$data.funds);
+    expect(aggregate.updatedAt).toEqual(event.$timestamp);
   });
 });

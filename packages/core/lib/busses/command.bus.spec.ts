@@ -12,9 +12,9 @@ import { CommandBus } from "./command.bus";
 
 @RegisterType()
 export class TestCommand extends Command implements ICommand {
-  public version = 1;
-  responseKey = "hello";
-  routingKey = "world";
+  public $version = 1;
+  $responseKey = "hello";
+  $routingKey = "world";
 }
 
 @CommandHandler(TestCommand)
@@ -80,7 +80,7 @@ describe("CommandBus", () => {
 
       expect(await bus.execute(command)).toEqual("hello world");
 
-      command.responseKey = expect.any(String);
+      command.$responseKey = expect.any(String);
       expect(publishSpy).toHaveBeenCalledWith(command);
     });
   });

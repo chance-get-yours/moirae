@@ -36,10 +36,10 @@ export class RabbitMQPublisher
   }
 
   protected async handleAcknowledge(event: IEventLike): Promise<void> {
-    const msg = this._activeInbound.get(event.uuid);
+    const msg = this._activeInbound.get(event.$uuid);
     if (!msg) return;
     this._workChannel.ack(msg);
-    this._activeInbound.delete(event.uuid);
+    this._activeInbound.delete(event.$uuid);
   }
 
   protected async handleBootstrap(): Promise<void> {
@@ -85,7 +85,7 @@ export class RabbitMQPublisher
         )
           this._workChannel.reject(msg, true);
         const parsedEvent = this.parseEvent(msg.content.toString());
-        this._activeInbound.set(parsedEvent.uuid, msg);
+        this._activeInbound.set(parsedEvent.$uuid, msg);
         this._distributor.publish(parsedEvent);
       },
     ));

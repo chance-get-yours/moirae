@@ -14,9 +14,9 @@ import { createMockConnection } from "../testing/connection.mock";
 import { RabbitMQPublisher } from "./rabbitmq.publisher";
 
 export class TestEvent extends Event implements IEvent {
-  data = {};
-  streamId = "q12345f";
-  version = 1;
+  $data = {};
+  $streamId = "q12345f";
+  $version = 1;
 }
 
 describe("RabbitMQPublisher", () => {
@@ -65,13 +65,13 @@ describe("RabbitMQPublisher", () => {
 
     it("will ack and delete active", async () => {
       const msg: Message = {} as Message;
-      publisher["_activeInbound"].set(event.uuid, msg);
+      publisher["_activeInbound"].set(event.$uuid, msg);
 
       const ackSpy = jest.spyOn(publisher["_workChannel"], "ack");
       await publisher.acknowledgeEvent(event);
 
       expect(ackSpy).toHaveBeenCalledWith(msg);
-      expect(publisher["_activeInbound"].get(event.uuid)).toBeUndefined();
+      expect(publisher["_activeInbound"].get(event.$uuid)).toBeUndefined();
     });
 
     it("will skip ack if active request doesn't exist", async () => {

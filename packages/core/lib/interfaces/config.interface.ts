@@ -1,10 +1,12 @@
 import { ModuleMetadata } from "@nestjs/common";
 import { ClassConstructor } from "class-transformer";
-import { IEventSource } from "../interfaces/event-source.interface";
 import { IPublisherConfig } from "./publisher-config.interface";
+import { IStoreConfig } from "./store-config.interface";
 
-export interface IMoiraeConfig<TPub extends IPublisherConfig>
-  extends Pick<ModuleMetadata, "imports"> {
+export interface IMoiraeConfig<
+  TPub extends IPublisherConfig,
+  TStore extends IStoreConfig,
+> extends Pick<ModuleMetadata, "imports"> {
   /**
    * Register external types to the system to assist with serialization
    */
@@ -16,5 +18,5 @@ export interface IMoiraeConfig<TPub extends IPublisherConfig>
   /**
    * Store provides an event store to persist all events processed in the system.
    */
-  store?: ClassConstructor<IEventSource>;
+  store?: TStore;
 }

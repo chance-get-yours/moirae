@@ -50,7 +50,7 @@ describe("CommandBus", () => {
     handler = module.get(TestHandler);
     publisher = bus["_publisher"];
 
-    await publisher.onApplicationBootstrap();
+    await publisher["onApplicationBootstrap"]();
     bus.onApplicationBootstrap();
   });
 

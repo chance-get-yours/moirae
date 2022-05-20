@@ -1,5 +1,5 @@
 import { IPublisherConfig } from "./publisher-config.interface";
 
-export interface MemoryPublisherConfig extends IPublisherConfig {
+export interface IMemoryPublisherConfig extends IPublisherConfig {
   type: "memory";
 }

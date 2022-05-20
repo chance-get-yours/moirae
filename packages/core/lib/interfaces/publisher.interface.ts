@@ -1,4 +1,3 @@
-import { OnApplicationBootstrap } from "@nestjs/common";
 import { ResponseWrapper } from "../classes/response.class";
 import { IEventLike } from "./event-like.interface";
 
@@ -6,7 +5,7 @@ import { IEventLike } from "./event-like.interface";
  * Publishers provide the interface between the underlying event system and
  * the bus. This defines the interactions the bus has with the publisher.
  */
-export interface IPublisher<Evt = IEventLike> extends OnApplicationBootstrap {
+export interface IPublisher<Evt = IEventLike> {
   /**
    * Await the response from a remote system
    */

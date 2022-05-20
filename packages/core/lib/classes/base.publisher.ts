@@ -18,7 +18,10 @@ export const EVENT_KEY = "__event_key__";
 // @AddMixin(EventProcessor)
 export abstract class BasePublisher<Evt extends Respondable>
   extends EventProcessor<Evt>
-  implements OnApplicationBootstrap, BeforeApplicationShutdown, EventProcessor
+  implements
+    OnApplicationBootstrap,
+    BeforeApplicationShutdown,
+    EventProcessor<Evt>
 {
   protected _distributor: Distributor<Evt>;
   protected _responseMap: AsyncMap<ResponseWrapper<unknown>>;

@@ -28,6 +28,7 @@ export type { ICommandHandler } from "./lib/interfaces/command-handler.interface
 export type { ICommand } from "./lib/interfaces/command.interface";
 export type { IMoiraeConfig } from "./lib/interfaces/config.interface";
 export type { IEventHandler } from "./lib/interfaces/event-handler.interface";
+export { EventType } from "./lib/interfaces/event-like.interface";
 export type { IEventLike } from "./lib/interfaces/event-like.interface";
 export type { IEventSource } from "./lib/interfaces/event-source.interface";
 export type { IEvent } from "./lib/interfaces/event.interface";
@@ -37,6 +38,7 @@ export type { IPublisher } from "./lib/interfaces/publisher.interface";
 export type { IQueryHandler } from "./lib/interfaces/query-handler.interface";
 export type { IQuery } from "./lib/interfaces/query.interface";
 export type { SagaHandler } from "./lib/interfaces/saga-handler.interface";
+export type { IStoreConfig } from "./lib/interfaces/store-config.interface";
 // mixins
 export { EventProcessor } from "./lib/mixins/event-processor.mixin";
 // constants
@@ -44,9 +46,12 @@ export {
   ESState,
   EVENT_PUBSUB_ENGINE,
   EVENT_SOURCE,
+  PUBLISHER,
   PUBLISHER_OPTIONS,
 } from "./lib/moirae.constants";
 // modules
 export { MoiraeModule } from "./lib/moirae.module";
+// publishers
+export { MemoryPublisher } from "./lib/publishers/memory.publisher";
 // testing
 export { mockAggregateFactory } from "./lib/testing/aggregate-factory.mock";

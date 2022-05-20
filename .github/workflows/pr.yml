@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         node-version: [16.x]
-        package: [core, rabbitmq-publisher]
+        package: [core, rabbitmq-publisher, typeorm-store]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -73,6 +73,7 @@ jobs:
       matrix:
         node-version: [16.x]
         publisher: [memory, rabbitmq]
+        store: [memory, typeorm]
     env:
       RABBIT_MQ_PORT: 5672
       RABBIT_MQ_HOST: localhost
@@ -104,4 +105,4 @@ jobs:
       - name: Build packages
         run: yarn build
       - name: E2E test demo-app
-        run: env PUB_TYPE=${{ matrix.publisher }} yarn workspace demo-app test:e2e
+        run: env PUB_TYPE=${{ matrix.publisher }} env STORE_TYPE=${{ matrix.store }} yarn workspace demo-app test:e2e

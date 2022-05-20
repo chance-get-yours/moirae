@@ -14,7 +14,7 @@ export class AccountCreatedHandler
 
   public async execute(event: AccountCreatedEvent): Promise<void> {
     const aggregate = await this.aggregateFactory.mergeContext(
-      event.streamId,
+      event.$streamId,
       AccountAggregate,
     );
     await this.service.save(aggregate.toProjection());

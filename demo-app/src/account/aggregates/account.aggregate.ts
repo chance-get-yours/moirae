@@ -24,13 +24,13 @@ export class AccountAggregate
 
   @Apply(AccountCreatedEvent)
   protected handleAccountCreated(event: AccountCreatedEvent): void {
-    this.balance = event.data.balance;
-    this.createdAt = event.data.createdAt;
-    this.name = event.data.name;
+    this.balance = event.$data.balance;
+    this.createdAt = event.$data.createdAt;
+    this.name = event.$data.name;
   }
 
   @Apply(FundsDepositedEvent)
   handleDeposit(event: FundsDepositedEvent): void {
-    this.balance += event.data.funds;
+    this.balance += event.$data.funds;
   }
 }

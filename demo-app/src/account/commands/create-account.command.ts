@@ -4,7 +4,7 @@ import { CreateAccountInput } from "../dto/create-account.input";
 
 @RegisterType()
 export class CreateAccountCommand extends Command implements ICommand {
-  public readonly version: number = 1;
+  public readonly $version: number = 1;
 
   @Type(() => CreateAccountInput)
   public readonly input: CreateAccountInput;

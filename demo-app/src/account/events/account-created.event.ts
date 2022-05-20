@@ -8,11 +8,11 @@ export class AccountCreatedEvent
   extends Event
   implements IEvent<AccountCreatedPayload>
 {
-  public readonly version: number = 1;
+  public readonly $version: number = 1;
 
   constructor(
-    public readonly streamId: string,
-    public readonly data: AccountCreatedPayload,
+    public readonly $streamId: string,
+    public readonly $data: AccountCreatedPayload,
   ) {
     super();
   }

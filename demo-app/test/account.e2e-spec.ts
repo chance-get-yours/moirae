@@ -77,7 +77,7 @@ describe("Account", () => {
       );
       await wsClient.awaitMatch(
         (event) =>
-          event.name === "AccountCreatedEvent" && event.streamId === id,
+          event.$name === "AccountCreatedEvent" && event.$streamId === id,
       );
     });
 
@@ -135,7 +135,7 @@ describe("Account", () => {
       );
       await wsClient.awaitMatch(
         (event) =>
-          event.name === "AccountCreatedEvent" && event.streamId === id,
+          event.$name === "AccountCreatedEvent" && event.$streamId === id,
       );
     });
 

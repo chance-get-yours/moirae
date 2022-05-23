@@ -48,6 +48,7 @@ export class EventBus {
       .flatMap((saga) => saga(event))
       .filter((command) => !!command);
     commands.forEach((command) => {
+      if (event.$correlationId) command.$correlationId = event.$correlationId;
       this.commandBus.publish(command);
     });
     this._status.set(ESState.IDLE);

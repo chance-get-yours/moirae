@@ -3,6 +3,7 @@ import { UnavailableCommitError } from "../exceptions/commit-unavailable.error";
 import { InvalidMultipleSetError } from "../exceptions/invalid-mutliple-set.error";
 import { UnhandledEventError } from "../exceptions/unhandled-event.error";
 import { AggregateFactory } from "../factories/aggregate.factory";
+import { ICommand } from "../interfaces/command.interface";
 import { IEvent } from "../interfaces/event.interface";
 import { APPLY_METADATA, PROJECTION_METADATA } from "../moirae.constants";
 
@@ -65,9 +66,16 @@ export abstract class AggregateRoot<Projection = Record<string, unknown>> {
   /**
    * Commit all uncommitted events to the store
    */
-  public async commit() {
+  public async commit(): Promise<void>;
+  public async commit(initiatorCommand: ICommand): Promise<void>;
+  public async commit(initiatorCommand?: ICommand): Promise<void> {
     if (!this._commitFn) throw new UnavailableCommitError(this);
-    await this._commitFn(this.uncommittedEventHistory);
+    await this._commitFn(
+      this.uncommittedEventHistory.map((event) => {
+        event.$correlationId = initiatorCommand?.$correlationId;
+        return event;
+      }),
+    );
   }
 
   public setCommitFunction(fn: IEventCommitFn) {

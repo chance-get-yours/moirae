@@ -7,6 +7,8 @@ import { CreateAccountHandler } from "./handlers/create-account.handler";
 import { DepositFundsHandler } from "./handlers/deposit-funds.handler";
 import { FindAccountByIdHandler } from "./handlers/find-account-by-id.handler";
 import { FundsDepositedHandler } from "./handlers/funds-deposited.handler";
+import { FundsWithdrawnHandler } from "./handlers/funds-withdrawn.handler";
+import { WithdrawFundsHandler } from "./handlers/withdraw-funds.handler";
 import { Account } from "./projections/account.entity";
 
 @Module({
@@ -19,6 +21,8 @@ import { Account } from "./projections/account.entity";
     DepositFundsHandler,
     FindAccountByIdHandler,
     FundsDepositedHandler,
+    FundsWithdrawnHandler,
+    WithdrawFundsHandler,
   ],
   exports: [AccountService],
 })

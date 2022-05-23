@@ -3,13 +3,13 @@ import { AggregateFactory, mockAggregateFactory } from "@moirae/core";
 import { Test } from "@nestjs/testing";
 import { AccountService } from "../account.service";
 import { AccountAggregate } from "../aggregates/account.aggregate";
-import { AccountCreatedEvent } from "../events/account-created.event";
+import { FundsDepositedEvent } from "../events/funds-deposited.event";
 import { Account } from "../projections/account.entity";
-import { AccountCreatedHandler } from "./account-created.handler";
+import { FundsWithdrawnHandler } from "./funds-withdrawn.handler";
 
-describe("AccountCreatedHandler", () => {
+describe("FundsWithdrawnHandler", () => {
   let factory: AggregateFactory;
-  let handler: AccountCreatedHandler;
+  let handler: FundsWithdrawnHandler;
   let service: AccountService;
 
   afterAll(() => {
@@ -22,7 +22,7 @@ describe("AccountCreatedHandler", () => {
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [
-        AccountCreatedHandler,
+        FundsWithdrawnHandler,
         ...mockAggregateFactory(),
         {
           provide: AccountService,
@@ -32,7 +32,7 @@ describe("AccountCreatedHandler", () => {
     }).compile();
 
     factory = module.get(AggregateFactory);
-    handler = module.get(AccountCreatedHandler);
+    handler = module.get(FundsWithdrawnHandler);
     service = module.get(AccountService);
 
     await factory["eventSource"]["onApplicationBootstrap"]();
@@ -53,10 +53,8 @@ describe("AccountCreatedHandler", () => {
     });
 
     it("will call service save", async () => {
-      const event = new AccountCreatedEvent(streamId, {
-        balance: 0,
-        createdAt: new Date(),
-        name: faker.lorem.word(),
+      const event = new FundsDepositedEvent(streamId, {
+        funds: -10,
       });
 
       aggregate.apply(event);

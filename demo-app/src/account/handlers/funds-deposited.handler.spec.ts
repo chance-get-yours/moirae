@@ -36,7 +36,7 @@ describe("FundsDepositedHandler", () => {
     handler = module.get(FundsDepositedHandler);
     service = module.get(AccountService);
 
-    await factory["eventSource"].onApplicationBootstrap();
+    await factory["eventSource"]["onApplicationBootstrap"]();
   });
 
   it("will be defined", () => {

@@ -10,6 +10,7 @@ export class CommandResponse {
    * Transactional id generated as part of execution
    */
   correlationId: string;
+  error?: Error;
   /**
    * StreamID of the aggregate processed
    */

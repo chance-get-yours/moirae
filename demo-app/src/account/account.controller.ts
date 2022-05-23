@@ -1,9 +1,19 @@
 import { CommandBus, CommandResponse, QueryBus } from "@moirae/core";
-import { Body, Controller, Get, Param, Post, Put } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  InternalServerErrorException,
+  Param,
+  Post,
+  Put,
+} from "@nestjs/common";
 import { CreateAccountCommand } from "./commands/create-account.command";
 import { DepositFundsCommand } from "./commands/deposit-funds.command";
+import { WithdrawFundsCommand } from "./commands/withdraw-funds.command";
 import { CreateAccountInput } from "./dto/create-account.input";
 import { DepositFundsInput } from "./dto/deposit-funds.input";
+import { WithdrawFundsInput } from "./dto/withdraw-funds.input";
 import { Account } from "./projections/account.entity";
 import { FindAccountByIdQuery } from "./queries/find-account-by-id.query";
 
@@ -35,5 +45,17 @@ export class AccountController {
     return this.commandBus.execute(new DepositFundsCommand(input), {
       throwError: true,
     });
+  }
+
+  @Put("/withdraw")
+  async withdrawFunds(
+    @Body() input: WithdrawFundsInput,
+  ): Promise<CommandResponse> {
+    const response = await this.commandBus.execute<CommandResponse>(
+      new WithdrawFundsCommand(input),
+      { throwError: true },
+    );
+    if (response.error) throw new InternalServerErrorException(response.error);
+    return response;
   }
 }

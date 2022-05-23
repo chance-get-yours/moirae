@@ -6,7 +6,11 @@ import {
 } from "@moirae/core";
 import { IRabbitMQConfig } from "@moirae/rabbitmq-publisher";
 import { EventStore, ITypeORMStoreConfig } from "@moirae/typeorm-store";
-import { Module, NotFoundException } from "@nestjs/common";
+import {
+  InternalServerErrorException,
+  Module,
+  NotFoundException,
+} from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { AccountModule } from "./account/account.module";
@@ -19,7 +23,7 @@ const moiraeConfigGenerator = (): IMoiraeConfig<
   IStoreConfig
 > => {
   const config: IMoiraeConfig<IPublisherConfig, IStoreConfig> = {
-    externalTypes: [NotFoundException],
+    externalTypes: [InternalServerErrorException, NotFoundException],
     publisher: {
       nodeId: "demo-node",
       type: "memory",

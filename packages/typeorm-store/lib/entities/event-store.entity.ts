@@ -8,6 +8,12 @@ export class EventStore<T = unknown> implements IEvent<T> {
   $order: number;
 
   @Column({
+    name: "correlation_id",
+    nullable: true,
+  })
+  $correlationId?: string;
+
+  @Column({
     name: "data",
     type: "simple-json",
   })

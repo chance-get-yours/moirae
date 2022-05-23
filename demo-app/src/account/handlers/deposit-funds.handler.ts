@@ -15,9 +15,8 @@ export class DepositFundsHandler
 {
   constructor(private readonly aggregateFactory: AggregateFactory) {}
 
-  public async execute({
-    input,
-  }: DepositFundsCommand): Promise<CommandResponse> {
+  public async execute(command: DepositFundsCommand): Promise<CommandResponse> {
+    const { input } = command;
     const response = new CommandResponse();
     response.streamId = input.accountId;
     try {
@@ -29,7 +28,8 @@ export class DepositFundsHandler
         funds: input.funds,
       });
       aggregate.apply(event);
-      await aggregate.commit();
+      await aggregate.commit(command);
+      response.correlationId = command.$correlationId;
       response.success = true;
     } catch (err) {
       Logger.error(err);

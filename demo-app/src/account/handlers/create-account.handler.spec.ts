@@ -28,7 +28,7 @@ describe("CreateAccountHandler", () => {
     factory = module.get(AggregateFactory);
     handler = module.get(CreateAccountHandler);
 
-    await factory["eventSource"].onApplicationBootstrap();
+    await factory["eventSource"]["onApplicationBootstrap"]();
   });
 
   it("will be defined", () => {

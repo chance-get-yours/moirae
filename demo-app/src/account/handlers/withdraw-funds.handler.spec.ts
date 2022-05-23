@@ -1,13 +1,13 @@
 import { faker } from "@faker-js/faker";
 import { AggregateFactory, mockAggregateFactory } from "@moirae/core";
 import { Test } from "@nestjs/testing";
-import { DepositFundsCommand } from "../commands/deposit-funds.command";
+import { WithdrawFundsCommand } from "../commands/withdraw-funds.command";
 import { AccountCreatedEvent } from "../events/account-created.event";
-import { DepositFundsHandler } from "./deposit-funds.handler";
+import { WithdrawFundsHandler } from "./withdraw-funds.handler";
 
-describe("DepositFundsHandler", () => {
+describe("WithdrawFundsHandler", () => {
   let factory: AggregateFactory;
-  let handler: DepositFundsHandler;
+  let handler: WithdrawFundsHandler;
 
   afterAll(() => {
     jest.useRealTimers();
@@ -18,11 +18,11 @@ describe("DepositFundsHandler", () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
-      providers: [DepositFundsHandler, ...mockAggregateFactory()],
+      providers: [WithdrawFundsHandler, ...mockAggregateFactory()],
     }).compile();
 
     factory = module.get(AggregateFactory);
-    handler = module.get(DepositFundsHandler);
+    handler = module.get(WithdrawFundsHandler);
 
     await factory["eventSource"]["onApplicationBootstrap"]();
   });
@@ -37,7 +37,7 @@ describe("DepositFundsHandler", () => {
     beforeEach(async () => {
       streamId = faker.datatype.uuid();
       const create = new AccountCreatedEvent(streamId, {
-        balance: 0,
+        balance: 10000,
         createdAt: new Date(),
         name: faker.lorem.word(),
       });
@@ -45,9 +45,9 @@ describe("DepositFundsHandler", () => {
     });
 
     it("will apply the event to the aggregate", async () => {
-      const command = new DepositFundsCommand({
+      const command = new WithdrawFundsCommand({
         accountId: streamId,
-        funds: faker.datatype.number({ min: 1, max: 1000 }),
+        funds: faker.datatype.number({ min: 1, max: 1000 }) * -1,
       });
 
       const commitSpy = jest.spyOn(factory, "commitEvents");

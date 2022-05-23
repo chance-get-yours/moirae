@@ -5,6 +5,7 @@ import { Test, TestingModule } from "@nestjs/testing";
 import * as request from "supertest";
 import { CreateAccountInput } from "../src/account/dto/create-account.input";
 import { DepositFundsInput } from "../src/account/dto/deposit-funds.input";
+import { WithdrawFundsInput } from "../src/account/dto/withdraw-funds.input";
 import { AppModule } from "../src/app.module";
 import { WsHandler } from "./utilities/ws-handler";
 
@@ -150,6 +151,65 @@ describe("Account", () => {
             balance: 0,
           });
         });
+    });
+  });
+
+  describe("withdraw funds", () => {
+    let id: string;
+
+    afterAll(() => {
+      wsClient.clear();
+    });
+
+    beforeAll(async () => {
+      const input: CreateAccountInput = {
+        name: faker.lorem.word(),
+        balance: 100,
+      };
+      await request(app.getHttpServer())
+        .post("/account")
+        .send(input)
+        .expect(201)
+        .expect(({ body }) => {
+          id = body.streamId;
+        });
+      wsClient.send(
+        JSON.stringify({
+          event: "@moirae/events",
+          data: { id },
+        }),
+      );
+      await wsClient.awaitMatch(
+        (event) =>
+          event.$name === "AccountCreatedEvent" && event.$streamId === id,
+      );
+    });
+
+    it("will remove funds from the account", async () => {
+      const input: WithdrawFundsInput = {
+        accountId: id,
+        funds: -10,
+      };
+
+      await request(app.getHttpServer())
+        .put("/account/withdraw")
+        .send(input)
+        .expect(200)
+        .expect(({ body }) => {
+          expect(body.success).toEqual(true);
+        });
+    });
+
+    it("will fail if account would go to a negative balance", async () => {
+      const input: WithdrawFundsInput = {
+        accountId: id,
+        funds: -100,
+      };
+
+      await request(app.getHttpServer())
+        .put("/account/withdraw")
+        .send(input)
+        .expect(500);
     });
   });
 });

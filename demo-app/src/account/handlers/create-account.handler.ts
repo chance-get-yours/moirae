@@ -34,7 +34,8 @@ export class CreateAccountHandler
         ...input,
       });
       aggregate.apply(event);
-      await aggregate.commit();
+      await aggregate.commit(command);
+      response.correlationId = command.$correlationId;
       response.success = true;
     } catch (err) {
       Logger.error(err);

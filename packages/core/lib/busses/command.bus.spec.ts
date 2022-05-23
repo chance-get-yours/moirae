@@ -81,7 +81,12 @@ describe("CommandBus", () => {
       expect(await bus.execute(command)).toEqual("hello world");
 
       command.$responseKey = expect.any(String);
-      expect(publishSpy).toHaveBeenCalledWith(command);
+      expect(publishSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          ...command,
+          $correlationId: expect.any(String),
+        }),
+      );
     });
   });
 });

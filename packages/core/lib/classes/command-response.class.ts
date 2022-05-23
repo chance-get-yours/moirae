@@ -7,6 +7,10 @@ import { RegisterType } from "../decorators/register-type.decorator";
 @RegisterType()
 export class CommandResponse {
   /**
+   * Transactional id generated as part of execution
+   */
+  correlationId: string;
+  /**
    * StreamID of the aggregate processed
    */
   streamId?: string;

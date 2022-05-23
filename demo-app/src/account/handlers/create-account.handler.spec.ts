@@ -41,10 +41,11 @@ describe("CreateAccountHandler", () => {
       input.name = faker.lorem.word();
 
       const commitSpy = jest.spyOn(factory, "commitEvents");
+      const command = new CreateAccountCommand(input);
+      command.$correlationId = faker.datatype.uuid();
 
-      expect(
-        await handler.execute(new CreateAccountCommand(input)),
-      ).toMatchObject<CommandResponse>({
+      expect(await handler.execute(command)).toMatchObject<CommandResponse>({
+        correlationId: command.$correlationId,
         success: true,
         streamId: expect.any(String),
       });

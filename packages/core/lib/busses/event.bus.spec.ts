@@ -1,3 +1,4 @@
+import { faker } from "@faker-js/faker";
 import { Injectable } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
 import { randomUUID } from "crypto";
@@ -110,9 +111,9 @@ describe("EventBus", () => {
     it("will not throw an error if handler does not exist", async () => {
       @RegisterType()
       class UnhandledEvent extends Event implements IEvent {
-        streamId = "123456789";
-        version = 1;
-        data = {};
+        $streamId = "123456789";
+        $version = 1;
+        $data = {};
       }
       const handlerSpy = jest.spyOn(handler, "execute");
 
@@ -125,6 +126,19 @@ describe("EventBus", () => {
 
       await bus["executeLocal"](new TestEvent());
       expect(commandSpy).toHaveBeenCalledWith(expect.any(TestCommand));
+    });
+
+    it("will pass the event correlationId to the commands", async () => {
+      const commandSpy = jest.spyOn(commandBus, "publish");
+      const event = new TestEvent();
+      event.$correlationId = faker.datatype.uuid();
+
+      await bus["executeLocal"](event);
+      expect(commandSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          $correlationId: event.$correlationId,
+        }),
+      );
     });
 
     it("will catch an error in a handler and still run sagas", async () => {

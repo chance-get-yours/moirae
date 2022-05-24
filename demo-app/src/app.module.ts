@@ -16,6 +16,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { AccountModule } from "./account/account.module";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
+import { InventoryModule } from "./inventory/inventory.module";
 import { MoiraeWsGateway } from "./moirae-ws.gateway";
 
 const moiraeConfigGenerator = (): IMoiraeConfig<
@@ -60,6 +61,7 @@ const moiraeConfigGenerator = (): IMoiraeConfig<
     ConfigModule.forRoot({
       envFilePath: "../.env",
     }),
+    InventoryModule,
     MoiraeModule.forRootAsync(moiraeConfigGenerator()),
     TypeOrmModule.forRoot({
       autoLoadEntities: true,

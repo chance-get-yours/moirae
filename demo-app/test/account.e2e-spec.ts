@@ -72,7 +72,7 @@ describe("Account", () => {
         });
       wsClient.send(
         JSON.stringify({
-          event: "@moirae/events",
+          event: "@moirae/id",
           data: { id },
         }),
       );
@@ -130,7 +130,7 @@ describe("Account", () => {
         });
       wsClient.send(
         JSON.stringify({
-          event: "@moirae/events",
+          event: "@moirae/id",
           data: { id },
         }),
       );
@@ -175,7 +175,7 @@ describe("Account", () => {
         });
       wsClient.send(
         JSON.stringify({
-          event: "@moirae/events",
+          event: "@moirae/id",
           data: { id },
         }),
       );

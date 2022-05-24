@@ -39,6 +39,7 @@ describe("CreateInventoryHandler", () => {
       const command = new CreateInventoryCommand({
         name: faker.lorem.word(),
         quantity: 4,
+        price: 1,
       });
       command.$correlationId = faker.datatype.uuid();
 
@@ -55,6 +56,7 @@ describe("CreateInventoryHandler", () => {
           $data: {
             createdAt: expect.any(Date),
             name: command.input.name,
+            price: command.input.price,
             quantity: command.input.quantity,
           },
         }),

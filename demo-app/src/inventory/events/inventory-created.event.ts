@@ -3,7 +3,7 @@ import { IInventory } from "../interfaces/inventory.interface";
 
 type InventoryCreatedEventPayload = Pick<
   IInventory,
-  "createdAt" | "name" | "quantity"
+  "createdAt" | "name" | "price" | "quantity"
 >;
 
 @RegisterType()

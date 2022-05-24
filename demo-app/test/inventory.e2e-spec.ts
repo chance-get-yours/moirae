@@ -37,6 +37,7 @@ describe("Inventory", () => {
     it("will create a new inventory item", async () => {
       const input: CreateInventoryInput = {
         name: faker.lorem.word(),
+        price: 4,
         quantity: 5,
       };
 
@@ -51,7 +52,7 @@ describe("Inventory", () => {
         });
       client.send(
         JSON.stringify({
-          event: "@moirae/events",
+          event: "@moirae/id",
           data: { id },
         }),
       );

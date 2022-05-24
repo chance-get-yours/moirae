@@ -1,5 +1,5 @@
 import { RegisterType } from "@moirae/core";
-import { IsNumber, IsString, Min } from "class-validator";
+import { IsNumber, IsPositive, IsString, Min } from "class-validator";
 
 @RegisterType()
 export class CreateInventoryInput {
@@ -9,4 +9,8 @@ export class CreateInventoryInput {
   @IsNumber()
   @Min(0)
   quantity: number;
+
+  @IsNumber({ maxDecimalPlaces: 2 })
+  @IsPositive()
+  price: number;
 }

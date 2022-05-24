@@ -14,6 +14,9 @@ export class Inventory implements IInventory {
   @Column()
   quantity: number;
 
+  @Column()
+  price: number;
+
   @CreateDateColumn()
   createdAt: Date;
 

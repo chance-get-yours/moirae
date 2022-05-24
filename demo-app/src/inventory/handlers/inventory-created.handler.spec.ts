@@ -56,6 +56,7 @@ describe("InventoryCreatedHandler", () => {
       const event = new InventoryCreatedEvent(streamId, {
         createdAt: new Date(),
         name: faker.lorem.word(),
+        price: 3,
         quantity: 3,
       });
 
@@ -76,6 +77,7 @@ describe("InventoryCreatedHandler", () => {
         id: aggregate.id,
         createdAt: aggregate.createdAt,
         name: aggregate.name,
+        price: aggregate.price,
         quantity: aggregate.quantity,
         updatedAt: aggregate.updatedAt,
       });

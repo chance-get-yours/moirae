@@ -13,6 +13,9 @@ export class InventoryAggregate
   quantity: number;
 
   @Projection()
+  price: number;
+
+  @Projection()
   createdAt: Date;
 
   @Projection()
@@ -28,6 +31,7 @@ export class InventoryAggregate
     const { createdAt, name, quantity } = event.$data;
     this.createdAt = createdAt;
     this.name = name;
+    this.price = event.$data.price;
     this.quantity = quantity;
   }
 }

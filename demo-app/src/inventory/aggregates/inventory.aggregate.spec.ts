@@ -14,6 +14,7 @@ describe("InventoryAggregate", () => {
     const event = new InventoryCreatedEvent(streamId, {
       createdAt: new Date(),
       name: faker.lorem.word(),
+      price: 21,
       quantity: 4,
     });
 
@@ -21,6 +22,7 @@ describe("InventoryAggregate", () => {
     expect(aggregate.createdAt).toEqual(event.$data.createdAt);
     expect(aggregate.id).toEqual(streamId);
     expect(aggregate.name).toEqual(event.$data.name);
+    expect(aggregate.price).toEqual(event.$data.price);
     expect(aggregate.quantity).toEqual(event.$data.quantity);
     expect(aggregate.updatedAt).toEqual(event.$timestamp);
   });

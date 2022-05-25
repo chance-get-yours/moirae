@@ -16,6 +16,8 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { AccountModule } from "./account/account.module";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
+import { ProcessOrderSaga } from "./common/sagas/process-order.saga";
+import { InventoryModule } from "./inventory/inventory.module";
 import { MoiraeWsGateway } from "./moirae-ws.gateway";
 
 const moiraeConfigGenerator = (): IMoiraeConfig<
@@ -28,6 +30,7 @@ const moiraeConfigGenerator = (): IMoiraeConfig<
       nodeId: "demo-node",
       type: "memory",
     },
+    sagas: [ProcessOrderSaga],
   };
   switch (process.env.PUB_TYPE) {
     case "rabbitmq":
@@ -60,6 +63,7 @@ const moiraeConfigGenerator = (): IMoiraeConfig<
     ConfigModule.forRoot({
       envFilePath: "../.env",
     }),
+    InventoryModule,
     MoiraeModule.forRootAsync(moiraeConfigGenerator()),
     TypeOrmModule.forRoot({
       autoLoadEntities: true,

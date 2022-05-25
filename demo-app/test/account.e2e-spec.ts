@@ -7,6 +7,7 @@ import { CreateAccountInput } from "../src/account/dto/create-account.input";
 import { DepositFundsInput } from "../src/account/dto/deposit-funds.input";
 import { WithdrawFundsInput } from "../src/account/dto/withdraw-funds.input";
 import { AppModule } from "../src/app.module";
+import { Subscriptions } from "../src/moirae-ws.gateway";
 import { WsHandler } from "./utilities/ws-handler";
 
 describe("Account", () => {
@@ -72,7 +73,7 @@ describe("Account", () => {
         });
       wsClient.send(
         JSON.stringify({
-          event: "@moirae/events",
+          event: Subscriptions.ID,
           data: { id },
         }),
       );
@@ -130,7 +131,7 @@ describe("Account", () => {
         });
       wsClient.send(
         JSON.stringify({
-          event: "@moirae/events",
+          event: Subscriptions.ID,
           data: { id },
         }),
       );
@@ -175,7 +176,7 @@ describe("Account", () => {
         });
       wsClient.send(
         JSON.stringify({
-          event: "@moirae/events",
+          event: Subscriptions.ID,
           data: { id },
         }),
       );

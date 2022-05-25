@@ -7,6 +7,11 @@ import {
 } from "@nestjs/websockets";
 import { filter, map, Observable, Subject } from "rxjs";
 
+export enum Subscriptions {
+  ID = "@moirae/id",
+  CORRELATION = "@moirae/correlationId",
+}
+
 /**
  * Enable WS support for interfacing with the event system
  */
@@ -24,11 +29,24 @@ export class MoiraeWsGateway {
   /**
    * Subscribe to all events related to a specific ID
    */
-  @SubscribeMessage("@moirae/events")
+  @SubscribeMessage(Subscriptions.ID)
   handleEvents(@MessageBody("id") id: string): Observable<WsResponse<IEvent>> {
     return this.subject.pipe(
       filter((event) => event.$streamId === id),
-      map((event) => ({ event: "@moirae/events", data: event })),
+      map((event) => ({ event: Subscriptions.ID, data: event })),
+    );
+  }
+
+  /**
+   * Subscribe to all events related to a specific correlationId
+   */
+  @SubscribeMessage(Subscriptions.CORRELATION)
+  handleCorrelation(
+    @MessageBody("correlationId") correlationId: string,
+  ): Observable<WsResponse<IEvent>> {
+    return this.subject.pipe(
+      filter((event) => event.$correlationId === correlationId),
+      map((event) => ({ event: Subscriptions.CORRELATION, data: event })),
     );
   }
 }

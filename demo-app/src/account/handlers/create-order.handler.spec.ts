@@ -7,7 +7,9 @@ import {
 import { Test } from "@nestjs/testing";
 import { InventoryAggregate } from "../../inventory/aggregates/inventory.aggregate";
 import { InventoryCreatedEvent } from "../../inventory/events/inventory-created.event";
-import { CreateOrderCommand } from "../commands/create-order.command";
+import { AccountAggregate } from "../aggregates/account.aggregate";
+import { AccountCreatedEvent } from "../events/account-created.event";
+import { CreateOrderCommand } from "../order/commands/create-order.command";
 import { CreateOrderHandler } from "./create-order.handler";
 
 describe("CreateOrderHandler", () => {
@@ -30,9 +32,22 @@ describe("CreateOrderHandler", () => {
   });
 
   describe("execute", () => {
+    let account: AccountAggregate;
     let inventory: InventoryAggregate;
 
     beforeEach(async () => {
+      account = await factory.mergeContext(
+        faker.datatype.uuid(),
+        AccountAggregate,
+      );
+      account.apply(
+        new AccountCreatedEvent(account.id, {
+          balance: 1000,
+          createdAt: new Date(),
+          name: faker.lorem.word(),
+        }),
+      );
+      await account.commit();
       inventory = await factory.mergeContext(
         faker.datatype.uuid(),
         InventoryAggregate,
@@ -50,7 +65,7 @@ describe("CreateOrderHandler", () => {
 
     it("will create a new Order", async () => {
       const command = new CreateOrderCommand({
-        accountId: faker.datatype.uuid(),
+        accountId: account.id,
         inventoryId: inventory.id,
         quantity: 7,
       });
@@ -66,6 +81,7 @@ describe("CreateOrderHandler", () => {
           $data: {
             accountId: command.input.accountId,
             cost: inventory.price * command.input.quantity,
+            id: expect.any(String),
             inventoryId: command.input.inventoryId,
             quantity: command.input.quantity,
           },

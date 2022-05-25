@@ -1,9 +1,9 @@
 import { Event, IEvent, RegisterType } from "@moirae/core";
-import { Order } from "../projections/order.entity";
+import { Order } from "../order/projections/order.entity";
 
 type OrderCreatedEventPayload = Pick<
   Order,
-  "accountId" | "cost" | "inventoryId" | "quantity"
+  "accountId" | "cost" | "id" | "inventoryId" | "quantity"
 >;
 
 @RegisterType()

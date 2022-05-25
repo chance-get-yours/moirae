@@ -36,6 +36,7 @@ export class MoiraeModule {
       publisher = {
         type: "memory",
       },
+      sagas = [],
       store = {
         type: "memory",
       },
@@ -111,6 +112,7 @@ export class MoiraeModule {
         ObservableFactory,
         QueryBus,
         ...providers,
+        ...sagas,
       ],
       exports: [AggregateFactory, CommandBus, EventBus, QueryBus, ...exports],
     };

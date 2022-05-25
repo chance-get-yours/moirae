@@ -1,5 +1,5 @@
-import { Account } from "../../account/projections/account.entity";
-import { Inventory } from "../../inventory/projections/inventory.entity";
+import { Inventory } from "../../../inventory/projections/inventory.entity";
+import { Account } from "../../projections/account.entity";
 
 export interface IOrder {
   id: string;

@@ -2,6 +2,7 @@ import { faker } from "@faker-js/faker";
 import { AccountCreatedEvent } from "../events/account-created.event";
 import { FundsDepositedEvent } from "../events/funds-deposited.event";
 import { FundsWithdrawnEvent } from "../events/funds-withdrawn.event";
+import { OrderCreatedEvent } from "../events/order-created.event";
 import { AccountAggregate } from "./account.aggregate";
 
 describe("AccountAggregate", () => {
@@ -61,5 +62,22 @@ describe("AccountAggregate", () => {
     aggregate.apply(event);
     expect(aggregate.balance).toEqual(0);
     expect(aggregate.updatedAt).toEqual(event.$timestamp);
+  });
+
+  it("will apply an OrderCreatedEvent", () => {
+    const event = new OrderCreatedEvent(aggregate.id, {
+      accountId: aggregate.id,
+      cost: 1,
+      id: faker.datatype.uuid(),
+      inventoryId: faker.datatype.uuid(),
+      quantity: 1,
+    });
+
+    expect(aggregate.orders).not.toBeDefined();
+    aggregate.apply(event);
+    expect(aggregate.orders).toHaveLength(1);
+    expect(aggregate.orders[0]).toMatchObject(
+      expect.objectContaining(event.$data),
+    );
   });
 });

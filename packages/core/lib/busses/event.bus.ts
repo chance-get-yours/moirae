@@ -49,6 +49,7 @@ export class EventBus {
       .filter((command) => !!command);
     commands.forEach((command) => {
       if (event.$correlationId) command.$correlationId = event.$correlationId;
+      command.$disableResponse = true;
       this.commandBus.publish(command);
     });
     this._status.set(ESState.IDLE);

@@ -1,7 +1,7 @@
 import { RegisterType } from "@moirae/core";
 import { Column, Entity, ManyToOne, PrimaryColumn, RelationId } from "typeorm";
-import { Account } from "../../account/projections/account.entity";
-import { Inventory } from "../../inventory/projections/inventory.entity";
+import { Inventory } from "../../../inventory/projections/inventory.entity";
+import { Account } from "../../projections/account.entity";
 import { IOrder } from "../interfaces/order.interface";
 
 @RegisterType()

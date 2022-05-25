@@ -2,7 +2,9 @@ import { AggregateRoot, Apply, Projection } from "@moirae/core";
 import { AccountCreatedEvent } from "../events/account-created.event";
 import { FundsDepositedEvent } from "../events/funds-deposited.event";
 import { FundsWithdrawnEvent } from "../events/funds-withdrawn.event";
+import { OrderCreatedEvent } from "../events/order-created.event";
 import { IAccount } from "../interfaces/account.interface";
+import { IOrder } from "../order/interfaces/order.interface";
 
 export class AccountAggregate
   extends AggregateRoot<IAccount>
@@ -14,6 +16,9 @@ export class AccountAggregate
   public balance: number;
   @Projection()
   public createdAt: Date;
+
+  @Projection()
+  public orders: IOrder[];
 
   @Projection()
   public updatedAt: Date;
@@ -38,5 +43,20 @@ export class AccountAggregate
   @Apply(FundsWithdrawnEvent)
   handleWithdrawal(event: FundsWithdrawnEvent): void {
     this.balance += event.$data.funds;
+  }
+
+  @Apply(OrderCreatedEvent)
+  handleCreate(event: OrderCreatedEvent): void {
+    const { accountId, cost, id, inventoryId, quantity } = event.$data;
+    if (!this.orders) this.orders = [];
+    this.orders.push({
+      accountId,
+      createdAt: new Date(),
+      cost,
+      id,
+      inventoryId,
+      quantity,
+      updatedAt: new Date(),
+    });
   }
 }

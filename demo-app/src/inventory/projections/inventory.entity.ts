@@ -6,7 +6,7 @@ import {
   OneToMany,
   PrimaryColumn,
 } from "typeorm";
-import { Order } from "../../order/projections/order.entity";
+import { Order } from "../../account/order/projections/order.entity";
 import { IInventory } from "../interfaces/inventory.interface";
 
 @RegisterType()

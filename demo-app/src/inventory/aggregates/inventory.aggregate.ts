@@ -1,5 +1,6 @@
 import { AggregateRoot, Apply, Projection } from "@moirae/core";
 import { InventoryCreatedEvent } from "../events/inventory-created.event";
+import { InventoryRemovedEvent } from "../events/inventory-removed.event";
 import { IInventory } from "../interfaces/inventory.interface";
 
 export class InventoryAggregate
@@ -33,5 +34,10 @@ export class InventoryAggregate
     this.name = name;
     this.price = event.$data.price;
     this.quantity = quantity;
+  }
+
+  @Apply(InventoryRemovedEvent)
+  protected handleRemove(event: InventoryRemovedEvent): void {
+    this.quantity -= event.$data.quantity;
   }
 }

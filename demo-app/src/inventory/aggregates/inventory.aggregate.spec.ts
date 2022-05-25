@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { InventoryCreatedEvent } from "../events/inventory-created.event";
+import { InventoryRemovedEvent } from "../events/inventory-removed.event";
 import { InventoryAggregate } from "./inventory.aggregate";
 
 describe("InventoryAggregate", () => {
@@ -25,5 +26,26 @@ describe("InventoryAggregate", () => {
     expect(aggregate.price).toEqual(event.$data.price);
     expect(aggregate.quantity).toEqual(event.$data.quantity);
     expect(aggregate.updatedAt).toEqual(event.$timestamp);
+  });
+
+  it("will apply an InventoryRemovedEvent", () => {
+    const event = new InventoryCreatedEvent(streamId, {
+      createdAt: new Date(),
+      name: faker.lorem.word(),
+      price: 21,
+      quantity: 4,
+    });
+
+    aggregate.apply(event);
+
+    const remove = new InventoryRemovedEvent(streamId, {
+      quantity: 1,
+    });
+
+    aggregate.apply(remove);
+
+    expect(aggregate.quantity).toEqual(
+      event.$data.quantity - remove.$data.quantity,
+    );
   });
 });

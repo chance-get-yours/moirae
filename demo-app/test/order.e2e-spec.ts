@@ -8,6 +8,7 @@ import { FundsWithdrawnEvent } from "../src/account/events/funds-withdrawn.event
 import { CreateOrderInput } from "../src/account/order/dto/create-order.input";
 import { AppModule } from "../src/app.module";
 import { CreateInventoryInput } from "../src/inventory/dto/create-inventory.input";
+import { InventoryRemovedEvent } from "../src/inventory/events/inventory-removed.event";
 import { Subscriptions } from "../src/moirae-ws.gateway";
 import { WsHandler } from "./utilities/ws-handler";
 
@@ -105,6 +106,13 @@ describe("Order", () => {
       expect(event.$streamId).toEqual(accountId);
     });
 
-    it.todo("will emit a InventoryRemovedEvent");
+    it("will emit a InventoryRemovedEvent", async () => {
+      const event = await client.awaitMatch(
+        (event) =>
+          event.$name === InventoryRemovedEvent.name &&
+          event.$correlationId === correlationId,
+      );
+      expect(event.$streamId).toEqual(inventoryId);
+    });
   });
 });

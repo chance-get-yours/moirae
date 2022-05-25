@@ -1,17 +1,17 @@
 import { Command, ICommand, RegisterType } from "@moirae/core";
 
-interface ExportInventoryInput {
+interface RemoveInventoryInput {
   inventoryId: string;
   quantity: number;
 }
 
 @RegisterType()
-export class ExportInventoryCommand extends Command implements ICommand {
+export class RemoveInventoryCommand extends Command implements ICommand {
   public readonly $version = 1;
 
-  public readonly input: ExportInventoryInput;
+  public readonly input: RemoveInventoryInput;
 
-  constructor(input: ExportInventoryInput) {
+  constructor(input: RemoveInventoryInput) {
     super();
     this.input = input;
   }

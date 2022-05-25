@@ -86,6 +86,12 @@ describe("CreateOrderHandler", () => {
             quantity: command.input.quantity,
           },
         }),
+        expect.objectContaining({
+          $correlationId: command.$correlationId,
+          $data: {
+            funds: inventory.price * command.input.quantity * -1,
+          },
+        }),
       ]);
     });
   });

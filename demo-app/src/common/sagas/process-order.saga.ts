@@ -11,6 +11,7 @@ export class ProcessOrderSaga {
     return [
       new RemoveInventoryCommand({
         inventoryId: event.$data.inventoryId,
+        orderId: event.$data.id,
         quantity: event.$data.quantity,
       }),
     ];

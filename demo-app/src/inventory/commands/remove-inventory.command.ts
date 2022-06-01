@@ -2,6 +2,7 @@ import { Command, ICommand, RegisterType } from "@moirae/core";
 
 interface RemoveInventoryInput {
   inventoryId: string;
+  orderId: string;
   quantity: number;
 }
 

@@ -1,13 +1,13 @@
-import { ICommand, IEvent, Saga, SagaHandler } from "@moirae/core";
+import { ICommand, Saga, SagaStep } from "@moirae/core";
 import { Injectable } from "@nestjs/common";
+import { RollbackAccountCommand } from "../../account/commands/rollback-account.command";
 import { OrderCreatedEvent } from "../../account/events/order-created.event";
 import { RemoveInventoryCommand } from "../../inventory/commands/remove-inventory.command";
 
 @Injectable()
-export class ProcessOrderSaga {
-  @Saga()
-  postOrderCreated: SagaHandler = (event: IEvent): ICommand[] => {
-    if (!(event instanceof OrderCreatedEvent)) return [];
+export class ProcessOrderSaga extends Saga {
+  @SagaStep(OrderCreatedEvent, RollbackAccountCommand)
+  postOrderCreated(event: OrderCreatedEvent): ICommand[] {
     return [
       new RemoveInventoryCommand({
         inventoryId: event.$data.inventoryId,
@@ -15,5 +15,5 @@ export class ProcessOrderSaga {
         quantity: event.$data.quantity,
       }),
     ];
-  };
+  }
 }

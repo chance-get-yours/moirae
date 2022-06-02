@@ -88,7 +88,6 @@ export class EventBus {
     });
     this.eventSource.subscribe(this.executeLocal.bind(this));
     this._status.set(ESState.IDLE);
-    console.log(this._sagas);
   }
 
   public async publish(event: IEvent): Promise<void> {

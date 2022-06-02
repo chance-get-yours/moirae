@@ -4,14 +4,15 @@ import { Test } from "@nestjs/testing";
 import { randomUUID } from "crypto";
 import { TestEvent } from "../classes/aggregate-root.class.spec";
 import { Event } from "../classes/event.class";
+import { Saga } from "../classes/saga.class";
+import { TestRollbackCommand } from "../classes/saga.class.spec";
 import { EventHandler } from "../decorators/event-handler.decorator";
 import { RegisterType } from "../decorators/register-type.decorator";
-import { Saga } from "../decorators/saga.decorator";
+import { SagaStep } from "../decorators/saga-step.decorator";
 import { ObservableFactory } from "../factories/observable.factory";
 import { IEventHandler } from "../interfaces/event-handler.interface";
 import { IEventSource } from "../interfaces/event-source.interface";
 import { IEvent } from "../interfaces/event.interface";
-import { SagaHandler } from "../interfaces/saga-handler.interface";
 import {
   EVENT_PUBSUB_ENGINE,
   EVENT_SOURCE,
@@ -32,15 +33,15 @@ class TestHandler implements IEventHandler<TestEvent> {
 }
 
 @Injectable()
-class TestSaga {
-  @Saga()
-  testSaga: SagaHandler = (event: IEvent) => {
-    if (event instanceof TestEvent) {
-      return [new TestCommand()];
-    }
-  };
+class TestSaga extends Saga {
+  @SagaStep(TestEvent, TestRollbackCommand)
+  public onTestEvent(event: TestEvent) {
+    return [new TestCommand()];
+  }
 
-  dummyFn = () => undefined;
+  dummyFn() {
+    return undefined;
+  }
 }
 
 describe("EventBus", () => {
@@ -93,6 +94,7 @@ describe("EventBus", () => {
     await source["onApplicationBootstrap"]();
     await commandBus["_publisher"]["onApplicationBootstrap"]();
     bus.onApplicationBootstrap();
+    module.get(TestSaga).onApplicationBootstrap();
   });
 
   it("will be defined", () => {

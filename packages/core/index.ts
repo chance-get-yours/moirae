@@ -11,6 +11,7 @@ export { Distributor } from "./lib/classes/distributor.class";
 export { Event } from "./lib/classes/event.class";
 export { Query } from "./lib/classes/query.class";
 export { ResponseWrapper } from "./lib/classes/response.class";
+export { Saga } from "./lib/classes/saga.class";
 // decorators
 export { Apply } from "./lib/decorators/apply.decorator";
 export { CommandHandler } from "./lib/decorators/command-handler.decorator";
@@ -19,7 +20,7 @@ export { AddMixin } from "./lib/decorators/mixin.decorator";
 export { Projection } from "./lib/decorators/projection.decorator";
 export { QueryHandler } from "./lib/decorators/query-handler.decorator";
 export { RegisterType } from "./lib/decorators/register-type.decorator";
-export { Saga } from "./lib/decorators/saga.decorator";
+export { SagaStep } from "./lib/decorators/saga-step.decorator";
 // factories
 export { AggregateFactory } from "./lib/factories/aggregate.factory";
 export { ObservableFactory } from "./lib/factories/observable.factory";
@@ -37,6 +38,7 @@ export type { IPublisherConfig } from "./lib/interfaces/publisher-config.interfa
 export type { IPublisher } from "./lib/interfaces/publisher.interface";
 export type { IQueryHandler } from "./lib/interfaces/query-handler.interface";
 export type { IQuery } from "./lib/interfaces/query.interface";
+export type { IRollbackCommand } from "./lib/interfaces/rollback-command.interface";
 export type { SagaHandler } from "./lib/interfaces/saga-handler.interface";
 export type { IStoreConfig } from "./lib/interfaces/store-config.interface";
 // mixins

@@ -6,32 +6,13 @@ import {
   IRollbackCommand,
   IRollbackCommandConstructor,
 } from "../interfaces/rollback-command.interface";
+import { SAGA_METADATA } from "../moirae.constants";
 
 interface SagaMetadataPayload {
   event: ClassConstructor<IEvent>;
   propertyKey: string;
   rollbackCommand: IRollbackCommandConstructor;
 }
-
-/**
- * Decorator to describe if -> then conditions for a saga.
- * @param event
- * @param rollbackCommand
- * @returns
- */
-export const SagaFilter =
-  <T extends IEvent>(
-    event: ClassConstructor<T>,
-    rollbackCommand: IRollbackCommandConstructor,
-  ): MethodDecorator =>
-  (target, propertyKey) => {
-    const sagas = Reflect.getMetadata("", target.constructor) || [];
-    Reflect.defineMetadata(
-      "",
-      [...sagas, { event, propertyKey, rollbackCommand }],
-      target,
-    );
-  };
 
 export abstract class Saga implements OnApplicationBootstrap {
   private _commandConstructors: Map<
@@ -51,7 +32,7 @@ export abstract class Saga implements OnApplicationBootstrap {
   }
 
   public onApplicationBootstrap() {
-    const sagas = Reflect.getMetadata("", this) || [];
+    const sagas = Reflect.getMetadata(SAGA_METADATA, this) || [];
     sagas.forEach((sagaMeta: SagaMetadataPayload) => {
       if (!this._sagaMap.has(sagaMeta.event.name))
         this._sagaMap.set(sagaMeta.event.name, []);

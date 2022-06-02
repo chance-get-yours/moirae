@@ -1,12 +1,12 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { ModulesContainer } from "@nestjs/core";
+import { Saga } from "../classes/saga.class";
 import { StateTracker } from "../classes/state-tracker.class";
 import { ObservableFactory } from "../factories/observable.factory";
 import { IEventHandler } from "../interfaces/event-handler.interface";
 import { IEventSource } from "../interfaces/event-source.interface";
 import { IEvent } from "../interfaces/event.interface";
 import { IPubSub } from "../interfaces/pub-sub.interface";
-import { SagaHandler } from "../interfaces/saga-handler.interface";
 import {
   ESState,
   EVENT_METADATA,
@@ -22,9 +22,8 @@ import { CommandBus } from "./command.bus";
 @Injectable()
 export class EventBus {
   private readonly _handlerMap: Map<string, IEventHandler<IEvent>[]>;
-  private readonly _sagas: SagaHandler[];
+  private readonly _sagas: Saga[];
   private _status: StateTracker<ESState>;
-  private _subId: string;
 
   constructor(
     private readonly commandBus: CommandBus,
@@ -45,7 +44,7 @@ export class EventBus {
     const handlers = this._handlerMap.get(event.$name) || [];
     await Promise.allSettled(handlers.map((handler) => handler.execute(event)));
     const commands = this._sagas
-      .flatMap((saga) => saga(event))
+      .flatMap((saga) => saga.process(event))
       .filter((command) => !!command);
     commands.forEach((command) => {
       if (event.$correlationId) command.$correlationId = event.$correlationId;
@@ -57,12 +56,8 @@ export class EventBus {
   }
 
   protected handleProvider(instance: unknown): void {
-    if (Reflect.hasMetadata(SAGA_METADATA, instance.constructor)) {
-      Reflect.getMetadata(SAGA_METADATA, instance.constructor).forEach(
-        (key) => {
-          this._sagas.push(instance[key].bind(instance));
-        },
-      );
+    if (Reflect.hasMetadata(SAGA_METADATA, instance)) {
+      this._sagas.push(instance as Saga);
     }
   }
 
@@ -91,8 +86,9 @@ export class EventBus {
       }
       this.handleProvider(instance);
     });
-    this._subId = this.eventSource.subscribe(this.executeLocal.bind(this));
+    this.eventSource.subscribe(this.executeLocal.bind(this));
     this._status.set(ESState.IDLE);
+    console.log(this._sagas);
   }
 
   public async publish(event: IEvent): Promise<void> {

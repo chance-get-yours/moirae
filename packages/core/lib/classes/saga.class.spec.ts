@@ -2,12 +2,13 @@ import { faker } from "@faker-js/faker";
 import { Injectable } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
 import { TestCommand } from "../busses/command.bus.spec";
+import { SagaStep } from "../decorators/saga-step.decorator";
 import { IEvent } from "../interfaces/event.interface";
 import { IRollbackCommand } from "../interfaces/rollback-command.interface";
 import { TestEvent } from "./aggregate-root.class.spec";
 import { Command } from "./command.class";
 import { Event } from "./event.class";
-import { Saga, SagaFilter } from "./saga.class";
+import { Saga } from "./saga.class";
 
 class UnhandledEvent extends Event implements IEvent {
   $streamId = "123456789";
@@ -15,7 +16,7 @@ class UnhandledEvent extends Event implements IEvent {
   $data = {};
 }
 
-class TestRollbackCommand extends Command implements IRollbackCommand {
+export class TestRollbackCommand extends Command implements IRollbackCommand {
   public readonly $data: { streamId: string; correlationId: string };
   public $version = 1;
 
@@ -27,7 +28,7 @@ class TestRollbackCommand extends Command implements IRollbackCommand {
 
 @Injectable()
 class TestSaga extends Saga {
-  @SagaFilter(TestEvent, TestRollbackCommand)
+  @SagaStep(TestEvent, TestRollbackCommand)
   handleTestEvent(event: TestEvent) {
     return [new TestCommand()];
   }

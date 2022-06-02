@@ -34,3 +34,14 @@ Queries function similar to commands however without generating any events or si
 ### Aggregate Root
 TBD: explanation
 
+### Uniqueness
+A known shortfall of event based systems is the inability to reliably enforce uniqueness in aggregates. Moirae solves this using a reservation system, the idea being that potentially unique values should be reserved prior to events being committed and these reservations released once the projection is updated. The reservation allows the system to compensate for the delay and eventual consistency of the read/write side. As an example, consider the case for a unique email:
+
+1. CreateUserCommand is generated as part of a controller
+2. CreateUserHandler successfully reserves UserAggregate.email = `fake@mail.co`
+3. CreateUserHandler queries the projections database for users with the email `fake@mail.co` and finds nothing
+4. CreateUserHandler properly commits the UserCreatedEvent
+5. UserCreatedHandler updates the projections database with the new user
+6. UserCreatedHandler releases the reservation for UserAggregate.email
+
+It is important to release the reservations on commit to the projections 

@@ -2,6 +2,7 @@ import { faker } from "@faker-js/faker";
 import "reflect-metadata";
 import { Apply } from "../decorators/apply.decorator";
 import { RegisterType } from "../decorators/register-type.decorator";
+import { Rollback } from "../decorators/rollback.decorator";
 import { UnavailableCommitError } from "../exceptions/commit-unavailable.error";
 import { InvalidMultipleSetError } from "../exceptions/invalid-mutliple-set.error";
 import { UnhandledEventError } from "../exceptions/unhandled-event.error";
@@ -20,6 +21,20 @@ export class TestEvent extends Event implements IEvent<ITestEntity> {
   public readonly $data: ITestEntity = { foo: "bar" };
 }
 
+@RegisterType()
+class OtherTestEvent extends Event implements IEvent<ITestEntity> {
+  public $streamId = "12345";
+  public readonly $version: number = 1;
+  public readonly $data: ITestEntity = { foo: "baz" };
+}
+
+@RegisterType()
+class RollbackOtherTestEvent extends Event implements IEvent<ITestEntity> {
+  public $streamId = "12345";
+  public readonly $version: number = 1;
+  public $data: ITestEntity;
+}
+
 export class TestAggregate
   extends AggregateRoot<ITestEntity>
   implements ITestEntity
@@ -28,6 +43,26 @@ export class TestAggregate
 
   @Apply(TestEvent)
   protected onTestEvent(event: TestEvent): void {
+    this.foo = event.$data.foo;
+  }
+
+  @Apply(OtherTestEvent)
+  protected onOtherTestEvent(event: OtherTestEvent): void {
+    this.foo = event.$data.foo;
+  }
+
+  @Rollback(OtherTestEvent)
+  protected createRollbackOtherTestEvent(
+    event: OtherTestEvent,
+  ): RollbackOtherTestEvent {
+    const aggregate = this.getAggregatePriorTo<TestAggregate>(event);
+    const rollbackEvent = new RollbackOtherTestEvent();
+    rollbackEvent.$data = { foo: aggregate.foo };
+    return rollbackEvent;
+  }
+
+  @Apply(RollbackOtherTestEvent)
+  protected onRollbackOtherTestEvent(event: RollbackOtherTestEvent): void {
     this.foo = event.$data.foo;
   }
 }
@@ -112,6 +147,27 @@ describe("AggregateRoot", () => {
       await expect(() => testAggregate.commit()).rejects.toThrowError(
         UnavailableCommitError,
       );
+    });
+  });
+
+  describe("rollback", () => {
+    let correlationId: string;
+    beforeEach(() => {
+      const testEvent = new TestEvent();
+      testEvent.$correlationId = faker.datatype.uuid();
+
+      const otherTestEvent = new OtherTestEvent();
+      otherTestEvent.$correlationId = faker.datatype.uuid();
+
+      correlationId = otherTestEvent.$correlationId;
+
+      testAggregate.apply(testEvent);
+      testAggregate.apply(otherTestEvent);
+    });
+
+    it("will apply compensating events for the given correlationId", () => {
+      expect(testAggregate.rollback(correlationId)).toEqual(1);
+      expect(testAggregate.foo).toEqual("bar");
     });
   });
 });

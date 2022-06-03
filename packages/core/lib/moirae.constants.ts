@@ -8,6 +8,7 @@ export const PROJECTION_METADATA = "__aggregate_projection__";
 export const PUBLISHER = "__publisher__";
 export const PUBLISHER_OPTIONS = "__publisher-options__";
 export const QUERY_METADATA = "__query_handler__";
+export const ROLLBACK_METADATA = "__rollback-event-metadata__";
 export const SAGA_METADATA = "__saga_handler__";
 
 /**

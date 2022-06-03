@@ -1,6 +1,6 @@
 import { AggregateFactory, EventHandler, IEventHandler } from "@moirae/core";
 import { AccountAggregate } from "../../aggregates/account.aggregate";
-import { OrderCreatedEvent } from "../../events/order-created.event";
+import { OrderCreatedEvent } from "../events/order-created.event";
 import { OrderService } from "../order.service";
 
 @EventHandler(OrderCreatedEvent)

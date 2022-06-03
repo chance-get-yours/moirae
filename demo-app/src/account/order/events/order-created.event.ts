@@ -1,5 +1,5 @@
 import { Event, IEvent, RegisterType } from "@moirae/core";
-import { Order } from "../order/projections/order.entity";
+import { Order } from "../projections/order.entity";
 
 type OrderCreatedEventPayload = Pick<
   Order,

@@ -8,8 +8,8 @@ import { Test } from "@nestjs/testing";
 import { AccountAggregate } from "../aggregates/account.aggregate";
 import { RollbackAccountCommand } from "../commands/rollback-account.command";
 import { AccountCreatedEvent } from "../events/account-created.event";
-import { OrderCreatedEvent } from "../events/order-created.event";
-import { RollbackOrderCreatedEvent } from "../events/rollback-order-created.event";
+import { OrderCreatedEvent } from "../order/events/order-created.event";
+import { RollbackOrderCreatedEvent } from "../order/events/rollback-order-created.event";
 import { RollbackAccountHandler } from "./rollback-account.handler";
 
 describe("RollbackAccountHandler", () => {

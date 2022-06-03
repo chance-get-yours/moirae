@@ -2,10 +2,10 @@ import { AggregateRoot, Apply, Projection, Rollback } from "@moirae/core";
 import { AccountCreatedEvent } from "../events/account-created.event";
 import { FundsDepositedEvent } from "../events/funds-deposited.event";
 import { FundsWithdrawnEvent } from "../events/funds-withdrawn.event";
-import { OrderCreatedEvent } from "../events/order-created.event";
 import { RollbackFundsWithdrawnEvent } from "../events/rollback-funds-withdrawn.event";
-import { RollbackOrderCreatedEvent } from "../events/rollback-order-created.event";
 import { IAccount } from "../interfaces/account.interface";
+import { OrderCreatedEvent } from "../order/events/order-created.event";
+import { RollbackOrderCreatedEvent } from "../order/events/rollback-order-created.event";
 import { IOrder } from "../order/interfaces/order.interface";
 
 export class AccountAggregate

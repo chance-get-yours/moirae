@@ -8,9 +8,9 @@ import { randomUUID } from "crypto";
 import { InventoryAggregate } from "../../inventory/aggregates/inventory.aggregate";
 import { AccountAggregate } from "../aggregates/account.aggregate";
 import { FundsWithdrawnEvent } from "../events/funds-withdrawn.event";
-import { OrderCreatedEvent } from "../events/order-created.event";
 import { InvalidWithdrawalAmountException } from "../exceptions/invalid-withdrawal-amount.exception";
 import { CreateOrderCommand } from "../order/commands/create-order.command";
+import { OrderCreatedEvent } from "../order/events/order-created.event";
 
 @CommandHandler(CreateOrderCommand)
 export class CreateOrderHandler implements ICommandHandler<CreateOrderCommand> {

@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import { AccountCreatedEvent } from "../events/account-created.event";
 import { FundsDepositedEvent } from "../events/funds-deposited.event";
 import { FundsWithdrawnEvent } from "../events/funds-withdrawn.event";
-import { OrderCreatedEvent } from "../events/order-created.event";
+import { OrderCreatedEvent } from "../order/events/order-created.event";
 import { AccountAggregate } from "./account.aggregate";
 
 describe("AccountAggregate", () => {

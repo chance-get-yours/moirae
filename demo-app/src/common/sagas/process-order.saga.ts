@@ -1,7 +1,7 @@
 import { ICommand, Saga, SagaStep } from "@moirae/core";
 import { Injectable } from "@nestjs/common";
 import { RollbackAccountCommand } from "../../account/commands/rollback-account.command";
-import { OrderCreatedEvent } from "../../account/events/order-created.event";
+import { OrderCreatedEvent } from "../../account/order/events/order-created.event";
 import { RemoveInventoryCommand } from "../../inventory/commands/remove-inventory.command";
 
 @Injectable()

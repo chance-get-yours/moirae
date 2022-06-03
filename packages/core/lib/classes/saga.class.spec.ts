@@ -1,11 +1,11 @@
 import { faker } from "@faker-js/faker";
 import { Injectable } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
+import { TestEvent } from "../../testing-classes/test.event";
 import { TestCommand } from "../busses/command.bus.spec";
 import { SagaStep } from "../decorators/saga-step.decorator";
 import { IEvent } from "../interfaces/event.interface";
 import { IRollbackCommand } from "../interfaces/rollback-command.interface";
-import { TestEvent } from "./aggregate-root.class.spec";
 import { Command } from "./command.class";
 import { Event } from "./event.class";
 import { Saga } from "./saga.class";

@@ -73,9 +73,9 @@ export abstract class Saga implements OnApplicationBootstrap {
     return commands;
   }
 
-  public rollback(correlationId: string) {
+  public rollback(correlationId: string): IRollbackCommand[] {
     const related = this._storage.get(correlationId);
-    if (!related) return;
+    if (!related) return [];
     return [...related.entries()].flatMap(([commandName, streamIds]) => {
       const Command = this._commandConstructors.get(commandName);
       return [...streamIds].map((id) => new Command(id, correlationId));

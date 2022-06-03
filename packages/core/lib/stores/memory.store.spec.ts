@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { Test } from "@nestjs/testing";
-import { TestEvent } from "../classes/aggregate-root.class.spec";
+import { TestEvent } from "../../testing-classes/test.event";
 import { ObservableFactory } from "../factories/observable.factory";
 import { IEventSource } from "../interfaces/event-source.interface";
 import { PUBLISHER_OPTIONS } from "../moirae.constants";

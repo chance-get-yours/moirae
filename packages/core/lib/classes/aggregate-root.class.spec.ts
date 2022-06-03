@@ -1,39 +1,14 @@
 import { faker } from "@faker-js/faker";
 import "reflect-metadata";
+import { OtherTestEvent } from "../../testing-classes/other-test.event";
+import { RollbackOtherTestEvent } from "../../testing-classes/rollback-other-test.event";
+import { ITestEntity, TestEvent } from "../../testing-classes/test.event";
 import { Apply } from "../decorators/apply.decorator";
-import { RegisterType } from "../decorators/register-type.decorator";
 import { Rollback } from "../decorators/rollback.decorator";
 import { UnavailableCommitError } from "../exceptions/commit-unavailable.error";
 import { InvalidMultipleSetError } from "../exceptions/invalid-mutliple-set.error";
 import { UnhandledEventError } from "../exceptions/unhandled-event.error";
-import { IEvent } from "../interfaces/event.interface";
 import { AggregateRoot } from "./aggregate-root.class";
-import { Event } from "./event.class";
-
-export interface ITestEntity {
-  foo: string;
-}
-
-@RegisterType()
-export class TestEvent extends Event implements IEvent<ITestEntity> {
-  public $streamId = "12345";
-  public readonly $version: number = 1;
-  public readonly $data: ITestEntity = { foo: "bar" };
-}
-
-@RegisterType()
-class OtherTestEvent extends Event implements IEvent<ITestEntity> {
-  public $streamId = "12345";
-  public readonly $version: number = 1;
-  public readonly $data: ITestEntity = { foo: "baz" };
-}
-
-@RegisterType()
-class RollbackOtherTestEvent extends Event implements IEvent<ITestEntity> {
-  public $streamId = "12345";
-  public readonly $version: number = 1;
-  public $data: ITestEntity;
-}
 
 export class TestAggregate
   extends AggregateRoot<ITestEntity>

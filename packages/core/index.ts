@@ -20,6 +20,7 @@ export { AddMixin } from "./lib/decorators/mixin.decorator";
 export { Projection } from "./lib/decorators/projection.decorator";
 export { QueryHandler } from "./lib/decorators/query-handler.decorator";
 export { RegisterType } from "./lib/decorators/register-type.decorator";
+export { Rollback } from "./lib/decorators/rollback.decorator";
 export { SagaStep } from "./lib/decorators/saga-step.decorator";
 // factories
 export { AggregateFactory } from "./lib/factories/aggregate.factory";

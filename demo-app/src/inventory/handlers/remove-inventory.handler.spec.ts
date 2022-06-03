@@ -49,6 +49,7 @@ describe("RemoveInventoryHandler", () => {
     it("will remove inventory from the aggregate", async () => {
       const command = new RemoveInventoryCommand({
         inventoryId: inventory.id,
+        orderId: faker.datatype.uuid(),
         quantity: 1,
       });
       command.$correlationId = faker.datatype.uuid();

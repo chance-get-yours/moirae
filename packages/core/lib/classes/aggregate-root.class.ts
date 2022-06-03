@@ -76,7 +76,8 @@ export abstract class AggregateRoot<Projection = Record<string, unknown>> {
     if (!this._commitFn) throw new UnavailableCommitError(this);
     await this._commitFn(
       this.uncommittedEventHistory.map((event) => {
-        event.$correlationId = initiatorCommand?.$correlationId;
+        if (!event.$correlationId)
+          event.$correlationId = initiatorCommand?.$correlationId;
         return event;
       }),
     );

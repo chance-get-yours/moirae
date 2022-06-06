@@ -14,6 +14,14 @@ interface SagaMetadataPayload {
   rollbackCommand: IRollbackCommandConstructor;
 }
 
+/**
+ * The Saga class allows coordinating a process across multiple domains. The base class
+ * provides transactional tracking and ability to rollback a given transaction automatically should
+ * a related command/event handler fail to process.
+ *
+ * The saga should be extended with a series of methods decorated with the {@link core.SagaStep} decorator where
+ * each method defines the `IF... THEN...` progression of the saga.
+ */
 export abstract class Saga implements OnApplicationBootstrap {
   private _commandConstructors: Map<
     IRollbackCommand["$name"],
@@ -57,6 +65,12 @@ export abstract class Saga implements OnApplicationBootstrap {
     this._storage.get(correlationId).get(commandConstructor.name).add(streamId);
   }
 
+  /**
+   * Process an event in the context of a saga. In some cases, this means the event will
+   * do nothing as the saga is not equipped to handle it. If the saga is equipped to handle the event,
+   * the saga will process the event accordingly and register the correlationId and rollback
+   * process for use later if needed.
+   */
   public process(event: IEvent): ICommand[] {
     const handlers = this._sagaMap.get(event.$name) || [];
     const commands = new Array<ICommand>();
@@ -73,6 +87,9 @@ export abstract class Saga implements OnApplicationBootstrap {
     return commands;
   }
 
+  /**
+   * Rollback a specific transaction by correlationId.
+   */
   public rollback(correlationId: string): IRollbackCommand[] {
     const related = this._storage.get(correlationId);
     if (!related) return [];

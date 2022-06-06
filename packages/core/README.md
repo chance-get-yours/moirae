@@ -3,11 +3,11 @@ The core module within Moirae, required for all uses of the library. See advance
 
 ## Installation
 Install with npm
-```
+```sh
 npm install @moirae/core
 ```
 or yarn
-```
+```sh
 yarn add @moirae/core
 ```
 

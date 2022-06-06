@@ -90,11 +90,6 @@ describe("AggregateRoot", () => {
     });
   });
 
-  describe("reserveValue", () => {
-    it.todo("will mark a value as reserved");
-    it.todo("will return false if value is already reserved");
-  });
-
   describe("rollback", () => {
     let correlationId: string;
     beforeEach(() => {

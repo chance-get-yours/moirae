@@ -1,4 +1,5 @@
 import {
+  ICacheConfig,
   IMoiraeConfig,
   IPublisherConfig,
   IStoreConfig,
@@ -21,10 +22,14 @@ import { InventoryModule } from "./inventory/inventory.module";
 import { MoiraeWsGateway } from "./moirae-ws.gateway";
 
 const moiraeConfigGenerator = (): IMoiraeConfig<
+  ICacheConfig,
   IPublisherConfig,
   IStoreConfig
 > => {
-  const config: IMoiraeConfig<IPublisherConfig, IStoreConfig> = {
+  const config: IMoiraeConfig<ICacheConfig, IPublisherConfig, IStoreConfig> = {
+    cache: {
+      type: "memory",
+    },
     externalTypes: [InternalServerErrorException, NotFoundException],
     publisher: {
       nodeId: "demo-node",

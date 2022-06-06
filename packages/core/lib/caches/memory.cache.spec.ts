@@ -19,6 +19,23 @@ describe("MemoryCache", () => {
     expect(cache).toBeDefined();
   });
 
+  describe("addToSet", () => {
+    it("will add a value to a set if it doesn't exist", async () => {
+      const key = faker.random.word();
+      const value = faker.random.word();
+
+      expect(await cache.addToSet(key, value)).toEqual(true);
+    });
+
+    it("will return false if the value already exists in the set", async () => {
+      const key = faker.random.word();
+      const value = faker.random.word();
+
+      expect(await cache.addToSet(key, value)).toEqual(true);
+      expect(await cache.addToSet(key, value)).toEqual(false);
+    });
+  });
+
   describe("getKey", () => {
     it("will get a value set internally", async () => {
       const key = faker.random.word();
@@ -59,6 +76,25 @@ describe("MemoryCache", () => {
       expect(await cache.setKey(key, value)).toEqual(true);
 
       expect(setSpy).toHaveBeenCalledWith(key, JSON.stringify(value));
+    });
+  });
+
+  describe("removeFromSet", () => {
+    it("will remove a value that exists in the set", async () => {
+      const key = faker.random.word();
+      const value = faker.random.word();
+
+      expect(await cache.addToSet(key, value)).toEqual(true);
+      expect(await cache.removeFromSet(key, value)).toEqual(true);
+    });
+
+    it("will return false for a value that doesn't exist in the set", async () => {
+      const key = faker.random.word();
+      const value = faker.random.word();
+
+      expect(await cache.addToSet(key, value)).toEqual(true);
+      expect(await cache.removeFromSet(key, value)).toEqual(true);
+      expect(await cache.removeFromSet(key, value)).toEqual(false);
     });
   });
 });

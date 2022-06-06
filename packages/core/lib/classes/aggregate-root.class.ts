@@ -104,6 +104,10 @@ export abstract class AggregateRoot<Projection = Record<string, unknown>> {
     return aggregate;
   }
 
+  public async reserveValue(value: string): Promise<boolean> {
+    return true;
+  }
+
   /**
    * Rollback all events with a specific correlationId
    *

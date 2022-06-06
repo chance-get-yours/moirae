@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { Test } from "@nestjs/testing";
+import { TestAggregate } from "../../testing-classes/test.aggregate";
 import { TestEvent } from "../../testing-classes/test.event";
-import { TestAggregate } from "../classes/aggregate-root.class.spec";
 import { IEventSource } from "../interfaces/event-source.interface";
 import { EVENT_SOURCE } from "../moirae.constants";
 import { AggregateFactory } from "./aggregate.factory";

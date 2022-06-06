@@ -5,7 +5,11 @@ import { UnhandledEventError } from "../exceptions/unhandled-event.error";
 import { AggregateFactory } from "../factories/aggregate.factory";
 import { ICommand } from "../interfaces/command.interface";
 import { IEvent } from "../interfaces/event.interface";
-import { APPLY_METADATA, PROJECTION_METADATA } from "../moirae.constants";
+import {
+  APPLY_METADATA,
+  PROJECTION_METADATA,
+  ROLLBACK_METADATA,
+} from "../moirae.constants";
 
 type IEventCommitFn = typeof AggregateFactory.prototype.commitEvents;
 
@@ -72,10 +76,54 @@ export abstract class AggregateRoot<Projection = Record<string, unknown>> {
     if (!this._commitFn) throw new UnavailableCommitError(this);
     await this._commitFn(
       this.uncommittedEventHistory.map((event) => {
-        event.$correlationId = initiatorCommand?.$correlationId;
+        if (!event.$correlationId)
+          event.$correlationId = initiatorCommand?.$correlationId;
         return event;
       }),
     );
+  }
+
+  /**
+   * Get a duplicate of the current aggregate in the state it was prior to the application
+   * of the specified event.
+   */
+  protected getAggregatePriorTo<T extends AggregateRoot<Projection>>(
+    event: IEvent,
+  ): T {
+    const aggregate: T = Object.create(this, {
+      streamId: { value: this.streamId, writable: false },
+    });
+    let idx = 0;
+    while (
+      this._eventHistory[idx].$uuid !== event.$uuid &&
+      idx < this._eventHistory.length
+    ) {
+      aggregate.apply(this._eventHistory[idx], true);
+      idx++;
+    }
+    return aggregate;
+  }
+
+  /**
+   * Rollback all events with a specific correlationId
+   *
+   * @returns Number of events rolled back
+   */
+  public rollback(correlationId: string): number {
+    return this._eventHistory
+      .filter((event) => event.$correlationId === correlationId)
+      .reverse()
+      .map((event) => {
+        const handlerName = Reflect.getMetadata(
+          `${ROLLBACK_METADATA}:${event.$name}`,
+          this,
+        );
+        if (!handlerName) throw new UnhandledEventError(this, event);
+        const rollbackEvent: IEvent = this[handlerName].call(this, event);
+        rollbackEvent.$correlationId = correlationId;
+        return rollbackEvent;
+      })
+      .map((rollbackEvent) => this.apply(rollbackEvent)).length;
   }
 
   public setCommitFunction(fn: IEventCommitFn) {

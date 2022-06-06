@@ -9,6 +9,7 @@ import { DepositFundsHandler } from "./handlers/deposit-funds.handler";
 import { FindAccountByIdHandler } from "./handlers/find-account-by-id.handler";
 import { FundsDepositedHandler } from "./handlers/funds-deposited.handler";
 import { FundsWithdrawnHandler } from "./handlers/funds-withdrawn.handler";
+import { RollbackAccountHandler } from "./handlers/rollback-account.handler";
 import { WithdrawFundsHandler } from "./handlers/withdraw-funds.handler";
 import { OrderModule } from "./order/order.module";
 import { Account } from "./projections/account.entity";
@@ -25,6 +26,7 @@ import { Account } from "./projections/account.entity";
     FindAccountByIdHandler,
     FundsDepositedHandler,
     FundsWithdrawnHandler,
+    RollbackAccountHandler,
     WithdrawFundsHandler,
   ],
   exports: [AccountService],

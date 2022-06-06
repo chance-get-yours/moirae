@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import { AccountCreatedEvent } from "../events/account-created.event";
 import { FundsDepositedEvent } from "../events/funds-deposited.event";
 import { FundsWithdrawnEvent } from "../events/funds-withdrawn.event";
-import { OrderCreatedEvent } from "../events/order-created.event";
+import { OrderCreatedEvent } from "../order/events/order-created.event";
 import { AccountAggregate } from "./account.aggregate";
 
 describe("AccountAggregate", () => {
@@ -46,38 +46,74 @@ describe("AccountAggregate", () => {
     expect(aggregate.updatedAt).toEqual(event.$timestamp);
   });
 
-  it("will apply a FundsWithdrawnEvent", () => {
-    const event = new FundsWithdrawnEvent(streamId, {
-      funds: -100,
+  describe("FundsWithdrawnEvent", () => {
+    beforeEach(() => {
+      aggregate.apply(
+        new AccountCreatedEvent(streamId, {
+          balance: 100,
+          name: faker.lorem.word(),
+          createdAt: new Date(),
+        }),
+      );
+    });
+    it("will apply a FundsWithdrawnEvent", () => {
+      const event = new FundsWithdrawnEvent(streamId, {
+        funds: aggregate.balance * -1,
+      });
+
+      aggregate.apply(event);
+      expect(aggregate.balance).toEqual(0);
+      expect(aggregate.updatedAt).toEqual(event.$timestamp);
     });
 
-    aggregate.apply(
-      new AccountCreatedEvent(streamId, {
-        balance: event.$data.funds * -1,
-        name: faker.lorem.word(),
-        createdAt: new Date(),
-      }),
-    );
+    it("will rollback a FundsWithdrawnEvent", () => {
+      const initialBalance = aggregate.balance;
+      const event = new FundsWithdrawnEvent(streamId, {
+        funds: aggregate.balance * -1,
+      });
 
-    aggregate.apply(event);
-    expect(aggregate.balance).toEqual(0);
-    expect(aggregate.updatedAt).toEqual(event.$timestamp);
+      aggregate.apply(event);
+
+      const rollbackEvent = aggregate.createRollbackFundsWithdrawnEvent(event);
+      expect(rollbackEvent.$data.funds).toEqual(event.$data.funds);
+
+      aggregate.apply(rollbackEvent);
+      expect(aggregate.balance).toEqual(initialBalance);
+    });
   });
 
-  it("will apply an OrderCreatedEvent", () => {
-    const event = new OrderCreatedEvent(aggregate.id, {
-      accountId: aggregate.id,
-      cost: 1,
-      id: faker.datatype.uuid(),
-      inventoryId: faker.datatype.uuid(),
-      quantity: 1,
+  describe("OrderCreatedEvent", () => {
+    it("will apply an OrderCreatedEvent", () => {
+      const event = new OrderCreatedEvent(aggregate.id, {
+        accountId: aggregate.id,
+        cost: 1,
+        id: faker.datatype.uuid(),
+        inventoryId: faker.datatype.uuid(),
+        quantity: 1,
+      });
+
+      expect(aggregate.orders).not.toBeDefined();
+      aggregate.apply(event);
+      expect(aggregate.orders).toHaveLength(1);
+      expect(aggregate.orders[0]).toMatchObject(
+        expect.objectContaining(event.$data),
+      );
     });
 
-    expect(aggregate.orders).not.toBeDefined();
-    aggregate.apply(event);
-    expect(aggregate.orders).toHaveLength(1);
-    expect(aggregate.orders[0]).toMatchObject(
-      expect.objectContaining(event.$data),
-    );
+    it("will rollback an OrderCreatedEvent", () => {
+      const event = new OrderCreatedEvent(aggregate.id, {
+        accountId: aggregate.id,
+        cost: 1,
+        id: faker.datatype.uuid(),
+        inventoryId: faker.datatype.uuid(),
+        quantity: 1,
+      });
+      aggregate.apply(event);
+
+      const rollbackEvent = aggregate.createRollbackOrderCreated(event);
+      expect(rollbackEvent.$data.id).toEqual(event.$data.id);
+      aggregate.apply(rollbackEvent);
+      expect(aggregate.orders).toHaveLength(0);
+    });
   });
 });

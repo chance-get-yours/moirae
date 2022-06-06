@@ -1,5 +1,7 @@
+import { faker } from "@faker-js/faker";
 import { Test } from "@nestjs/testing";
 import { Command } from "../classes/command.class";
+import { SagaManager } from "../classes/saga-manager.class";
 import { CommandHandler } from "../decorators/command-handler.decorator";
 import { RegisterType } from "../decorators/register-type.decorator";
 import { ObservableFactory } from "../factories/observable.factory";
@@ -28,12 +30,14 @@ describe("CommandBus", () => {
   let bus: CommandBus;
   let handler: TestHandler;
   let publisher: IPublisher;
+  let sagaManager: SagaManager;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [
         CommandBus,
         ObservableFactory,
+        SagaManager,
         {
           provide: PUBLISHER,
           useClass: MemoryPublisher,
@@ -49,8 +53,10 @@ describe("CommandBus", () => {
     bus = module.get(CommandBus);
     handler = module.get(TestHandler);
     publisher = bus["_publisher"];
+    sagaManager = module.get(SagaManager);
 
     await publisher["onApplicationBootstrap"]();
+    sagaManager.onApplicationBootstrap();
     bus.onApplicationBootstrap();
   });
 
@@ -66,10 +72,14 @@ describe("CommandBus", () => {
     });
 
     it("will catch, log, and return an error in execution", async () => {
+      const command = new TestCommand();
+      command.$correlationId = faker.datatype.uuid();
+
       jest.spyOn(handler, "execute").mockRejectedValue(new Error());
-      expect(await bus["executeLocal"](new TestCommand())).toBeInstanceOf(
-        Error,
-      );
+      const rollbackSpy = jest.spyOn(sagaManager, "rollbackSagas");
+
+      expect(await bus["executeLocal"](command)).toBeInstanceOf(Error);
+      expect(rollbackSpy).toHaveBeenCalledWith(command.$correlationId);
     });
   });
 

@@ -3,13 +3,14 @@ import { AggregateFactory, mockAggregateFactory } from "@moirae/core";
 import { Test } from "@nestjs/testing";
 import { AccountAggregate } from "../../aggregates/account.aggregate";
 import { OrderCreatedEvent } from "../events/order-created.event";
+import { RollbackOrderCreatedEvent } from "../events/rollback-order-created.event";
 import { OrderService } from "../order.service";
 import { Order } from "../projections/order.entity";
-import { OrderCreatedHandler } from "./order-created.handler";
+import { RollbackOrderCreatedHandler } from "./rollback-order-created.handler";
 
-describe("OrderCreatedHandler", () => {
+describe("RollbackOrderCreatedHandler", () => {
   let factory: AggregateFactory;
-  let handler: OrderCreatedHandler;
+  let handler: RollbackOrderCreatedHandler;
   let service: OrderService;
 
   afterAll(() => {
@@ -22,17 +23,21 @@ describe("OrderCreatedHandler", () => {
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [
-        OrderCreatedHandler,
+        RollbackOrderCreatedHandler,
         ...mockAggregateFactory(),
         {
           provide: OrderService,
-          useFactory: () => ({ save: jest.fn() }),
+          useFactory: () => ({
+            findOne: jest.fn(),
+            remove: jest.fn(),
+            save: jest.fn(),
+          }),
         },
       ],
     }).compile();
 
     factory = module.get(AggregateFactory);
-    handler = module.get(OrderCreatedHandler);
+    handler = module.get(RollbackOrderCreatedHandler);
     service = module.get(OrderService);
 
     await factory["eventSource"]["onApplicationBootstrap"]();
@@ -50,33 +55,30 @@ describe("OrderCreatedHandler", () => {
       aggregate = new AccountAggregate(streamId);
 
       jest.spyOn(factory, "mergeContext").mockResolvedValue(aggregate);
+
+      aggregate.apply(
+        new OrderCreatedEvent(streamId, {
+          accountId: streamId,
+          cost: 9,
+          id: faker.datatype.uuid(),
+          inventoryId: faker.datatype.uuid(),
+          quantity: 1,
+        }),
+      );
     });
 
-    it("will call service save", async () => {
-      const event = new OrderCreatedEvent(streamId, {
-        accountId: faker.datatype.uuid(),
-        cost: 4,
-        id: faker.datatype.uuid(),
-        inventoryId: faker.datatype.uuid(),
-        quantity: 3,
+    it("will call service remove", async () => {
+      const event = new RollbackOrderCreatedEvent(streamId, {
+        id: aggregate.orders[0].id,
       });
-
-      aggregate.apply(event);
-
       const order = new Order();
-      order.accountId = event.$data.accountId;
-      order.createdAt = new Date();
-      order.cost = event.$data.cost;
       order.id = event.$data.id;
-      order.inventoryId = event.$data.inventoryId;
-      order.quantity = event.$data.quantity;
-      order.updatedAt = new Date();
 
-      (service.save as jest.Mock).mockResolvedValue(order);
+      (service.findOne as jest.Mock).mockResolvedValue(order);
 
       await handler.execute(event);
 
-      expect(service.save).toHaveBeenCalledWith(expect.objectContaining(order));
+      expect(service.remove).toHaveBeenCalledWith(event.$data.id);
     });
   });
 });

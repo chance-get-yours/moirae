@@ -5,7 +5,9 @@ import { Test, TestingModule } from "@nestjs/testing";
 import * as request from "supertest";
 import { CreateAccountInput } from "../src/account/dto/create-account.input";
 import { FundsWithdrawnEvent } from "../src/account/events/funds-withdrawn.event";
+import { RollbackFundsWithdrawnEvent } from "../src/account/events/rollback-funds-withdrawn.event";
 import { CreateOrderInput } from "../src/account/order/dto/create-order.input";
+import { RollbackOrderCreatedEvent } from "../src/account/order/events/rollback-order-created.event";
 import { AppModule } from "../src/app.module";
 import { CreateInventoryInput } from "../src/inventory/dto/create-inventory.input";
 import { InventoryRemovedEvent } from "../src/inventory/events/inventory-removed.event";
@@ -113,6 +115,93 @@ describe("Order", () => {
           event.$correlationId === correlationId,
       );
       expect(event.$streamId).toEqual(inventoryId);
+    });
+  });
+
+  describe("create and rollback order", () => {
+    let accountId: string;
+    let correlationId: string;
+    let inventoryId: string;
+
+    beforeAll(async () => {
+      const createAccountInput: CreateAccountInput = {
+        name: faker.lorem.word(),
+        balance: 10000,
+      };
+
+      await request(app.getHttpServer())
+        .post("/account")
+        .send(createAccountInput)
+        .expect(201)
+        .expect(({ body }) => {
+          accountId = body.streamId;
+        });
+
+      const createInventoryInput: CreateInventoryInput = {
+        name: faker.lorem.word(),
+        price: 4,
+        quantity: 0,
+      };
+
+      await request(app.getHttpServer())
+        .post("/inventory")
+        .send(createInventoryInput)
+        .expect(201)
+        .expect(({ body }) => {
+          inventoryId = body.streamId;
+        });
+    });
+
+    it("will create an order", async () => {
+      const createOrderInput: CreateOrderInput = {
+        accountId,
+        inventoryId,
+        quantity: 1,
+      };
+
+      await request(app.getHttpServer())
+        .post("/order")
+        .send(createOrderInput)
+        .expect(201)
+        .expect(({ body }) => {
+          expect(body.streamId).toBeDefined();
+          expect(body.correlationId).toBeDefined();
+          expect(body.success).toEqual(true);
+          correlationId = body.correlationId;
+          client.send(
+            JSON.stringify({
+              event: Subscriptions.CORRELATION,
+              data: { correlationId },
+            }),
+          );
+        });
+    });
+
+    it("will emit a FundsWithdrawnEvent", async () => {
+      const event = await client.awaitMatch(
+        (event) =>
+          event.$name === FundsWithdrawnEvent.name &&
+          event.$correlationId === correlationId,
+      );
+      expect(event).toBeDefined();
+    });
+
+    it("will emit a RollbackFundsWithdrawnEvent", async () => {
+      const event = await client.awaitMatch(
+        (event) =>
+          event.$name === RollbackFundsWithdrawnEvent.name &&
+          event.$correlationId === correlationId,
+      );
+      expect(event).toBeDefined();
+    });
+
+    it("will emit a RollbackOrderCreatedEvent", async () => {
+      const event = await client.awaitMatch(
+        (event) =>
+          event.$name === RollbackOrderCreatedEvent.name &&
+          event.$correlationId === correlationId,
+      );
+      expect(event).toBeDefined();
     });
   });
 });

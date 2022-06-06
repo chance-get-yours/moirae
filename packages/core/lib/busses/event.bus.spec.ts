@@ -2,16 +2,18 @@ import { faker } from "@faker-js/faker";
 import { Injectable } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
 import { randomUUID } from "crypto";
-import { TestEvent } from "../classes/aggregate-root.class.spec";
+import { TestEvent } from "../../testing-classes/test.event";
 import { Event } from "../classes/event.class";
+import { SagaManager } from "../classes/saga-manager.class";
+import { Saga } from "../classes/saga.class";
+import { TestRollbackCommand } from "../classes/saga.class.spec";
 import { EventHandler } from "../decorators/event-handler.decorator";
 import { RegisterType } from "../decorators/register-type.decorator";
-import { Saga } from "../decorators/saga.decorator";
+import { SagaStep } from "../decorators/saga-step.decorator";
 import { ObservableFactory } from "../factories/observable.factory";
 import { IEventHandler } from "../interfaces/event-handler.interface";
 import { IEventSource } from "../interfaces/event-source.interface";
 import { IEvent } from "../interfaces/event.interface";
-import { SagaHandler } from "../interfaces/saga-handler.interface";
 import {
   EVENT_PUBSUB_ENGINE,
   EVENT_SOURCE,
@@ -32,15 +34,15 @@ class TestHandler implements IEventHandler<TestEvent> {
 }
 
 @Injectable()
-class TestSaga {
-  @Saga()
-  testSaga: SagaHandler = (event: IEvent) => {
-    if (event instanceof TestEvent) {
-      return [new TestCommand()];
-    }
-  };
+class TestSaga extends Saga {
+  @SagaStep(TestEvent, TestRollbackCommand)
+  public onTestEvent(event: TestEvent) {
+    return [new TestCommand()];
+  }
 
-  dummyFn = () => undefined;
+  dummyFn() {
+    return undefined;
+  }
 }
 
 describe("EventBus", () => {
@@ -62,6 +64,7 @@ describe("EventBus", () => {
         CommandBus,
         EventBus,
         ObservableFactory,
+        SagaManager,
         {
           provide: EVENT_SOURCE,
           useClass: MemoryStore,
@@ -92,7 +95,9 @@ describe("EventBus", () => {
 
     await source["onApplicationBootstrap"]();
     await commandBus["_publisher"]["onApplicationBootstrap"]();
+    module.get(SagaManager).onApplicationBootstrap();
     bus.onApplicationBootstrap();
+    module.get(TestSaga).onApplicationBootstrap();
   });
 
   it("will be defined", () => {
@@ -141,12 +146,18 @@ describe("EventBus", () => {
       );
     });
 
-    it("will catch an error in a handler and still run sagas", async () => {
+    it("will catch an error in a handler and initialize a rollback", async () => {
+      const initialEvent = new TestEvent();
+      initialEvent.$correlationId = faker.datatype.uuid();
+      await bus["executeLocal"](initialEvent);
+
       jest.spyOn(handler, "execute").mockRejectedValue(new Error());
       const commandSpy = jest.spyOn(commandBus, "publish");
 
-      await bus["executeLocal"](new TestEvent());
-      expect(commandSpy).toHaveBeenCalledWith(expect.any(TestCommand));
+      const failureEvent = new TestEvent();
+      failureEvent.$correlationId = initialEvent.$correlationId;
+      await bus["executeLocal"](failureEvent);
+      expect(commandSpy).toHaveBeenCalledWith(expect.any(TestRollbackCommand));
     });
   });
 });

@@ -1,5 +1,5 @@
 import { Test } from "@nestjs/testing";
-import { TestEvent } from "../classes/aggregate-root.class.spec";
+import { TestEvent } from "../../testing-classes/test.event";
 import { ConstructorStorage } from "../classes/constructor-storage.class";
 import { ObservableFactory } from "../factories/observable.factory";
 import { IEvent } from "../interfaces/event.interface";

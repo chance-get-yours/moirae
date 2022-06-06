@@ -9,6 +9,7 @@ import { CommandBus } from "./busses/command.bus";
 import { EventBus } from "./busses/event.bus";
 import { QueryBus } from "./busses/query.bus";
 import { ConstructorStorage } from "./classes/constructor-storage.class";
+import { SagaManager } from "./classes/saga-manager.class";
 import { AggregateFactory } from "./factories/aggregate.factory";
 import { ObservableFactory } from "./factories/observable.factory";
 import { IMoiraeConfig } from "./interfaces/config.interface";
@@ -87,7 +88,6 @@ export class MoiraeModule {
     switch (store.type) {
       case "typeorm":
         const { TypeORMStore } = await import("@moirae/typeorm-store");
-        // imports.push(TypeOrmModule.forFeature([EventStore]))
         providers.push({
           provide: EVENT_SOURCE,
           useClass: TypeORMStore,
@@ -111,6 +111,7 @@ export class MoiraeModule {
         EventBus,
         ObservableFactory,
         QueryBus,
+        SagaManager,
         ...providers,
         ...sagas,
       ],

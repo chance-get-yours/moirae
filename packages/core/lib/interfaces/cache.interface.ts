@@ -27,7 +27,11 @@ export interface ICache {
   /**
    * Drop set from the cache
    */
-  dropSet(key): Promise<void>;
+  dropSet(key: string): Promise<void>;
+  /**
+   * Get all values from a set
+   */
+  readFromSet<T>(key: string, options?: ICacheOptions<T>): Promise<T[]>;
   /**
    * Remove a value from the set if it exists. Returns a boolean where
    * `true` means the operation was successful and `false` means the value doesn't exist

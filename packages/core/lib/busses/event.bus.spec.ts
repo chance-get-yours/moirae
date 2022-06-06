@@ -3,6 +3,7 @@ import { Injectable } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
 import { randomUUID } from "crypto";
 import { TestEvent } from "../../testing-classes/test.event";
+import { MemoryCache } from "../caches/memory.cache";
 import { Event } from "../classes/event.class";
 import { SagaManager } from "../classes/saga-manager.class";
 import { Saga } from "../classes/saga.class";
@@ -15,6 +16,7 @@ import { IEventHandler } from "../interfaces/event-handler.interface";
 import { IEventSource } from "../interfaces/event-source.interface";
 import { IEvent } from "../interfaces/event.interface";
 import {
+  CACHE_PROVIDER,
   EVENT_PUBSUB_ENGINE,
   EVENT_SOURCE,
   PUBLISHER,
@@ -65,6 +67,10 @@ describe("EventBus", () => {
         EventBus,
         ObservableFactory,
         SagaManager,
+        {
+          provide: CACHE_PROVIDER,
+          useClass: MemoryCache,
+        },
         {
           provide: EVENT_SOURCE,
           useClass: MemoryStore,

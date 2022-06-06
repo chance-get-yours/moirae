@@ -34,6 +34,10 @@ export class MemoryCache extends BaseCache implements ICache {
     return Promise.resolve(this._keyValue.get(key));
   }
 
+  protected handleReadFromSet(key: string): Promise<string[]> {
+    return Promise.resolve([...(this._sets.get(key) || [])]);
+  }
+
   protected handleRemoveFromSet(key: string, value: string): Promise<boolean> {
     if (!this._sets.has(key)) return Promise.resolve(false);
     const returnValue = this._sets.get(key).has(value);

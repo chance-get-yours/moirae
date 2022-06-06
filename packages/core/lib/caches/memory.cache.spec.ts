@@ -79,6 +79,35 @@ describe("MemoryCache", () => {
     });
   });
 
+  describe("readFromSet", () => {
+    it("will return all values from the set", async () => {
+      const key = faker.random.word();
+      const values = faker.random.words(5).split(" ");
+
+      await Promise.all(values.map((value) => cache.addToSet(key, value)));
+
+      expect(await cache.readFromSet(key)).toEqual(values);
+    });
+
+    it("will return an empty array if no values exist", async () => {
+      const key = faker.random.word();
+
+      expect(await cache.readFromSet(key)).toEqual([]);
+    });
+
+    it("will apply the transform function for each element", async () => {
+      const key = faker.random.word();
+      const values = faker.random.words(5).split(" ");
+      const transform = jest.fn((value) => value);
+
+      await Promise.all(values.map((value) => cache.addToSet(key, value)));
+
+      expect(await cache.readFromSet(key, { transform })).toEqual(values);
+      expect(transform).toHaveBeenCalledTimes(values.length);
+      values.forEach((value) => expect(transform).toHaveBeenCalledWith(value));
+    });
+  });
+
   describe("removeFromSet", () => {
     it("will remove a value that exists in the set", async () => {
       const key = faker.random.word();

@@ -20,11 +20,23 @@ export abstract class BaseCache {
     value: string,
   ): Promise<boolean>;
   protected abstract handleGetKey(key: string): Promise<string>;
+  protected abstract handleReadFromSet(key: string): Promise<string[]>;
   protected abstract handleRemoveFromSet(
     key: string,
     value: string,
   ): Promise<boolean>;
   protected abstract handleSetKey(key: string, value: string): Promise<boolean>;
+
+  public async readFromSet<T>(
+    key: string,
+    options: ICacheOptions<T> = {},
+  ): Promise<T[]> {
+    const rawList = await this.handleReadFromSet(key);
+    return rawList.map((raw) => {
+      const parsed = JSON.parse(raw);
+      return options.transform?.(parsed) || parsed;
+    });
+  }
 
   public removeFromSet<T>(key: string, value: T): Promise<boolean> {
     return this.handleRemoveFromSet(key, JSON.stringify(value));

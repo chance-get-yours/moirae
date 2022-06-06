@@ -46,9 +46,9 @@ export class EventBus {
     );
     let commands: ICommand[];
     if (handlerResults.some((result) => result.status === "rejected")) {
-      commands = this._sagaManager.rollbackSagas(event.$correlationId);
+      commands = await this._sagaManager.rollbackSagas(event.$correlationId);
     } else {
-      commands = this._sagaManager.applyEventToSagas(event);
+      commands = await this._sagaManager.applyEventToSagas(event);
     }
     commands
       .filter((command) => !!command)
@@ -84,7 +84,6 @@ export class EventBus {
           .get(event.name)
           .push(instance as IEventHandler<IEvent>);
       }
-      // this.handleProvider(instance);
     });
     this.eventSource.subscribe(this.executeLocal.bind(this));
     this._status.set(ESState.IDLE);

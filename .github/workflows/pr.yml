@@ -71,6 +71,7 @@ jobs:
     needs: test-packages
     strategy:
       matrix:
+        cache: [memory]
         node-version: [16.x]
         publisher: [memory, rabbitmq]
         store: [memory, typeorm]
@@ -105,4 +106,4 @@ jobs:
       - name: Build packages
         run: yarn build
       - name: E2E test demo-app
-        run: env PUB_TYPE=${{ matrix.publisher }} env STORE_TYPE=${{ matrix.store }} yarn workspace demo-app test:e2e
+        run: env CACHE_TYPE=${{ matrix.cache }} env PUB_TYPE=${{ matrix.publisher }} env STORE_TYPE=${{ matrix.store }} yarn workspace demo-app test:e2e

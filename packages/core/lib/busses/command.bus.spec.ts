@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { Test } from "@nestjs/testing";
+import { MemoryCache } from "../caches/memory.cache";
 import { Command } from "../classes/command.class";
 import { SagaManager } from "../classes/saga-manager.class";
 import { CommandHandler } from "../decorators/command-handler.decorator";
@@ -8,7 +9,11 @@ import { ObservableFactory } from "../factories/observable.factory";
 import { ICommandHandler } from "../interfaces/command-handler.interface";
 import { ICommand } from "../interfaces/command.interface";
 import { IPublisher } from "../interfaces/publisher.interface";
-import { PUBLISHER, PUBLISHER_OPTIONS } from "../moirae.constants";
+import {
+  CACHE_PROVIDER,
+  PUBLISHER,
+  PUBLISHER_OPTIONS,
+} from "../moirae.constants";
 import { MemoryPublisher } from "../publishers/memory.publisher";
 import { CommandBus } from "./command.bus";
 
@@ -38,6 +43,10 @@ describe("CommandBus", () => {
         CommandBus,
         ObservableFactory,
         SagaManager,
+        {
+          provide: CACHE_PROVIDER,
+          useClass: MemoryCache,
+        },
         {
           provide: PUBLISHER,
           useClass: MemoryPublisher,

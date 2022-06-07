@@ -33,14 +33,13 @@ describe("Inventory", () => {
 
   describe("create inventory", () => {
     let id: string;
+    const input: CreateInventoryInput = {
+      name: faker.lorem.word(),
+      price: 4,
+      quantity: 5,
+    };
 
     it("will create a new inventory item", async () => {
-      const input: CreateInventoryInput = {
-        name: faker.lorem.word(),
-        price: 4,
-        quantity: 5,
-      };
-
       await request(app.getHttpServer())
         .post("/inventory")
         .send(input)
@@ -64,6 +63,13 @@ describe("Inventory", () => {
           event.$streamId === id && event.$name === InventoryCreatedEvent.name,
       );
       expect(event).toBeDefined();
+    });
+
+    it("will not allow two inventory with the same name", async () => {
+      await request(app.getHttpServer())
+        .post("/inventory")
+        .send(input)
+        .expect(500);
     });
   });
 });

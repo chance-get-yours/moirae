@@ -1,9 +1,10 @@
 import { faker } from "@faker-js/faker";
 import { Test } from "@nestjs/testing";
+import { TestAggregate } from "../../testing-classes/test.aggregate";
 import { TestEvent } from "../../testing-classes/test.event";
-import { TestAggregate } from "../classes/aggregate-root.class.spec";
+import { MemoryCache } from "../caches/memory.cache";
 import { IEventSource } from "../interfaces/event-source.interface";
-import { EVENT_SOURCE } from "../moirae.constants";
+import { CACHE_PROVIDER, EVENT_SOURCE } from "../moirae.constants";
 import { AggregateFactory } from "./aggregate.factory";
 
 describe("AggregateFactory", () => {
@@ -14,6 +15,10 @@ describe("AggregateFactory", () => {
     const module = await Test.createTestingModule({
       providers: [
         AggregateFactory,
+        {
+          provide: CACHE_PROVIDER,
+          useClass: MemoryCache,
+        },
         {
           provide: EVENT_SOURCE,
           useFactory: () => ({

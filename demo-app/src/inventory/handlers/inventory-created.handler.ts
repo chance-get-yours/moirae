@@ -18,5 +18,6 @@ export class InventoryCreatedHandler
       InventoryAggregate,
     );
     await this.service.save(aggregate.toProjection());
+    await aggregate.releaseValue("name", aggregate.name);
   }
 }

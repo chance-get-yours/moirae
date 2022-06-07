@@ -1,15 +1,19 @@
-import { Injectable, OnApplicationBootstrap } from "@nestjs/common";
+import { Inject, Injectable, OnApplicationBootstrap } from "@nestjs/common";
 import { ModulesContainer } from "@nestjs/core";
+import { ICache } from "../interfaces/cache.interface";
 import { ICommand } from "../interfaces/command.interface";
 import { IEvent } from "../interfaces/event.interface";
-import { SAGA_METADATA } from "../moirae.constants";
+import { CACHE_PROVIDER, SAGA_METADATA } from "../moirae.constants";
 import { Saga } from "./saga.class";
 
 @Injectable()
 export class SagaManager implements OnApplicationBootstrap {
   private _sagas: Saga[];
 
-  constructor(private readonly _moduleContainer: ModulesContainer) {
+  constructor(
+    @Inject(CACHE_PROVIDER) private readonly _cache: ICache,
+    private readonly _moduleContainer: ModulesContainer,
+  ) {
     this._sagas = [];
   }
 
@@ -17,8 +21,10 @@ export class SagaManager implements OnApplicationBootstrap {
     this._sagas.push(saga);
   }
 
-  public applyEventToSagas(event: IEvent): ICommand[] {
-    return this._sagas.flatMap((saga) => saga.process(event));
+  public async applyEventToSagas(event: IEvent): Promise<ICommand[]> {
+    return (
+      await Promise.all(this._sagas.map((saga) => saga.process(event)))
+    ).flat();
   }
 
   public onApplicationBootstrap() {
@@ -29,12 +35,15 @@ export class SagaManager implements OnApplicationBootstrap {
       const { instance } = provider;
       if (!instance) return;
       if (Reflect.hasMetadata(SAGA_METADATA, instance)) {
+        (instance as Saga)["_cacheController"] = this._cache;
         this._sagas.push(instance as Saga);
       }
     });
   }
 
-  public rollbackSagas(correlationId: string): ICommand[] {
-    return this._sagas.flatMap((saga) => saga.rollback(correlationId));
+  public async rollbackSagas(correlationId: string): Promise<ICommand[]> {
+    return (
+      await Promise.all(this._sagas.map((saga) => saga.rollback(correlationId)))
+    ).flat();
   }
 }

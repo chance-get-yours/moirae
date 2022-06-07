@@ -36,7 +36,7 @@ export class CommandBus extends BaseBus<ICommand> {
   protected async executeLocal(command: ICommand) {
     const response = await super.executeLocal(command);
     if (response instanceof Error) {
-      const rollbackCommands = this._sagaManager.rollbackSagas(
+      const rollbackCommands = await this._sagaManager.rollbackSagas(
         command.$correlationId,
       );
       await Promise.all(rollbackCommands.map((c) => this.publish(c)));

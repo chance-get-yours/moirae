@@ -48,6 +48,7 @@ describe("InventoryCreatedHandler", () => {
     beforeEach(() => {
       streamId = faker.datatype.uuid();
       aggregate = new InventoryAggregate(streamId);
+      aggregate["_cacheController"] = factory["cache"];
 
       jest.spyOn(factory, "mergeContext").mockResolvedValue(aggregate);
     });

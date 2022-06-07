@@ -1,46 +1,11 @@
 import { faker } from "@faker-js/faker";
 import "reflect-metadata";
 import { OtherTestEvent } from "../../testing-classes/other-test.event";
-import { RollbackOtherTestEvent } from "../../testing-classes/rollback-other-test.event";
-import { ITestEntity, TestEvent } from "../../testing-classes/test.event";
-import { Apply } from "../decorators/apply.decorator";
-import { Rollback } from "../decorators/rollback.decorator";
+import { TestAggregate } from "../../testing-classes/test.aggregate";
+import { TestEvent } from "../../testing-classes/test.event";
 import { UnavailableCommitError } from "../exceptions/commit-unavailable.error";
 import { InvalidMultipleSetError } from "../exceptions/invalid-mutliple-set.error";
 import { UnhandledEventError } from "../exceptions/unhandled-event.error";
-import { AggregateRoot } from "./aggregate-root.class";
-
-export class TestAggregate
-  extends AggregateRoot<ITestEntity>
-  implements ITestEntity
-{
-  public foo: string;
-
-  @Apply(TestEvent)
-  protected onTestEvent(event: TestEvent): void {
-    this.foo = event.$data.foo;
-  }
-
-  @Apply(OtherTestEvent)
-  protected onOtherTestEvent(event: OtherTestEvent): void {
-    this.foo = event.$data.foo;
-  }
-
-  @Rollback(OtherTestEvent)
-  protected createRollbackOtherTestEvent(
-    event: OtherTestEvent,
-  ): RollbackOtherTestEvent {
-    const aggregate = this.getAggregatePriorTo<TestAggregate>(event);
-    const rollbackEvent = new RollbackOtherTestEvent();
-    rollbackEvent.$data = { foo: aggregate.foo };
-    return rollbackEvent;
-  }
-
-  @Apply(RollbackOtherTestEvent)
-  protected onRollbackOtherTestEvent(event: RollbackOtherTestEvent): void {
-    this.foo = event.$data.foo;
-  }
-}
 
 describe("AggregateRoot", () => {
   let testAggregate: TestAggregate;

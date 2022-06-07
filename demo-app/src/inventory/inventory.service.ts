@@ -11,6 +11,10 @@ export class InventoryService {
     private readonly repository: Repository<Inventory>,
   ) {}
 
+  public async nameExists(name: string): Promise<boolean> {
+    return (await this.repository.count({ name })) > 0;
+  }
+
   public findOne(id: Inventory["id"]): Promise<Inventory> {
     return this.repository.findOne(id);
   }

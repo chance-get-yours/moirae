@@ -3,6 +3,7 @@ import { Injectable } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
 import { TestEvent } from "../../testing-classes/test.event";
 import { TestCommand } from "../busses/command.bus.spec";
+import { MemoryCache } from "../caches/memory.cache";
 import { SagaStep } from "../decorators/saga-step.decorator";
 import { IEvent } from "../interfaces/event.interface";
 import { IRollbackCommand } from "../interfaces/rollback-command.interface";
@@ -39,11 +40,12 @@ describe("Saga", () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
-      providers: [TestSaga],
+      providers: [TestSaga, MemoryCache],
     }).compile();
 
     saga = module.get(TestSaga);
     saga.onApplicationBootstrap();
+    saga["_cacheController"] = module.get(MemoryCache);
   });
 
   it("will be defined", () => {
@@ -51,24 +53,26 @@ describe("Saga", () => {
   });
 
   describe("process", () => {
-    it("will return a test command given a test event", () => {
+    it("will return a test command given a test event", async () => {
       const event = new TestEvent();
-      expect(saga.process(event)).toMatchObject([expect.any(TestCommand)]);
+      expect(await saga.process(event)).toMatchObject([
+        expect.any(TestCommand),
+      ]);
     });
 
-    it("will return an empty array given an unhandled event", () => {
+    it("will return an empty array given an unhandled event", async () => {
       const event = new UnhandledEvent();
-      expect(saga.process(event)).toMatchObject([]);
+      expect(await saga.process(event)).toMatchObject([]);
     });
   });
 
   describe("rollback", () => {
-    it("will emit a TestRollbackCommand for the correlationId", () => {
+    it("will emit a TestRollbackCommand for the correlationId", async () => {
       const event = new TestEvent();
       event.$correlationId = faker.datatype.uuid();
-      saga.process(event);
+      await saga.process(event);
 
-      expect(saga.rollback(event.$correlationId)).toMatchObject([
+      expect(await saga.rollback(event.$correlationId)).toMatchObject([
         expect.objectContaining({
           $data: {
             correlationId: event.$correlationId,

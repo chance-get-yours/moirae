@@ -8,16 +8,20 @@ import { randomUUID } from "crypto";
 import { CommandBus } from "./busses/command.bus";
 import { EventBus } from "./busses/event.bus";
 import { QueryBus } from "./busses/query.bus";
+import { MemoryCache } from "./caches/memory.cache";
 import { ConstructorStorage } from "./classes/constructor-storage.class";
 import { SagaManager } from "./classes/saga-manager.class";
 import { AggregateFactory } from "./factories/aggregate.factory";
 import { ObservableFactory } from "./factories/observable.factory";
+import { ICacheConfig } from "./interfaces/cache-config.interface";
 import { IMoiraeConfig } from "./interfaces/config.interface";
+import { IMemoryCacheConfig } from "./interfaces/memory-cache-config.interface";
 import { IMemoryPublisherConfig } from "./interfaces/memory-publisher-config.interface";
 import { IMemoryStoreConfig } from "./interfaces/memory-store-config.interface";
 import { IPublisherConfig } from "./interfaces/publisher-config.interface";
 import { IStoreConfig } from "./interfaces/store-config.interface";
 import {
+  CACHE_PROVIDER,
   EVENT_PUBSUB_ENGINE,
   EVENT_SOURCE,
   PUBLISHER,
@@ -29,10 +33,14 @@ import { MemoryStore } from "./stores/memory.store";
 @Module({})
 export class MoiraeModule {
   public static async forRootAsync<
+    TCache extends ICacheConfig = IMemoryCacheConfig,
     TPub extends IPublisherConfig = IMemoryPublisherConfig,
     TStore extends IStoreConfig = IMemoryStoreConfig,
-  >(config: IMoiraeConfig<TPub, TStore> = {}): Promise<DynamicModule> {
+  >(config: IMoiraeConfig<TCache, TPub, TStore> = {}): Promise<DynamicModule> {
     const {
+      cache = {
+        type: "memory",
+      },
       externalTypes = [],
       publisher = {
         type: "memory",
@@ -53,20 +61,30 @@ export class MoiraeModule {
     ];
     const exports: InjectionToken[] = [PUBLISHER_OPTIONS, EVENT_PUBSUB_ENGINE];
 
+    switch (cache.type) {
+      default:
+        providers.push({
+          provide: CACHE_PROVIDER,
+          useClass: MemoryCache,
+        });
+    }
+
     switch (publisher.type) {
       case "rabbitmq":
         const { RabbitMQConnection, RabbitMQPublisher, RabbitPubSubEngine } =
           await import("@moirae/rabbitmq-publisher");
 
-        const pubSubProvider: Provider = {
-          provide: EVENT_PUBSUB_ENGINE,
-          useClass: RabbitPubSubEngine,
-        };
-
-        providers.push(RabbitMQConnection, pubSubProvider, {
-          provide: PUBLISHER,
-          useClass: RabbitMQPublisher,
-        });
+        providers.push(
+          RabbitMQConnection,
+          {
+            provide: EVENT_PUBSUB_ENGINE,
+            useClass: RabbitPubSubEngine,
+          },
+          {
+            provide: PUBLISHER,
+            useClass: RabbitMQPublisher,
+          },
+        );
 
         exports.push(RabbitMQConnection);
         break;

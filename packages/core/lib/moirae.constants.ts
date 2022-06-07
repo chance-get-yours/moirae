@@ -1,6 +1,7 @@
 export const APPLY_METADATA = "__apply_event_metadata__";
 export const CACHE_PROVIDER = "__cache-provider__";
 export const COMMAND_METADATA = "__command_handler__";
+export const CORRELATION_PREFIX = "moirae__correlation";
 export const EVENT_METADATA = "__event_handler__";
 export const EVENT_PUBSUB_ENGINE = "__event-pubsub-engine__";
 export const EVENT_SOURCE = "__event_source__";

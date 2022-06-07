@@ -37,6 +37,10 @@ const moiraeConfigGenerator = (): IMoiraeConfig<
     },
     sagas: [ProcessOrderSaga],
   };
+
+  switch (process.env.CACHE_TYPE) {
+  }
+
   switch (process.env.PUB_TYPE) {
     case "rabbitmq":
       (config.publisher as IRabbitMQConfig) = {

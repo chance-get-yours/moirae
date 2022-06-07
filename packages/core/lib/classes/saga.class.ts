@@ -7,7 +7,7 @@ import {
   IRollbackCommand,
   IRollbackCommandConstructor,
 } from "../interfaces/rollback-command.interface";
-import { SAGA_METADATA } from "../moirae.constants";
+import { CORRELATION_PREFIX, SAGA_METADATA } from "../moirae.constants";
 
 interface SagaMetadataPayload {
   event: ClassConstructor<IEvent>;
@@ -29,16 +29,11 @@ export abstract class Saga implements OnApplicationBootstrap {
     IRollbackCommandConstructor
   >;
   private _cacheController: ICache;
-  private _storage: Map<
-    IEvent["$correlationId"],
-    Map<IRollbackCommand["$name"], Set<IRollbackCommand["$data"]["streamId"]>>
-  >;
   private _sagaMap: Map<IEvent["$name"], SagaMetadataPayload[]>;
 
   constructor() {
     this._commandConstructors = new Map();
     this._sagaMap = new Map();
-    this._storage = new Map();
   }
 
   public onApplicationBootstrap() {
@@ -61,14 +56,9 @@ export abstract class Saga implements OnApplicationBootstrap {
   ): Promise<void> {
     if (!this._cacheController) throw new Error();
     await this._cacheController.addToSet(
-      `${correlationId}__${commandConstructor.name}`,
+      `${CORRELATION_PREFIX}__${correlationId}__${commandConstructor.name}`,
       streamId,
     );
-    // if (!this._storage.has(correlationId))
-    //   this._storage.set(correlationId, new Map());
-    // if (!this._storage.get(correlationId).has(commandConstructor.name))
-    //   this._storage.get(correlationId).set(commandConstructor.name, new Set());
-    // this._storage.get(correlationId).get(commandConstructor.name).add(streamId);
   }
 
   /**
@@ -101,17 +91,11 @@ export abstract class Saga implements OnApplicationBootstrap {
     const commandArrays = await Promise.all(
       constructors.map(async ([commandName, Constructor]) => {
         const streamIds = await this._cacheController.readFromSet<string>(
-          `${correlationId}__${commandName}`,
+          `${CORRELATION_PREFIX}__${correlationId}__${commandName}`,
         );
         return streamIds.map((id) => new Constructor(id, correlationId));
       }),
     );
     return commandArrays.flat();
-    // const related = this._storage.get(correlationId);
-    // if (!related) return [];
-    // return [...related.entries()].flatMap(([commandName, streamIds]) => {
-    //   const Command = this._commandConstructors.get(commandName);
-    //   return [...streamIds].map((id) => new Command(id, correlationId));
-    // });
   }
 }

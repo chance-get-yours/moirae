@@ -8,9 +8,12 @@ export class InventoryController {
   constructor(private readonly commandBus: CommandBus) {}
 
   @Post()
-  createInventory(
+  async createInventory(
     @Body() input: CreateInventoryInput,
   ): Promise<CommandResponse> {
-    return this.commandBus.execute(new CreateInventoryCommand(input));
+    return this.commandBus.execute<CommandResponse>(
+      new CreateInventoryCommand(input),
+      { throwError: true },
+    );
   }
 }

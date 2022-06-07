@@ -6,11 +6,13 @@ import {
 } from "@moirae/core";
 import { Test } from "@nestjs/testing";
 import { CreateInventoryCommand } from "../commands/create-inventory.command";
+import { InventoryService } from "../inventory.service";
 import { CreateInventoryHandler } from "./create-inventory.handler";
 
 describe("CreateInventoryHandler", () => {
   let factory: AggregateFactory;
   let handler: CreateInventoryHandler;
+  let service: InventoryService;
 
   afterAll(() => {
     jest.useRealTimers();
@@ -21,11 +23,19 @@ describe("CreateInventoryHandler", () => {
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
-      providers: [CreateInventoryHandler, ...mockAggregateFactory()],
+      providers: [
+        CreateInventoryHandler,
+        ...mockAggregateFactory(),
+        {
+          provide: InventoryService,
+          useFactory: () => ({ nameExists: jest.fn() }),
+        },
+      ],
     }).compile();
 
     factory = module.get(AggregateFactory);
     handler = module.get(CreateInventoryHandler);
+    service = module.get(InventoryService);
 
     await factory["eventSource"]["onApplicationBootstrap"]();
   });
@@ -43,6 +53,7 @@ describe("CreateInventoryHandler", () => {
       });
       command.$correlationId = faker.datatype.uuid();
 
+      (service.nameExists as jest.Mock).mockResolvedValueOnce(false);
       const commitSpy = jest.spyOn(factory, "commitEvents");
 
       expect(await handler.execute(command)).toMatchObject<CommandResponse>({

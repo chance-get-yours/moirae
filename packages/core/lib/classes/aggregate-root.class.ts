@@ -1,8 +1,10 @@
 import { instanceToPlain } from "class-transformer";
+import { sha1 } from "object-hash";
 import { UnavailableCommitError } from "../exceptions/commit-unavailable.error";
 import { InvalidMultipleSetError } from "../exceptions/invalid-mutliple-set.error";
 import { UnhandledEventError } from "../exceptions/unhandled-event.error";
 import { AggregateFactory } from "../factories/aggregate.factory";
+import { ICache } from "../interfaces/cache.interface";
 import { ICommand } from "../interfaces/command.interface";
 import { IEvent } from "../interfaces/event.interface";
 import {
@@ -14,6 +16,7 @@ import {
 type IEventCommitFn = typeof AggregateFactory.prototype.commitEvents;
 
 export abstract class AggregateRoot<Projection = Record<string, unknown>> {
+  private _cacheController: ICache;
   protected _commitFn: IEventCommitFn;
   /**
    * History of all events applied to this aggregate in order
@@ -104,8 +107,30 @@ export abstract class AggregateRoot<Projection = Record<string, unknown>> {
     return aggregate;
   }
 
-  public async reserveValue(value: string): Promise<boolean> {
-    return true;
+  /**
+   * Release a value previously reserved
+   */
+  public async releaseValue<T = unknown>(
+    propertyName: string,
+    value: T,
+  ): Promise<boolean> {
+    return this._cacheController.removeFromSet(
+      `${this.constructor.name}__${propertyName}`,
+      sha1({ value }),
+    );
+  }
+
+  /**
+   * Reserve a value to ensure uniqueness
+   */
+  public async reserveValue<T = unknown>(
+    propertyName: string,
+    value: T,
+  ): Promise<boolean> {
+    return this._cacheController.addToSet(
+      `${this.constructor.name}__${propertyName}`,
+      sha1({ value }),
+    );
   }
 
   /**

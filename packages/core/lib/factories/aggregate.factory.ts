@@ -1,13 +1,15 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { ClassConstructor } from "class-transformer";
 import { AggregateRoot } from "../classes/aggregate-root.class";
+import { ICache } from "../interfaces/cache.interface";
 import { IEventSource } from "../interfaces/event-source.interface";
 import { IEvent } from "../interfaces/event.interface";
-import { EVENT_SOURCE } from "../moirae.constants";
+import { CACHE_PROVIDER, EVENT_SOURCE } from "../moirae.constants";
 
 @Injectable()
 export class AggregateFactory {
   constructor(
+    @Inject(CACHE_PROVIDER) private readonly cache: ICache,
     @Inject(EVENT_SOURCE) private readonly eventSource: IEventSource,
   ) {}
 
@@ -30,6 +32,7 @@ export class AggregateFactory {
     const events = await this.eventSource.readFromStream(streamId);
     const aggregate = new Aggregate(streamId);
     events.forEach((event) => aggregate.apply(event, true));
+    aggregate["_cacheController"] = this.cache;
     aggregate.setCommitFunction(this.commitEvents.bind(this));
     return aggregate;
   }

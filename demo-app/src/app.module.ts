@@ -6,6 +6,7 @@ import {
   MoiraeModule,
 } from "@moirae/core";
 import { IRabbitMQConfig } from "@moirae/rabbitmq-publisher";
+import { IRedisCacheConfig } from "@moirae/redis-cache";
 import { EventStore, ITypeORMStoreConfig } from "@moirae/typeorm-store";
 import {
   InternalServerErrorException,
@@ -39,7 +40,21 @@ const moiraeConfigGenerator = (): IMoiraeConfig<
   };
 
   switch (process.env.CACHE_TYPE) {
+    case "redis":
+      (config.cache as IRedisCacheConfig) = {
+        namespaceRoot: "__demo-app__",
+        redis: {
+          socket: {
+            host: "localhost",
+            port: 6379,
+          },
+        },
+        type: "redis",
+      };
+      break;
   }
+
+  config.cache.clear = process.env.NODE_ENV === "test";
 
   switch (process.env.PUB_TYPE) {
     case "rabbitmq":

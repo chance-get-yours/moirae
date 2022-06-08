@@ -25,6 +25,7 @@
   "dependencies": {
     "@moirae/core": "workspace:^",
     "@moirae/rabbitmq-publisher": "workspace:^",
+    "@moirae/redis-cache": "workspace:^",
     "@moirae/typeorm-store": "workspace:^",
     "@nestjs/common": "^8.0.0",
     "@nestjs/config": "^2.0.0",

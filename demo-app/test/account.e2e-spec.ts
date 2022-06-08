@@ -162,7 +162,7 @@ describe("Account", () => {
       wsClient.clear();
     });
 
-    beforeAll(async () => {
+    beforeEach(async () => {
       const input: CreateAccountInput = {
         name: faker.lorem.word(),
         balance: 100,
@@ -186,6 +186,18 @@ describe("Account", () => {
       );
     });
 
+    it("will fail if account would go to a negative balance", async () => {
+      const input: WithdrawFundsInput = {
+        accountId: id,
+        funds: -101,
+      };
+
+      await request(app.getHttpServer())
+        .put("/account/withdraw")
+        .send(input)
+        .expect(500);
+    });
+
     it("will remove funds from the account", async () => {
       const input: WithdrawFundsInput = {
         accountId: id,
@@ -199,18 +211,6 @@ describe("Account", () => {
         .expect(({ body }) => {
           expect(body.success).toEqual(true);
         });
-    });
-
-    it("will fail if account would go to a negative balance", async () => {
-      const input: WithdrawFundsInput = {
-        accountId: id,
-        funds: -100,
-      };
-
-      await request(app.getHttpServer())
-        .put("/account/withdraw")
-        .send(input)
-        .expect(500);
     });
   });
 });

@@ -86,6 +86,9 @@ jobs:
         uses: Namoshek/rabbitmq-github-action@v1.1.0
         with:
           ports: 5672:5672
+      - name: actions-setup-redis
+        if: ${{ matrix.cache == 'redis' }}
+        uses: shogo82148/actions-setup-redis@v1.15.4
       - name: Setup Node
         uses: actions/setup-node@v3.1.1
         with:

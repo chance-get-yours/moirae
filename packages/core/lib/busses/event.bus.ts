@@ -1,4 +1,4 @@
-import { BeforeApplicationShutdown, Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { ModulesContainer } from "@nestjs/core";
 import { SagaManager } from "../classes/saga-manager.class";
 import { StateTracker } from "../classes/state-tracker.class";
@@ -20,7 +20,7 @@ import { CommandBus } from "./command.bus";
  * Provide handling for an event based system
  */
 @Injectable()
-export class EventBus implements BeforeApplicationShutdown {
+export class EventBus {
   private readonly _handlerMap: Map<string, IEventHandler<IEvent>[]>;
   private _status: StateTracker<ESState>;
 
@@ -38,11 +38,6 @@ export class EventBus implements BeforeApplicationShutdown {
     );
   }
 
-  public async beforeApplicationShutdown() {
-    // await this._status.await(ESState.IDLE);
-    // this._status.set(ESState.SHUTTING_DOWN);
-  }
-
   protected async executeLocal(event: IEvent): Promise<void> {
     this._status.set(ESState.ACTIVE);
     const handlers = this._handlerMap.get(event.$name) || [];
@@ -55,7 +50,6 @@ export class EventBus implements BeforeApplicationShutdown {
     } else {
       commands = await this._sagaManager.applyEventToSagas(event);
     }
-    await this.pubSub.publish(event);
     await Promise.all(
       commands
         .filter((command) => !!command)
@@ -66,6 +60,7 @@ export class EventBus implements BeforeApplicationShutdown {
           return this.commandBus.publish(command);
         }),
     );
+    await this.pubSub.publish(event);
     this._status.set(ESState.IDLE);
   }
 

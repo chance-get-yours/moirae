@@ -1,4 +1,4 @@
-import { BeforeApplicationShutdown, Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { ModulesContainer } from "@nestjs/core";
 import { randomUUID } from "crypto";
 import { BaseBus } from "../classes/base.bus";
@@ -14,10 +14,7 @@ import { COMMAND_METADATA, ESState, PUBLISHER } from "../moirae.constants";
  * given the correct publisher.
  */
 @Injectable()
-export class CommandBus
-  extends BaseBus<ICommand>
-  implements BeforeApplicationShutdown
-{
+export class CommandBus extends BaseBus<ICommand> {
   constructor(
     private readonly _sagaManager: SagaManager,
     modulesContainer: ModulesContainer,
@@ -26,10 +23,6 @@ export class CommandBus
   ) {
     super(COMMAND_METADATA, modulesContainer, observableFactory, publisher);
     this._publisher.role = "__command-bus__";
-  }
-
-  public async beforeApplicationShutdown() {
-    // await this._status.await(ESState.IDLE);
   }
 
   public execute<TRes>(

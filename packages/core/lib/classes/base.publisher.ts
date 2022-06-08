@@ -50,8 +50,8 @@ export abstract class BasePublisher<Evt extends Respondable>
   }
 
   public async acknowledgeEvent(event: Evt): Promise<void> {
-    await this.handleAcknowledge(event);
     this._status.set(ESState.IDLE);
+    await this.handleAcknowledge(event);
   }
 
   public async awaitResponse(

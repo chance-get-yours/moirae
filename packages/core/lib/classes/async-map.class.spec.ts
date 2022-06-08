@@ -1,11 +1,14 @@
+import { randomUUID } from "crypto";
+import { EventEmitter } from "events";
 import { AsyncMapTimeoutError } from "../exceptions/async-map-timeout.error";
 import { AsyncMap } from "./async-map.class";
+import { Distributor } from "./distributor.class";
 
 describe("AsyncMap", () => {
   let map: AsyncMap;
 
   beforeEach(() => {
-    map = new AsyncMap();
+    map = new AsyncMap(new Distributor(new EventEmitter(), randomUUID()));
   });
 
   it("will function like a normal map", () => {

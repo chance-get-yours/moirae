@@ -82,7 +82,7 @@ describe("MemoryCache", () => {
   describe("readFromSet", () => {
     it("will return all values from the set", async () => {
       const key = faker.random.word();
-      const values = faker.random.words(5).split(" ");
+      const values = [...new Set(faker.random.words(5).split(" "))];
 
       await Promise.all(values.map((value) => cache.addToSet(key, value)));
 

@@ -1,22 +1,19 @@
-import { randomUUID } from "crypto";
-import { EventEmitter } from "events";
 import { AsyncMapTimeoutError } from "../exceptions/async-map-timeout.error";
+import { Distributor } from "./distributor.class";
 
 const ASYNC_MAP = "__async_map__";
 
 export class AsyncMap<T = unknown> {
-  private readonly _ee: EventEmitter;
+  private readonly _distributer: Distributor<{ key: string; value: T }>;
   private readonly _map: Map<string, T>;
-  private readonly _uuid: string;
 
-  constructor(eventEmitter?: EventEmitter) {
-    this._ee = eventEmitter || new EventEmitter();
+  constructor(distributor: Distributor<{ key: string; value: T }>) {
+    this._distributer = distributor;
     this._map = new Map();
-    this._uuid = randomUUID();
   }
 
-  private _key(userKey: string): string {
-    return `${this._uuid}:${ASYNC_MAP}:${userKey}`;
+  public get size(): number {
+    return this._map.size;
   }
 
   /**
@@ -48,7 +45,18 @@ export class AsyncMap<T = unknown> {
    */
   public set(key: string, value: T): void {
     this._map.set(key, value);
-    this._ee.emit(this._key(key), value);
+    // this._ee.emit(this._key(key), value);
+    this._distributer.publish({ key, value });
+  }
+
+  public subscribe(
+    handlerFn: (event: { key: string; value: T }) => void,
+  ): string {
+    return this._distributer.subscribe(handlerFn);
+  }
+
+  public unsubscribe(id: string): void {
+    return this._distributer.unsubscribe(id);
   }
 
   /**
@@ -60,17 +68,19 @@ export class AsyncMap<T = unknown> {
    */
   public async waitGet(key: string, timeout = 5000): Promise<T> {
     if (this.has(key)) return this.get(key);
-    const eeKey = this._key(key);
     const value = await new Promise<T>((res, rej) => {
+      let _subId: string; /* eslint-disable-line prefer-const */
       const _timeout = setTimeout(() => {
+        if (_subId) this._distributer.unsubscribe(_subId);
         rej(new AsyncMapTimeoutError(`Timeout waiting for key: ${key}`));
       }, timeout);
-      const listenerFN = (msg: T) => {
-        clearTimeout(_timeout);
-        this._ee.removeListener(eeKey, listenerFN);
-        res(msg);
-      };
-      this._ee.addListener(eeKey, listenerFN);
+      _subId = this._distributer.subscribe((event) => {
+        if (event.key === key) {
+          clearTimeout(_timeout);
+          if (_subId) this._distributer.unsubscribe(_subId);
+          res(event.value);
+        }
+      });
     });
     this.set(key, value);
     return value;

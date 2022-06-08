@@ -6,6 +6,7 @@ import * as request from "supertest";
 import { CreateAccountInput } from "../src/account/dto/create-account.input";
 import { DepositFundsInput } from "../src/account/dto/deposit-funds.input";
 import { WithdrawFundsInput } from "../src/account/dto/withdraw-funds.input";
+import { FundsWithdrawnEvent } from "../src/account/events/funds-withdrawn.event";
 import { AppModule } from "../src/app.module";
 import { Subscriptions } from "../src/moirae-ws.gateway";
 import { WsHandler } from "./utilities/ws-handler";
@@ -162,7 +163,7 @@ describe("Account", () => {
       wsClient.clear();
     });
 
-    beforeAll(async () => {
+    beforeEach(async () => {
       const input: CreateAccountInput = {
         name: faker.lorem.word(),
         balance: 100,
@@ -186,6 +187,18 @@ describe("Account", () => {
       );
     });
 
+    it("will fail if account would go to a negative balance", async () => {
+      const input: WithdrawFundsInput = {
+        accountId: id,
+        funds: -101,
+      };
+
+      await request(app.getHttpServer())
+        .put("/account/withdraw")
+        .send(input)
+        .expect(500);
+    });
+
     it("will remove funds from the account", async () => {
       const input: WithdrawFundsInput = {
         accountId: id,
@@ -199,18 +212,12 @@ describe("Account", () => {
         .expect(({ body }) => {
           expect(body.success).toEqual(true);
         });
-    });
 
-    it("will fail if account would go to a negative balance", async () => {
-      const input: WithdrawFundsInput = {
-        accountId: id,
-        funds: -100,
-      };
-
-      await request(app.getHttpServer())
-        .put("/account/withdraw")
-        .send(input)
-        .expect(500);
+      const event = await wsClient.awaitMatch(
+        (event) =>
+          event.$name === FundsWithdrawnEvent.name && event.$streamId === id,
+      );
+      expect(event).toBeDefined();
     });
   });
 });

@@ -6,9 +6,11 @@ import {
   MoiraeModule,
 } from "@moirae/core";
 import { IRabbitMQConfig } from "@moirae/rabbitmq-publisher";
+import { IRedisCacheConfig } from "@moirae/redis-cache";
 import { EventStore, ITypeORMStoreConfig } from "@moirae/typeorm-store";
 import {
   InternalServerErrorException,
+  Logger,
   Module,
   NotFoundException,
 } from "@nestjs/common";
@@ -35,11 +37,28 @@ const moiraeConfigGenerator = (): IMoiraeConfig<
       nodeId: "demo-node",
       type: "memory",
     },
+    store: {
+      type: "memory",
+    },
     sagas: [ProcessOrderSaga],
   };
 
   switch (process.env.CACHE_TYPE) {
+    case "redis":
+      (config.cache as IRedisCacheConfig) = {
+        namespaceRoot: "__demo-app__",
+        redis: {
+          socket: {
+            host: "localhost",
+            port: 6379,
+          },
+        },
+        type: "redis",
+      };
+      break;
   }
+
+  config.cache.clear = process.env.NODE_ENV === "test";
 
   switch (process.env.PUB_TYPE) {
     case "rabbitmq":
@@ -63,6 +82,9 @@ const moiraeConfigGenerator = (): IMoiraeConfig<
       };
       config.imports = [TypeOrmModule.forFeature([EventStore])];
   }
+  Logger.log(
+    `Start app with\n \tCACHE: ${config.cache.type}\n \tPUBLISHER: ${config.publisher.type}\n \tSTORE: ${config.store.type}`,
+  );
   return config;
 };
 

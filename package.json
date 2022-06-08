@@ -15,6 +15,7 @@
     "lint": "eslint --fix",
     "orm": "yarn workspace @moirae/typeorm-store",
     "prepare": "husky install",
+    "redisCache": "yarn workspace @moirae/redis-cache",
     "rmq": "yarn workspace @moirae/rabbitmq-publisher"
   },
   "devDependencies": {

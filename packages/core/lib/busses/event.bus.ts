@@ -55,15 +55,18 @@ export class EventBus implements BeforeApplicationShutdown {
     } else {
       commands = await this._sagaManager.applyEventToSagas(event);
     }
-    commands
-      .filter((command) => !!command)
-      .forEach((command) => {
-        if (event.$correlationId) command.$correlationId = event.$correlationId;
-        command.$disableResponse = true;
-        this.commandBus.publish(command);
-      });
-    this._status.set(ESState.IDLE);
+    await Promise.all(
+      commands
+        .filter((command) => !!command)
+        .map((command) => {
+          if (event.$correlationId)
+            command.$correlationId = event.$correlationId;
+          command.$disableResponse = true;
+          return this.commandBus.publish(command);
+        }),
+    );
     await this.pubSub.publish(event);
+    this._status.set(ESState.IDLE);
   }
 
   /**

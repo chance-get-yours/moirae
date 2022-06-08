@@ -71,7 +71,7 @@ jobs:
     needs: test-packages
     strategy:
       matrix:
-        cache: [memory]
+        cache: [memory, redis]
         node-version: [16.x]
         publisher: [memory, rabbitmq]
         store: [memory, typeorm]

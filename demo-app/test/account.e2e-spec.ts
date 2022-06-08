@@ -6,6 +6,7 @@ import * as request from "supertest";
 import { CreateAccountInput } from "../src/account/dto/create-account.input";
 import { DepositFundsInput } from "../src/account/dto/deposit-funds.input";
 import { WithdrawFundsInput } from "../src/account/dto/withdraw-funds.input";
+import { FundsWithdrawnEvent } from "../src/account/events/funds-withdrawn.event";
 import { AppModule } from "../src/app.module";
 import { Subscriptions } from "../src/moirae-ws.gateway";
 import { WsHandler } from "./utilities/ws-handler";
@@ -211,6 +212,12 @@ describe("Account", () => {
         .expect(({ body }) => {
           expect(body.success).toEqual(true);
         });
+
+      const event = await wsClient.awaitMatch(
+        (event) =>
+          event.$name === FundsWithdrawnEvent.name && event.$streamId === id,
+      );
+      expect(event).toBeDefined();
     });
   });
 });

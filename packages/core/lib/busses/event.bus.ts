@@ -55,6 +55,7 @@ export class EventBus implements BeforeApplicationShutdown {
     } else {
       commands = await this._sagaManager.applyEventToSagas(event);
     }
+    await this.pubSub.publish(event);
     await Promise.all(
       commands
         .filter((command) => !!command)
@@ -65,7 +66,6 @@ export class EventBus implements BeforeApplicationShutdown {
           return this.commandBus.publish(command);
         }),
     );
-    await this.pubSub.publish(event);
     this._status.set(ESState.IDLE);
   }
 

@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { randomUUID } from "crypto";
 import { EventEmitter } from "events";
 import { AsyncMap } from "../classes/async-map.class";
 import { Distributor } from "../classes/distributor.class";
@@ -20,7 +21,7 @@ export class ObservableFactory {
   }
 
   public generateAsyncMap<T>(): AsyncMap<T> {
-    return new AsyncMap(this._ee);
+    return new AsyncMap(this.generateDistributor(randomUUID()));
   }
 
   public generateDistributor<T>(uuid: string): Distributor<T> {

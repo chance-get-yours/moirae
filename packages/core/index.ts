@@ -4,6 +4,7 @@ export { EventBus } from "./lib/busses/event.bus";
 export { QueryBus } from "./lib/busses/query.bus";
 // classes
 export { AggregateRoot } from "./lib/classes/aggregate-root.class";
+export { AsyncMap } from "./lib/classes/async-map.class";
 export { BaseCache } from "./lib/classes/base.cache";
 export { BasePublisher } from "./lib/classes/base.publisher";
 export { CommandResponse } from "./lib/classes/command-response.class";

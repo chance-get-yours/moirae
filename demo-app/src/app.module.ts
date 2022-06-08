@@ -10,6 +10,7 @@ import { IRedisCacheConfig } from "@moirae/redis-cache";
 import { EventStore, ITypeORMStoreConfig } from "@moirae/typeorm-store";
 import {
   InternalServerErrorException,
+  Logger,
   Module,
   NotFoundException,
 } from "@nestjs/common";
@@ -34,6 +35,9 @@ const moiraeConfigGenerator = (): IMoiraeConfig<
     externalTypes: [InternalServerErrorException, NotFoundException],
     publisher: {
       nodeId: "demo-node",
+      type: "memory",
+    },
+    store: {
       type: "memory",
     },
     sagas: [ProcessOrderSaga],
@@ -78,6 +82,9 @@ const moiraeConfigGenerator = (): IMoiraeConfig<
       };
       config.imports = [TypeOrmModule.forFeature([EventStore])];
   }
+  Logger.log(
+    `Start app with\n \tCACHE: ${config.cache.type}\n \tPUBLISHER: ${config.publisher.type}\n \tSTORE: ${config.store.type}`,
+  );
   return config;
 };
 

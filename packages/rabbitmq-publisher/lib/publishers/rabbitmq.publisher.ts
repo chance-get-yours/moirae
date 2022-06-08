@@ -1,4 +1,5 @@
 import {
+  AsyncMap,
   BasePublisher,
   ESState,
   IEventLike,
@@ -16,7 +17,7 @@ export class RabbitMQPublisher
   extends BasePublisher<IEventLike>
   implements IPublisher
 {
-  private _activeInbound: Map<string, Message>;
+  private _activeInbound: AsyncMap<Message>;
   private _EXCHANGE: string;
   private _responseChannel: Channel;
   private _responseConsumer: string;
@@ -33,6 +34,7 @@ export class RabbitMQPublisher
     private readonly rabbitMQConnection: RabbitMQConnection,
   ) {
     super(observableFactory, publisherOptions);
+    this._activeInbound = observableFactory.generateAsyncMap();
   }
 
   protected async handleAcknowledge(event: IEventLike): Promise<void> {
@@ -43,8 +45,6 @@ export class RabbitMQPublisher
   }
 
   protected async handleBootstrap(): Promise<void> {
-    this._activeInbound = new Map();
-
     this._EXCHANGE = `${this.publisherOptions.namespaceRoot}-responseExchange-${this.role}`;
     this._RESPONSE_QUEUE = `${this.publisherOptions.namespaceRoot}-responses-${this.role}-${this.publisherOptions.nodeId}`;
     this._WORK_QUEUE = `${this.publisherOptions.namespaceRoot}-work-${this.role}`;

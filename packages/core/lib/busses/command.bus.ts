@@ -1,4 +1,4 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { BeforeApplicationShutdown, Inject, Injectable } from "@nestjs/common";
 import { ModulesContainer } from "@nestjs/core";
 import { randomUUID } from "crypto";
 import { BaseBus } from "../classes/base.bus";
@@ -7,14 +7,17 @@ import { ObservableFactory } from "../factories/observable.factory";
 import { ICommand } from "../interfaces/command.interface";
 import { ExecuteOptions } from "../interfaces/execute-options.interface";
 import { IPublisher } from "../interfaces/publisher.interface";
-import { COMMAND_METADATA, PUBLISHER } from "../moirae.constants";
+import { COMMAND_METADATA, ESState, PUBLISHER } from "../moirae.constants";
 
 /**
  * Provide the ability to run commands either locally or on remote systems
  * given the correct publisher.
  */
 @Injectable()
-export class CommandBus extends BaseBus<ICommand> {
+export class CommandBus
+  extends BaseBus<ICommand>
+  implements BeforeApplicationShutdown
+{
   constructor(
     private readonly _sagaManager: SagaManager,
     modulesContainer: ModulesContainer,
@@ -23,6 +26,10 @@ export class CommandBus extends BaseBus<ICommand> {
   ) {
     super(COMMAND_METADATA, modulesContainer, observableFactory, publisher);
     this._publisher.role = "__command-bus__";
+  }
+
+  public async beforeApplicationShutdown() {
+    // await this._status.await(ESState.IDLE);
   }
 
   public execute<TRes>(
@@ -34,6 +41,7 @@ export class CommandBus extends BaseBus<ICommand> {
   }
 
   protected async executeLocal(command: ICommand) {
+    this._status.set(ESState.ACTIVE);
     const response = await super.executeLocal(command);
     if (response instanceof Error) {
       const rollbackCommands = await this._sagaManager.rollbackSagas(
@@ -41,6 +49,7 @@ export class CommandBus extends BaseBus<ICommand> {
       );
       await Promise.all(rollbackCommands.map((c) => this.publish(c)));
     }
+    this._status.set(ESState.IDLE);
     return response;
   }
 }

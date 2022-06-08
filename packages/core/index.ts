@@ -26,8 +26,8 @@ export { SagaStep } from "./lib/decorators/saga-step.decorator";
 // factories
 export { AggregateFactory } from "./lib/factories/aggregate.factory";
 export { ObservableFactory } from "./lib/factories/observable.factory";
-export type { ICacheConfig } from "./lib/interfaces/cache-config.interface";
 // interfaces
+export type { ICacheConfig } from "./lib/interfaces/cache-config.interface";
 export type { ICache } from "./lib/interfaces/cache.interface";
 export type { ICommandHandler } from "./lib/interfaces/command-handler.interface";
 export type { ICommand } from "./lib/interfaces/command.interface";
@@ -49,6 +49,7 @@ export type { IStoreConfig } from "./lib/interfaces/store-config.interface";
 export { EventProcessor } from "./lib/mixins/event-processor.mixin";
 // constants
 export {
+  CACHE_OPTIONS,
   ESState,
   EVENT_PUBSUB_ENGINE,
   EVENT_SOURCE,

@@ -67,6 +67,7 @@ export abstract class BaseBus<T extends Respondable>
   }
 
   onApplicationBootstrap() {
+    this._status.set(ESState.PREPARING);
     const providers = [...this._moduleContainer.values()].flatMap((module) => [
       ...module.providers.values(),
     ]);
@@ -82,6 +83,7 @@ export abstract class BaseBus<T extends Respondable>
       }
     });
     this._subId = this._publisher.subscribe(this.executeLocal.bind(this));
+    this._status.set(ESState.IDLE);
   }
 
   public publish(event: T): Promise<void> {

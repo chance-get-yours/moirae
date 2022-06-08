@@ -21,6 +21,7 @@ import { IMemoryStoreConfig } from "./interfaces/memory-store-config.interface";
 import { IPublisherConfig } from "./interfaces/publisher-config.interface";
 import { IStoreConfig } from "./interfaces/store-config.interface";
 import {
+  CACHE_OPTIONS,
   CACHE_PROVIDER,
   EVENT_PUBSUB_ENGINE,
   EVENT_SOURCE,
@@ -55,13 +56,28 @@ export class MoiraeModule {
 
     const providers: Provider[] = [
       {
+        provide: CACHE_OPTIONS,
+        useValue: cache,
+      },
+      {
         provide: PUBLISHER_OPTIONS,
         useValue: publisher,
       },
     ];
     const exports: InjectionToken[] = [PUBLISHER_OPTIONS, EVENT_PUBSUB_ENGINE];
 
+    // Configure the cache providers
     switch (cache.type) {
+      case "redis":
+        const { RedisCache, RedisConnection } = await import(
+          "@moirae/redis-cache"
+        );
+        providers.push(RedisConnection, {
+          provide: CACHE_PROVIDER,
+          useClass: RedisCache,
+        });
+        exports.push(RedisConnection);
+        break;
       default:
         providers.push({
           provide: CACHE_PROVIDER,
@@ -69,6 +85,7 @@ export class MoiraeModule {
         });
     }
 
+    // Configure the publisher providers
     switch (publisher.type) {
       case "rabbitmq":
         const { RabbitMQConnection, RabbitMQPublisher, RabbitPubSubEngine } =
@@ -103,6 +120,7 @@ export class MoiraeModule {
         );
     }
 
+    // Configure the event store providers
     switch (store.type) {
       case "typeorm":
         const { TypeORMStore } = await import("@moirae/typeorm-store");

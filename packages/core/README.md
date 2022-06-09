@@ -1,6 +1,15 @@
 # @moirae/core
 The core module within Moirae, required for all uses of the library. See advanced documentation at [chance-get-yours.github.io/moirae](http://chance-get-yours.github.io/moirae/).
 
+**Table of Contents**
+- [Configuration](#configuration)
+- [Usage](#usage)
+    - [Recommended Reading](#recommended-reading)
+    - [Control Flow](#control-flow)
+    - [Aggregate Root](#aggregate-root)
+        - [Events](#events)
+    - [Uniqueness](#uniqueness)
+
 ## Installation
 Install with npm
 ```sh
@@ -32,7 +41,18 @@ Once distributed, events may be processed by any number of event handlers in add
 Queries function similar to commands however without generating any events or side-effects.
 
 ### Aggregate Root
-TBD: explanation
+Reading: [Khalil Stemmler on Aggregates](https://khalilstemmler.com/articles/typescript-domain-driven-design/aggregate-design-persistence/)
+
+The AggregateRoot provides a basis for domain models. Moirae leverages the factory pattern to create and use Aggregates as it optimizes the ability to inject much needed dependencies into an instance of the Aggregate. The abstract base class should be extended and additional fields added to support the domain logic.
+
+#### Events
+Applying an event to the aggregate requires three functions to be complete:
+
+**Apply** - Decorate a function that updates the state of the aggregate given the specified event
+
+**Rollback** - Given a specific event, create a rollback event to reverse the effects of the event
+
+**Apply** - As rollback events are stored just as normal events, each rollback event should have an apply function as well.
 
 ### Uniqueness
 A known shortfall of event based systems is the inability to reliably enforce uniqueness in aggregates. Moirae solves this using a reservation system, the idea being that potentially unique values should be reserved prior to events being committed and these reservations released once the projection is updated. The reservation allows the system to compensate for the delay and eventual consistency of the read/write side. As an example, consider the case for a unique email:
@@ -44,4 +64,4 @@ A known shortfall of event based systems is the inability to reliably enforce un
 5. UserCreatedHandler updates the projections database with the new user
 6. UserCreatedHandler releases the reservation for UserAggregate.email
 
-It is important to release the reservations on commit to the projections 
+It is important to release the reservations on commit to the projections.

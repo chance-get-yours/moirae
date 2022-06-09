@@ -1,20 +1,25 @@
-# @moirae/typeorm-store
+# @moirae/redis-cache
 
-A Moirae event store leveraging a SQL database providing:
-- EventStore: entity model for the database table
-- TypeORMStore: overriding the default `EVENT_STORE` token
+A cache provider for Moirae leveraging Redis.
 
-## Compatibility
-The following have been tested with Moirae and are known to be compatible.
-- [x] sqlite3
-
-## Usage
-When using this module, it's required to explicitly import `TypeOrmModule.forFeature([EventStore])` into the Moirae config.
-
+## Configuration
 ```ts
-MoiraeModule.forRootAsync({
-    imports: [TypeOrmModule.forFeature([EventStore])],
-    store: {
-        type: "typeorm",
-    }
-})
+{
+  /**
+   * Connection parameters for the underlying `redis` library
+   */
+  redis: RedisClientOptions;
+  /**
+   * Namespace root that prefixes all elements of the cache
+   */
+  namespaceRoot: string;
+  /**
+   * Duration in seconds to persist transaction information in the redis cache
+   * after last interaction.
+   *
+   * @default 172800 (48hrs)
+   */
+  transactionCacheDuration?: number;
+  type: "redis";
+}
+```

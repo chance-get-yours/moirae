@@ -15,9 +15,12 @@ import {
 
 type IEventCommitFn = typeof AggregateFactory.prototype.commitEvents;
 
+/**
+ * Base class to provide Aggregate functionality
+ */
 export abstract class AggregateRoot<Projection = Record<string, unknown>> {
   private _cacheController: ICache;
-  protected _commitFn: IEventCommitFn;
+  private _commitFn: IEventCommitFn;
   /**
    * History of all events applied to this aggregate in order
    */
@@ -74,6 +77,10 @@ export abstract class AggregateRoot<Projection = Record<string, unknown>> {
    * Commit all uncommitted events to the store
    */
   public async commit(): Promise<void>;
+  /**
+   * Commit all uncommitted events to the store and link those events
+   * to the provided Command via `Command.$correlationId`
+   */
   public async commit(initiatorCommand: ICommand): Promise<void>;
   public async commit(initiatorCommand?: ICommand): Promise<void> {
     if (!this._commitFn) throw new UnavailableCommitError(this);

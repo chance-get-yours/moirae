@@ -3,7 +3,7 @@ import { RedisClientOptions } from "@redis/client";
 
 export interface IRedisCacheConfig extends ICacheConfig {
   /**
-   * Connection parameters for the underlying `redis` library
+   * Connection parameters for the underlying {@link https://redis.js.org/} library
    */
   redis: RedisClientOptions;
   /**

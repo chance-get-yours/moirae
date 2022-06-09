@@ -6,24 +6,56 @@
 <p>Moirae consists of a single <a href="./packages/core/README.md">core</a> module and a series of plugins to support interaction with various messaging services and event stores.</p>
 <p>The name &quot;Moiae&quot; comes from the Fates of Greek mythology. <a href="https://en.wikipedia.org/wiki/Moirai">https://en.wikipedia.org/wiki/Moirai</a></p>
 
-<a href="#plugins" id="plugins" style="color: inherit; text-decoration: none;">
-  <h3>Plugins</h3>
+<a href="#structure" id="structure" style="color: inherit; text-decoration: none;">
+  <h2>Structure</h2>
 </a>
-<p>Current and proposed plugins for Moirae. Always welcome to other suggestions/PRs to add functionality.</p>
 
-<a href="#event-stores" id="event-stores" style="color: inherit; text-decoration: none;">
-  <h4>Event Stores</h4>
+<a href="#core" id="core" style="color: inherit; text-decoration: none;">
+  <h3>Core</h3>
+</a>
+<p>The core module provides base components and can function entirely standalone for rapid prototyping if data loss is acceptable.</p>
+
+<a href="#cache" id="cache" style="color: inherit; text-decoration: none;">
+  <h3>Cache</h3>
+</a>
+<p>Within Moirae, the cache provides ability to store and retrieve data required to ensure distributed transactions are properly tracked and to provide the ability to reserve values, for instance to ensure unique emails across users.</p>
+
+<a href="#supported" id="supported" style="color: inherit; text-decoration: none;">
+  <h4>Supported</h4>
 </a>
 <ul>
-<li><input disabled="" type="checkbox"> <a href="https://www.eventstore.com/eventstoredb">EventStoreDB</a></li>
-<li><input disabled="" type="checkbox"> <a href="https://www.mongodb.com/">MongoDB</a></li>
-<li><input disabled="" type="checkbox"> <a href="https://www.postgresql.org/">PostgreSQL</a>
-<a href="#message-brokers" id="message-brokers" style="color: inherit; text-decoration: none;">
-  <h4>Message Brokers</h4>
+<li><input checked="" disabled="" type="checkbox"> Redis</li>
+<li><input disabled="" type="checkbox"> SQL</li>
+</ul>
+
+<a href="#publisher" id="publisher" style="color: inherit; text-decoration: none;">
+  <h3>Publisher</h3>
 </a>
-</li>
-<li><input disabled="" type="checkbox"> <a href="https://aws.amazon.com/sqs/">Amazon SQS</a></li>
-<li><input checked="" disabled="" type="checkbox"> <a href="https://www.rabbitmq.com/">Rabbit MQ</a></li>
-<li><input disabled="" type="checkbox"> <a href="https://redis.io/">Redis</a></li>
+<p>The publisher provides a structure for passing messages between nodes of a distributed system. In Moirae, this provides for functions:</p>
+<ul>
+<li>Request/Response for Commands</li>
+<li>Request/Response for Queries</li>
+<li>Event processing</li>
+<li>Post-processing distribution of events</li>
+</ul>
+
+<a href="#supported-1" id="supported-1" style="color: inherit; text-decoration: none;">
+  <h4>Supported</h4>
+</a>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> RabbitMQ</li>
+<li><input disabled="" type="checkbox"> Redis</li>
+</ul>
+
+<a href="#store" id="store" style="color: inherit; text-decoration: none;">
+  <h3>Store</h3>
+</a>
+<p>The store allows for the storage and retrieval of events for processing.</p>
+
+<a href="#supported-2" id="supported-2" style="color: inherit; text-decoration: none;">
+  <h4>Supported</h4>
+</a>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> SQL</li>
 </ul>
 </div></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class="current"><a href="modules.html">Modules</a></li><li class=" tsd-kind-module"><a href="modules/core.html">core</a></li><li class=" tsd-kind-module"><a href="modules/rabbitmq_publisher.html">rabbitmq-<wbr/>publisher</a></li><li class=" tsd-kind-module"><a href="modules/redis_cache.html">redis-<wbr/>cache</a></li><li class=" tsd-kind-module"><a href="modules/typeorm_store.html">typeorm-<wbr/>store</a></li></ul></nav></div></div></div><footer class="with-border-bottom"><div class="container"><h2>Legend</h2><div class="tsd-legend-group"><ul class="tsd-legend"><li class="tsd-kind-namespace"><span class="tsd-kind-icon">Namespace</span></li><li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li><li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li><li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li><li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li><li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li><li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li><li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li></ul></div><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="container tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div><div class="overlay"></div><script src="assets/main.js"></script></body></html>

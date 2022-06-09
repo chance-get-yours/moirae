@@ -10,5 +10,12 @@ export interface IRedisCacheConfig extends ICacheConfig {
    * Namespace root that prefixes all elements of the cache
    */
   namespaceRoot: string;
+  /**
+   * Duration in seconds to persist transaction information in the redis cache
+   * after last interaction.
+   *
+   * @default 172800 (48hrs)
+   */
+  transactionCacheDuration?: number;
   type: "redis";
 }

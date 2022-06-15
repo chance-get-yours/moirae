@@ -900,7 +900,7 @@ __metadata:
     "@faker-js/faker": ^6.3.1
     "@nestjs/common": ^8.4.4
     "@nestjs/core": ^8.4.4
-    "@nestjs/testing": ^8.4.4
+    "@nestjs/testing": ^8.4.7
     "@swc/core": ^1.2.174
     "@swc/jest": ^0.2.21
     "@types/jest": ^27.4.1
@@ -926,7 +926,7 @@ __metadata:
     "@faker-js/faker": ^6.3.1
     "@nestjs/common": ^8.4.4
     "@nestjs/core": ^8.4.4
-    "@nestjs/testing": ^8.4.4
+    "@nestjs/testing": ^8.4.7
     "@swc/core": ^1.2.174
     "@swc/jest": ^0.2.21
     "@types/amqplib": ^0.8.2
@@ -953,7 +953,7 @@ __metadata:
     "@faker-js/faker": ^6.3.1
     "@nestjs/common": ^8.4.4
     "@nestjs/core": ^8.4.4
-    "@nestjs/testing": ^8.4.4
+    "@nestjs/testing": ^8.4.7
     "@swc/core": ^1.2.174
     "@swc/jest": ^0.2.21
     "@types/jest": ^27.4.1
@@ -978,7 +978,7 @@ __metadata:
     "@faker-js/faker": ^6.3.1
     "@nestjs/common": ^8.4.4
     "@nestjs/core": ^8.4.4
-    "@nestjs/testing": ^8.4.4
+    "@nestjs/testing": ^8.4.7
     "@nestjs/typeorm": ^8.0.4
     "@swc/core": ^1.2.174
     "@swc/jest": ^0.2.21
@@ -1145,12 +1145,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/testing@npm:^8.0.0, @nestjs/testing@npm:^8.4.4":
-  version: 8.4.4
-  resolution: "@nestjs/testing@npm:8.4.4"
+"@nestjs/testing@npm:^8.4.7":
+  version: 8.4.7
+  resolution: "@nestjs/testing@npm:8.4.7"
   dependencies:
-    optional: 0.1.4
-    tslib: 2.3.1
+    tslib: 2.4.0
   peerDependencies:
     "@nestjs/common": ^8.0.0
     "@nestjs/core": ^8.0.0
@@ -1161,7 +1160,7 @@ __metadata:
       optional: true
     "@nestjs/platform-express":
       optional: true
-  checksum: e896199b4801009f39204baaa371b7ba77ce5737847b65a281a9bf7a006ba3a7ca09e107081d7f1e131ce0c42462e245408b70b9da2de5ac000a39060c616d4d
+  checksum: 5514f2638ad1dcdabe3c13fa35f8d73dbae5924c051a9747f19c2bbb5491998a3261e6a43562af8a4f67af4fe4a5b6b97406712e3aa28da5d5e3ace0fbab7112
   languageName: node
   linkType: hard
 
@@ -3384,7 +3383,7 @@ __metadata:
     "@nestjs/platform-express": ^8.4.6
     "@nestjs/platform-ws": ^8.4.5
     "@nestjs/schematics": ^8.0.0
-    "@nestjs/testing": ^8.0.0
+    "@nestjs/testing": ^8.4.7
     "@nestjs/typeorm": ^8.0.3
     "@nestjs/websockets": ^8.4.7
     "@types/express": ^4.17.13
@@ -6300,13 +6299,6 @@ __metadata:
   dependencies:
     mimic-fn: ^2.1.0
   checksum: 2478859ef817fc5d4e9c2f9e5728512ddd1dbc9fb7829ad263765bb6d3b91ce699d6e2332eef6b7dff183c2f490bd3349f1666427eaba4469fba0ac38dfd0d34
-  languageName: node
-  linkType: hard
-
-"optional@npm:0.1.4":
-  version: 0.1.4
-  resolution: "optional@npm:0.1.4"
-  checksum: 81fd9884eac9c13b3624821f99aa825b71d46ffd547cd3f8cf9e1dfb0165e531448005288455895550f804bdd66459e4e7ae6e753805b8bf11a5983050d5b7c4
   languageName: node
   linkType: hard
 

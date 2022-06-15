@@ -1,5 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { ModulesContainer } from "@nestjs/core";
+import { randomUUID } from "crypto";
+import { Distributor } from "../classes/distributor.class";
 import { SagaManager } from "../classes/saga-manager.class";
 import { StateTracker } from "../classes/state-tracker.class";
 import { ObservableFactory } from "../factories/observable.factory";
@@ -21,6 +23,7 @@ import { CommandBus } from "./command.bus";
  */
 @Injectable()
 export class EventBus {
+  private readonly _distributor: Distributor<IEvent>;
   private readonly _handlerMap: Map<string, IEventHandler<IEvent>[]>;
   private _status: StateTracker<ESState>;
 
@@ -32,6 +35,9 @@ export class EventBus {
     @Inject(EVENT_SOURCE) private readonly eventSource: IEventSource,
     @Inject(EVENT_PUBSUB_ENGINE) private readonly pubSub: IPubSub,
   ) {
+    this._distributor = this._observableFactory.generateDistributor(
+      randomUUID(),
+    );
     this._handlerMap = new Map();
     this._status = this._observableFactory.generateStateTracker<ESState>(
       ESState.NOT_READY,
@@ -60,18 +66,26 @@ export class EventBus {
           return this.commandBus.publish(command);
         }),
     );
+    this._distributor.publish(event);
     await this.pubSub.publish(event);
     this._status.set(ESState.IDLE);
   }
 
   /**
-   * Listen to events post-processing
+   * Listen to events post-processing, including those processed locally
    */
   public listen(handlerFn: (event: IEvent) => void): string {
     return this.pubSub.subscribe(handlerFn);
   }
 
-  onApplicationBootstrap() {
+  /**
+   * Listen to events processed locally
+   */
+  public listenLocal(handlerFn: (event: IEvent) => void): string {
+    return this._distributor.subscribe(handlerFn);
+  }
+
+  public onApplicationBootstrap() {
     this._status.set(ESState.PREPARING);
     const providers = [...this._moduleContainer.values()].flatMap((module) => [
       ...module.providers.values(),
@@ -101,5 +115,12 @@ export class EventBus {
    */
   public removeListener(subId: string): void {
     this.pubSub.unsubscribe(subId);
+  }
+
+  /**
+   * Unsubscribe to locally processed events
+   */
+  public removeLocalListener(subId: string): void {
+    this._distributor.unsubscribe(subId);
   }
 }

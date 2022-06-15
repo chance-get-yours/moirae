@@ -31,7 +31,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
       - name: Test Package ${{ matrix.package }}
         run: yarn workspace @moirae/${{ matrix.package }} test
   integration-units:
@@ -59,7 +59,7 @@ jobs:
             restore-keys: |
               ${{ runner.os }}-yarn-
         - name: Install dependencies
-          run: yarn install --frozen-lockfile
+          run: yarn install --immutable
         - name: Build packages
           run: yarn build
         - name: Unittest demo-app
@@ -103,7 +103,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
       - name: Build packages
         run: yarn build
       - name: E2E test demo-app
@@ -132,7 +132,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
       - name: Build packages
         run: yarn build
       - name: Document

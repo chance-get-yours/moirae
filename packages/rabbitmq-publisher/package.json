@@ -16,7 +16,7 @@
     "@faker-js/faker": "^6.3.1",
     "@nestjs/common": "^8.4.4",
     "@nestjs/core": "^8.4.4",
-    "@nestjs/testing": "^8.4.4",
+    "@nestjs/testing": "^8.4.7",
     "@swc/core": "^1.2.174",
     "@swc/jest": "^0.2.21",
     "@types/amqplib": "^0.8.2",

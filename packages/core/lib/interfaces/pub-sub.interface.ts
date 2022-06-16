@@ -1,4 +1,4 @@
-import { IEvent } from "packages/core";
+import { IEvent } from "./event.interface";
 
 /**
  * Pub-sub engine to distribute events across the system after

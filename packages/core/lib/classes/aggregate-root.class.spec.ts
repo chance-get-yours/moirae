@@ -3,6 +3,7 @@ import "reflect-metadata";
 import { OtherTestEvent } from "../../testing-classes/other-test.event";
 import { TestAggregate } from "../../testing-classes/test.aggregate";
 import { TestEvent } from "../../testing-classes/test.event";
+import { AggregateDeletedError } from "../exceptions/aggregate-deleted.error";
 import { UnavailableCommitError } from "../exceptions/commit-unavailable.error";
 import { InvalidMultipleSetError } from "../exceptions/invalid-mutliple-set.error";
 import { UnhandledEventError } from "../exceptions/unhandled-event.error";
@@ -54,6 +55,20 @@ describe("AggregateRoot", () => {
     expect(() => testAggregate.apply(new ErrorEvent())).toThrowError(
       UnhandledEventError,
     );
+  });
+
+  it("will throw an AggregateDeletedError if an event is applied normally but the aggregate is deleted", () => {
+    testAggregate.deleted = true;
+
+    expect(() => testAggregate.apply(new TestEvent())).toThrowError(
+      AggregateDeletedError,
+    );
+  });
+
+  it("will not throw an AggregateDeletedError if applied from history", () => {
+    testAggregate.deleted = true;
+
+    expect(() => testAggregate.apply(new TestEvent(), true)).not.toThrowError();
   });
 
   describe("commit", () => {

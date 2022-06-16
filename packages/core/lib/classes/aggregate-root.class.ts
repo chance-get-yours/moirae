@@ -1,5 +1,6 @@
 import { instanceToPlain } from "class-transformer";
 import { sha1 } from "object-hash";
+import { AggregateDeletedError } from "../exceptions/aggregate-deleted.error";
 import { UnavailableCommitError } from "../exceptions/commit-unavailable.error";
 import { InvalidMultipleSetError } from "../exceptions/invalid-mutliple-set.error";
 import { UnhandledEventError } from "../exceptions/unhandled-event.error";
@@ -26,6 +27,10 @@ export abstract class AggregateRoot<Projection = Record<string, unknown>> {
    */
   protected _eventHistory: IEvent[];
   protected _lastCommittedIndex: number;
+  /**
+   * Mark the instance as deleted
+   */
+  public deleted: boolean;
   /**
    * Timestamp of the last applied event
    */
@@ -61,6 +66,7 @@ export abstract class AggregateRoot<Projection = Record<string, unknown>> {
    */
   public apply(event: IEvent, fromHistory: boolean): void;
   public apply(event: IEvent, fromHistory = false): void {
+    if (this.deleted && !fromHistory) throw new AggregateDeletedError(this);
     const handlerName = Reflect.getMetadata(
       `${APPLY_METADATA}:${event.$name}`,
       this,

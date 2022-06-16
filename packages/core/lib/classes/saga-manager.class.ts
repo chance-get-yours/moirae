@@ -33,7 +33,7 @@ export class SagaManager implements OnApplicationBootstrap {
     ]);
     providers.forEach((provider) => {
       const { instance } = provider;
-      if (!instance) return;
+      if (!instance || typeof instance !== "object") return;
       if (Reflect.hasMetadata(SAGA_METADATA, instance)) {
         (instance as Saga)["_cacheController"] = this._cache;
         this._sagas.push(instance as Saga);

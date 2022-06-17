@@ -85,7 +85,8 @@ export abstract class AggregateRoot<Projection = Record<string, unknown>> {
   public async commit(): Promise<void>;
   /**
    * Commit all uncommitted events to the store and link those events
-   * to the provided Command via `Command.$correlationId`
+   * to the provided Command via `Command.$correlationId`. Additionally pass
+   * on any metadata included as part of the command.
    */
   public async commit(initiatorCommand: ICommand): Promise<void>;
   public async commit(initiatorCommand?: ICommand): Promise<void> {
@@ -94,6 +95,8 @@ export abstract class AggregateRoot<Projection = Record<string, unknown>> {
       this.uncommittedEventHistory.map((event) => {
         if (!event.$correlationId)
           event.$correlationId = initiatorCommand?.$correlationId;
+        if (initiatorCommand?.$metadata)
+          event.$metadata = initiatorCommand.$metadata;
         return event;
       }),
     );

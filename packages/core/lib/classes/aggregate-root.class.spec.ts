@@ -2,6 +2,7 @@ import { faker } from "@faker-js/faker";
 import "reflect-metadata";
 import { OtherTestEvent } from "../../testing-classes/other-test.event";
 import { TestAggregate } from "../../testing-classes/test.aggregate";
+import { TestCommand } from "../../testing-classes/test.command";
 import { TestEvent } from "../../testing-classes/test.event";
 import { AggregateDeletedError } from "../exceptions/aggregate-deleted.error";
 import { UnavailableCommitError } from "../exceptions/commit-unavailable.error";
@@ -102,6 +103,38 @@ describe("AggregateRoot", () => {
       await expect(() => testAggregate.commit()).rejects.toThrowError(
         UnavailableCommitError,
       );
+    });
+
+    it("will pass the correlationId if it exists", async () => {
+      const event = new TestEvent();
+      const command = new TestCommand();
+      command.$correlationId = faker.datatype.uuid();
+
+      testAggregate.apply(event);
+      await testAggregate.commit(command);
+
+      expect(commitFn).toHaveBeenCalledWith([
+        expect.objectContaining({
+          ...event,
+          $correlationId: command.$correlationId,
+        }),
+      ]);
+    });
+
+    it("will pass metadata if it exists", async () => {
+      const metadata = { hello: "world" };
+      const event = new TestEvent();
+      const command = new TestCommand(metadata);
+
+      testAggregate.apply(event);
+      await testAggregate.commit(command);
+
+      expect(commitFn).toHaveBeenCalledWith([
+        expect.objectContaining({
+          ...event,
+          $metadata: metadata,
+        }),
+      ]);
     });
   });
 

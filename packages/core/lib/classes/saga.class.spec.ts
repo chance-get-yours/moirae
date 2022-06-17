@@ -1,8 +1,8 @@
 import { faker } from "@faker-js/faker";
 import { Injectable } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
+import { TestCommand } from "../../testing-classes/test.command";
 import { TestEvent } from "../../testing-classes/test.event";
-import { TestCommand } from "../busses/command.bus.spec";
 import { MemoryCache } from "../caches/memory.cache";
 import { SagaStep } from "../decorators/saga-step.decorator";
 import { IEvent } from "../interfaces/event.interface";

@@ -2,6 +2,7 @@ import { faker } from "@faker-js/faker";
 import { Injectable } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
 import { randomUUID } from "crypto";
+import { TestCommand } from "../../testing-classes/test.command";
 import { TestEvent } from "../../testing-classes/test.event";
 import { MemoryCache } from "../caches/memory.cache";
 import { Event } from "../classes/event.class";
@@ -25,7 +26,6 @@ import {
 import { MemoryPublisher } from "../publishers/memory.publisher";
 import { MemoryStore } from "../stores/memory.store";
 import { CommandBus } from "./command.bus";
-import { TestCommand } from "./command.bus.spec";
 import { EventBus } from "./event.bus";
 
 @EventHandler(TestEvent)

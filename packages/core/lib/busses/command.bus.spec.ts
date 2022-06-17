@@ -1,13 +1,11 @@
 import { faker } from "@faker-js/faker";
 import { Test } from "@nestjs/testing";
+import { TestCommand } from "../../testing-classes/test.command";
 import { MemoryCache } from "../caches/memory.cache";
-import { Command } from "../classes/command.class";
 import { SagaManager } from "../classes/saga-manager.class";
 import { CommandHandler } from "../decorators/command-handler.decorator";
-import { RegisterType } from "../decorators/register-type.decorator";
 import { ObservableFactory } from "../factories/observable.factory";
 import { ICommandHandler } from "../interfaces/command-handler.interface";
-import { ICommand } from "../interfaces/command.interface";
 import { IPublisher } from "../interfaces/publisher.interface";
 import {
   CACHE_PROVIDER,
@@ -16,13 +14,6 @@ import {
 } from "../moirae.constants";
 import { MemoryPublisher } from "../publishers/memory.publisher";
 import { CommandBus } from "./command.bus";
-
-@RegisterType()
-export class TestCommand extends Command implements ICommand {
-  public $version = 1;
-  $responseKey = "hello";
-  $routingKey = "world";
-}
 
 @CommandHandler(TestCommand)
 class TestHandler implements ICommandHandler<TestCommand> {

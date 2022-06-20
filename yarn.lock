@@ -900,7 +900,7 @@ __metadata:
   resolution: "@moirae/core@workspace:packages/core"
   dependencies:
     "@faker-js/faker": ^6.3.1
-    "@nestjs/common": ^8.4.4
+    "@nestjs/common": ^8.4.7
     "@nestjs/core": ^8.4.4
     "@nestjs/testing": ^8.4.7
     "@swc/core": ^1.2.174
@@ -916,7 +916,7 @@ __metadata:
     rxjs: ^7.5.5
     typescript: ^4.6.4
   peerDependencies:
-    "@nestjs/common": ^8.4.4
+    "@nestjs/common": ^8.4.7
     "@nestjs/core": ^8.4.4
     reflect-metadata: ^0.1.13
   languageName: unknown
@@ -927,7 +927,7 @@ __metadata:
   resolution: "@moirae/rabbitmq-publisher@workspace:packages/rabbitmq-publisher"
   dependencies:
     "@faker-js/faker": ^6.3.1
-    "@nestjs/common": ^8.4.4
+    "@nestjs/common": ^8.4.7
     "@nestjs/core": ^8.4.4
     "@nestjs/testing": ^8.4.7
     "@swc/core": ^1.2.174
@@ -944,7 +944,7 @@ __metadata:
     typescript: ^4.6.4
   peerDependencies:
     "@moirae/core": "*"
-    "@nestjs/common": ^8.4.4
+    "@nestjs/common": ^8.4.7
     "@nestjs/core": ^8.4.4
   languageName: unknown
   linkType: soft
@@ -954,7 +954,7 @@ __metadata:
   resolution: "@moirae/redis-cache@workspace:packages/redis-cache"
   dependencies:
     "@faker-js/faker": ^6.3.1
-    "@nestjs/common": ^8.4.4
+    "@nestjs/common": ^8.4.7
     "@nestjs/core": ^8.4.4
     "@nestjs/testing": ^8.4.7
     "@swc/core": ^1.2.174
@@ -969,7 +969,7 @@ __metadata:
     typescript: ^4.6.4
   peerDependencies:
     "@moirae/core": "*"
-    "@nestjs/common": ^8.4.4
+    "@nestjs/common": ^8.4.7
     "@nestjs/core": ^8.4.4
   languageName: unknown
   linkType: soft
@@ -979,7 +979,7 @@ __metadata:
   resolution: "@moirae/typeorm-store@workspace:packages/typeorm-store"
   dependencies:
     "@faker-js/faker": ^6.3.1
-    "@nestjs/common": ^8.4.4
+    "@nestjs/common": ^8.4.7
     "@nestjs/core": ^8.4.4
     "@nestjs/testing": ^8.4.7
     "@nestjs/typeorm": ^8.0.4
@@ -996,7 +996,7 @@ __metadata:
     typescript: ^4.6.4
   peerDependencies:
     "@moirae/core": "*"
-    "@nestjs/common": ^8.4.4
+    "@nestjs/common": ^8.4.7
     "@nestjs/core": ^8.4.4
   languageName: unknown
   linkType: soft
@@ -1033,13 +1033,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/common@npm:^8.0.0, @nestjs/common@npm:^8.4.4":
-  version: 8.4.4
-  resolution: "@nestjs/common@npm:8.4.4"
+"@nestjs/common@npm:^8.4.7":
+  version: 8.4.7
+  resolution: "@nestjs/common@npm:8.4.7"
   dependencies:
-    axios: 0.26.1
+    axios: 0.27.2
     iterare: 1.2.1
-    tslib: 2.3.1
+    tslib: 2.4.0
     uuid: 8.3.2
   peerDependencies:
     cache-manager: "*"
@@ -1054,7 +1054,7 @@ __metadata:
       optional: true
     class-validator:
       optional: true
-  checksum: bd0326a7a52b4ca819ca8790cec1e649ba0067d2eee54a32aabe890729f5d7dd6ecbf834cf68aa6727974a693981a4a6c119574dd12560914041380010632174
+  checksum: b3fa20618d4e60f9f5089215c800f2deb5d08b9f88443102b066036d7bacf17ff5926ad5ff0ef7ace42feb8e0ca561dc7e75fd05dbd028f5e675d5e7062eb685
   languageName: node
   linkType: hard
 
@@ -2494,12 +2494,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:0.26.1":
-  version: 0.26.1
-  resolution: "axios@npm:0.26.1"
+"axios@npm:0.27.2":
+  version: 0.27.2
+  resolution: "axios@npm:0.27.2"
   dependencies:
-    follow-redirects: ^1.14.8
-  checksum: d9eb58ff4bc0b36a04783fc9ff760e9245c829a5a1052ee7ca6013410d427036b1d10d04e7380c02f3508c5eaf3485b1ae67bd2adbfec3683704745c8d7a6e1a
+    follow-redirects: ^1.14.9
+    form-data: ^4.0.0
+  checksum: 38cb7540465fe8c4102850c4368053c21683af85c5fdf0ea619f9628abbcb59415d1e22ebc8a6390d2bbc9b58a9806c874f139767389c862ec9b772235f06854
   languageName: node
   linkType: hard
 
@@ -3372,7 +3373,7 @@ __metadata:
     "@moirae/redis-cache": "workspace:^"
     "@moirae/typeorm-store": "workspace:^"
     "@nestjs/cli": ^8.0.0
-    "@nestjs/common": ^8.0.0
+    "@nestjs/common": ^8.4.7
     "@nestjs/config": ^2.0.0
     "@nestjs/core": ^8.0.0
     "@nestjs/platform-express": ^8.4.6
@@ -4114,13 +4115,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.14.8":
-  version: 1.15.0
-  resolution: "follow-redirects@npm:1.15.0"
+"follow-redirects@npm:^1.14.9":
+  version: 1.15.1
+  resolution: "follow-redirects@npm:1.15.1"
   peerDependenciesMeta:
     debug:
       optional: true
-  checksum: eaec81c3e0ae57aae2422e38ad3539d0e7279b3a63f9681eeea319bb683dea67502c4e097136b8ce9721542b4e236e092b6b49e34e326cdd7733c274f0a3f378
+  checksum: 6aa4e3e3cdfa3b9314801a1cd192ba756a53479d9d8cca65bf4db3a3e8834e62139245cd2f9566147c8dfe2efff1700d3e6aefd103de4004a7b99985e71dd533
   languageName: node
   linkType: hard
 

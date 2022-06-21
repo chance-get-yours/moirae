@@ -6,14 +6,15 @@
     "packages/*",
     "demo-app"
   ],
-  "version": "0.1",
+  "version": "0.2.0",
   "scripts": {
-    "build": "yarn workspaces foreach --all --exclude=demo-app run build",
+    "build": "yarn packages run build",
     "core": "yarn workspace @moirae/core",
     "demo": "yarn workspace demo-app",
     "document": "typedoc",
     "lint": "eslint --fix",
     "orm": "yarn workspace @moirae/typeorm-store",
+    "packages": "yarn workspaces foreach --all --exclude=demo-app",
     "prepare": "husky install",
     "redisCache": "yarn workspace @moirae/redis-cache",
     "rmq": "yarn workspace @moirae/rabbitmq-publisher"

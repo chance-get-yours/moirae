@@ -1,4 +1,4 @@
-# @moirae/rabbitmq-publisher
+# @moirae/rabbitmq
 
 A Moirae publisher leveraging RabbitMQ as a transport layer providing:
 - RabbitMQConnection: a connection instance for RabbitMQ. Can be resused (e.g. PubSub)

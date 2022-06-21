@@ -5,9 +5,9 @@ import {
   IStoreConfig,
   MoiraeModule,
 } from "@moirae/core";
-import { IRabbitMQConfig } from "@moirae/rabbitmq-publisher";
-import { IRedisCacheConfig } from "@moirae/redis-cache";
-import { EventStore, ITypeORMStoreConfig } from "@moirae/typeorm-store";
+import { IRabbitMQConfig } from "@moirae/rabbitmq";
+import { IRedisCacheConfig } from "@moirae/redis";
+import { EventStore, ITypeORMStoreConfig } from "@moirae/typeorm";
 import {
   InternalServerErrorException,
   Logger,

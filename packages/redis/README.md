@@ -1,4 +1,4 @@
-# @moirae/redis-cache
+# @moirae/redis
 
 A cache provider for Moirae leveraging Redis.
 

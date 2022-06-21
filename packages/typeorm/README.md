@@ -1,4 +1,4 @@
-# @moirae/typeorm-store
+# @moirae/typeorm
 
 A Moirae event store leveraging a SQL database providing:
 - EventStore: entity model for the database table

@@ -1,22 +1,21 @@
 {
   "name": "moirae",
   "packageManager": "yarn@3.2.0",
-  "private": true,
   "workspaces": [
     "packages/*",
     "demo-app"
   ],
-  "version": "0.1",
+  "version": "0.1.2",
   "scripts": {
-    "build": "yarn workspaces foreach --all --exclude=demo-app run build",
+    "build": "yarn workspaces foreach --exclude=demo-app run build",
     "core": "yarn workspace @moirae/core",
     "demo": "yarn workspace demo-app",
     "document": "typedoc",
     "lint": "eslint --fix",
-    "orm": "yarn workspace @moirae/typeorm-store",
     "prepare": "husky install",
-    "redisCache": "yarn workspace @moirae/redis-cache",
-    "rmq": "yarn workspace @moirae/rabbitmq-publisher"
+    "redis": "yarn workspace @moirae/redis",
+    "rmq": "yarn workspace @moirae/rabbitmq",
+    "typeorm": "yarn workspace @moirae/typeorm"
   },
   "devDependencies": {
     "@knodes/typedoc-plugin-monorepo-readmes": "^0.22.5",

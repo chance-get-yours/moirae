@@ -7,12 +7,11 @@
   ],
   "version": "0.2.0",
   "scripts": {
-    "build": "yarn packages run build",
+    "build": "yarn workspaces foreach --exclude=demo-app run build",
     "core": "yarn workspace @moirae/core",
     "demo": "yarn workspace demo-app",
     "document": "typedoc",
     "lint": "eslint --fix",
-    "packages": "yarn workspaces foreach --exclude=demo-app",
     "prepare": "husky install",
     "redis": "yarn workspace @moirae/redis",
     "rmq": "yarn workspace @moirae/rabbitmq",

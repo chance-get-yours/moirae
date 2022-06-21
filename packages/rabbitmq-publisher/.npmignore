@@ -1,0 +1,6 @@
+lib
+!dist/lib
+testing-classes
+tsconfig.json
+tsconfig.tsbuildinfo
+index.ts

@@ -69,9 +69,7 @@ export class MoiraeModule {
     // Configure the cache providers
     switch (cache.type) {
       case "redis":
-        const { RedisCache, RedisConnection } = await import(
-          "@moirae/redis-cache"
-        );
+        const { RedisCache, RedisConnection } = await import("@moirae/redis");
         providers.push(RedisConnection, {
           provide: CACHE_PROVIDER,
           useClass: RedisCache,
@@ -89,7 +87,7 @@ export class MoiraeModule {
     switch (publisher.type) {
       case "rabbitmq":
         const { RabbitMQConnection, RabbitMQPublisher, RabbitPubSubEngine } =
-          await import("@moirae/rabbitmq-publisher");
+          await import("@moirae/rabbitmq");
 
         providers.push(
           RabbitMQConnection,
@@ -123,7 +121,7 @@ export class MoiraeModule {
     // Configure the event store providers
     switch (store.type) {
       case "typeorm":
-        const { TypeORMStore } = await import("@moirae/typeorm-store");
+        const { TypeORMStore } = await import("@moirae/typeorm");
         providers.push({
           provide: EVENT_SOURCE,
           useClass: TypeORMStore,

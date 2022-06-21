@@ -922,9 +922,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@moirae/rabbitmq-publisher@workspace:^, @moirae/rabbitmq-publisher@workspace:packages/rabbitmq-publisher":
+"@moirae/rabbitmq@workspace:^, @moirae/rabbitmq@workspace:packages/rabbitmq":
   version: 0.0.0-use.local
-  resolution: "@moirae/rabbitmq-publisher@workspace:packages/rabbitmq-publisher"
+  resolution: "@moirae/rabbitmq@workspace:packages/rabbitmq"
   dependencies:
     "@faker-js/faker": ^6.3.1
     "@nestjs/common": ^8.4.4
@@ -949,9 +949,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@moirae/redis-cache@workspace:^, @moirae/redis-cache@workspace:packages/redis-cache":
+"@moirae/redis@workspace:^, @moirae/redis@workspace:packages/redis":
   version: 0.0.0-use.local
-  resolution: "@moirae/redis-cache@workspace:packages/redis-cache"
+  resolution: "@moirae/redis@workspace:packages/redis"
   dependencies:
     "@faker-js/faker": ^6.3.1
     "@nestjs/common": ^8.4.4
@@ -974,9 +974,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@moirae/typeorm-store@workspace:^, @moirae/typeorm-store@workspace:packages/typeorm-store":
+"@moirae/typeorm@workspace:^, @moirae/typeorm@workspace:packages/typeorm":
   version: 0.0.0-use.local
-  resolution: "@moirae/typeorm-store@workspace:packages/typeorm-store"
+  resolution: "@moirae/typeorm@workspace:packages/typeorm"
   dependencies:
     "@faker-js/faker": ^6.3.1
     "@nestjs/common": ^8.4.4
@@ -3368,9 +3368,9 @@ __metadata:
   dependencies:
     "@faker-js/faker": ^6.3.1
     "@moirae/core": "workspace:^"
-    "@moirae/rabbitmq-publisher": "workspace:^"
-    "@moirae/redis-cache": "workspace:^"
-    "@moirae/typeorm-store": "workspace:^"
+    "@moirae/rabbitmq": "workspace:^"
+    "@moirae/redis": "workspace:^"
+    "@moirae/typeorm": "workspace:^"
     "@nestjs/cli": ^8.0.0
     "@nestjs/common": ^8.0.0
     "@nestjs/config": ^2.0.0

@@ -31,4 +31,4 @@ jobs:
       - name: Build
         run: yarn build
       - name: Publish Packages
-        run: yarn workspaces foreach --exclude=demo-app npm publish
+        run: yarn workspaces foreach --exclude=demo-app --exclude=moirae npm publish

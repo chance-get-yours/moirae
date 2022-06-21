@@ -28,7 +28,7 @@
     "@moirae/redis-cache": "workspace:^",
     "@moirae/typeorm-store": "workspace:^",
     "@nestjs/common": "^8.4.7",
-    "@nestjs/config": "^2.0.0",
+    "@nestjs/config": "^2.1.0",
     "@nestjs/core": "^8.4.7",
     "@nestjs/platform-express": "^8.4.6",
     "@nestjs/platform-ws": "^8.4.5",

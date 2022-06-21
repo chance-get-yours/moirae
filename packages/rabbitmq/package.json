@@ -2,7 +2,7 @@
   "name": "@moirae/rabbitmq",
   "packageManager": "yarn@3.2.0",
   "main": "dist/index.js",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -11,6 +11,10 @@
   },
   "engines": {
     "node": ">=16"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   },
   "peerDependencies": {
     "@moirae/core": "*",

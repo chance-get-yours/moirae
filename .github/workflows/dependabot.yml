@@ -12,6 +12,9 @@ name: Dependabot
 on:
   - pull_request_target
 
+env:
+  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
 jobs:
   fix-lockfile:
     runs-on: ubuntu-latest

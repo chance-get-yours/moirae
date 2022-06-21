@@ -2,8 +2,11 @@ name: Release
 
 on:
   push:
+    branches: [ main ]
     tags:
       - 'v*'
+env:
+  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
 jobs:
   release:

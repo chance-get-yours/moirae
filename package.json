@@ -5,7 +5,7 @@
     "packages/*",
     "demo-app"
   ],
-  "version": "0.1.2",
+  "version": "0.2.0",
   "scripts": {
     "build": "yarn workspaces foreach --exclude=demo-app run build",
     "core": "yarn workspace @moirae/core",
@@ -15,7 +15,8 @@
     "prepare": "husky install",
     "redis": "yarn workspace @moirae/redis",
     "rmq": "yarn workspace @moirae/rabbitmq",
-    "typeorm": "yarn workspace @moirae/typeorm"
+    "typeorm": "yarn workspace @moirae/typeorm",
+    "version-packages": "yarn workspaces foreach --exclude=demo-app version"
   },
   "devDependencies": {
     "@knodes/typedoc-plugin-monorepo-readmes": "^0.22.5",

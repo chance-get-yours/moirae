@@ -12,6 +12,10 @@
   "engines": {
     "node": ">=16"
   },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
   "peerDependencies": {
     "@moirae/core": "*",
     "@nestjs/common": "^8.4.7",

@@ -2,7 +2,7 @@
   "name": "@moirae/redis",
   "packageManager": "yarn@3.2.0",
   "main": "dist/index.js",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -13,7 +13,7 @@
     "node": ">=16"
   },
   "peerDependencies": {
-    "@moirae/core": "workspace:^",
+    "@moirae/core": "*",
     "@nestjs/common": "^8.4.7",
     "@nestjs/core": "^8.4.7"
   },

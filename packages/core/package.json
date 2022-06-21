@@ -2,7 +2,7 @@
   "name": "@moirae/core",
   "packageManager": "yarn@3.2.0",
   "main": "dist/index.js",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -40,6 +40,7 @@
   "scripts": {
     "build": "yarn prebuild && tsc",
     "prebuild": "rimraf ./dist",
+    "pack": "npm pack",
     "test": "jest --config=../../jest.config.js --roots=packages/core/lib"
   }
 }

@@ -55,6 +55,10 @@ describe("StateTracker", () => {
     expect(Date.now()).toBeGreaterThanOrEqual(startTime + 500);
   });
 
+  it("will return immediately if the current state is correct", async () => {
+    expect(await tracker.await(TestStatuses.hello)).toEqual(TestStatuses.hello);
+  });
+
   it("will throw a timeout error if waiting too long", async () => {
     await expect(() =>
       tracker.await(TestStatuses.world),

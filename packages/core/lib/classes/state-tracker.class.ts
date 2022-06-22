@@ -31,6 +31,7 @@ export class StateTracker<T> {
   }
 
   public await(desiredState: T): Promise<T> {
+    if (this._state === desiredState) return Promise.resolve(this._state);
     return new Promise((res, rej) => {
       const timeout = setTimeout(() => {
         rej(new Error("HI"));

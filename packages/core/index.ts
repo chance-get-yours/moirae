@@ -14,6 +14,7 @@ export { Event } from "./lib/classes/event.class";
 export { Query } from "./lib/classes/query.class";
 export { ResponseWrapper } from "./lib/classes/response.class";
 export { Saga } from "./lib/classes/saga.class";
+export { StateTracker } from "./lib/classes/state-tracker.class";
 // decorators
 export { Apply } from "./lib/decorators/apply.decorator";
 export { CommandHandler } from "./lib/decorators/command-handler.decorator";

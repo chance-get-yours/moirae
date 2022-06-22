@@ -1,9 +1,9 @@
 import { Inject, Injectable, OnApplicationBootstrap } from "@nestjs/common";
-import { ModulesContainer } from "@nestjs/core";
 import { ICache } from "../interfaces/cache.interface";
 import { ICommand } from "../interfaces/command.interface";
 import { IEvent } from "../interfaces/event.interface";
 import { CACHE_PROVIDER, SAGA_METADATA } from "../moirae.constants";
+import { Explorer } from "./explorer.class";
 import { Saga } from "./saga.class";
 
 @Injectable()
@@ -12,7 +12,7 @@ export class SagaManager implements OnApplicationBootstrap {
 
   constructor(
     @Inject(CACHE_PROVIDER) private readonly _cache: ICache,
-    private readonly _moduleContainer: ModulesContainer,
+    private readonly _explorer: Explorer,
   ) {
     this._sagas = [];
   }
@@ -28,10 +28,7 @@ export class SagaManager implements OnApplicationBootstrap {
   }
 
   public onApplicationBootstrap() {
-    const providers = [...this._moduleContainer.values()].flatMap((module) => [
-      ...module.providers.values(),
-    ]);
-    providers.forEach((provider) => {
+    this._explorer.getProviders().forEach((provider) => {
       const { instance } = provider;
       if (!instance || typeof instance !== "object") return;
       if (Reflect.hasMetadata(SAGA_METADATA, instance)) {

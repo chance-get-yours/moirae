@@ -8,11 +8,12 @@
   "version": "0.2.0",
   "private": true,
   "scripts": {
-    "build": "yarn workspaces foreach --exclude=demo-app --exclude=moirae run build",
+    "build": "yarn packages run build",
     "core": "yarn workspace @moirae/core",
     "demo": "yarn workspace demo-app",
     "document": "typedoc",
     "lint": "eslint --fix",
+    "packages": "yarn workspaces foreach --exclude=demo-app --exclude=moirae",
     "prepare": "husky install",
     "redis": "yarn workspace @moirae/redis",
     "rmq": "yarn workspace @moirae/rabbitmq",

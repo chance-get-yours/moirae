@@ -1,5 +1,4 @@
 import { Logger, OnApplicationBootstrap } from "@nestjs/common";
-import { ModulesContainer } from "@nestjs/core";
 import { randomUUID } from "crypto";
 import { HandlerNotFoundError } from "../exceptions/handler-not-found.error";
 import { ObservableFactory } from "../factories/observable.factory";
@@ -8,6 +7,7 @@ import { IHandler } from "../interfaces/handler.interface";
 import { IPublisher } from "../interfaces/publisher.interface";
 import { Respondable } from "../interfaces/respondable.interface";
 import { COMMAND_METADATA, ESState, QUERY_METADATA } from "../moirae.constants";
+import { Explorer } from "./explorer.class";
 import { StateTracker } from "./state-tracker.class";
 
 type MetadataConstant = typeof COMMAND_METADATA | typeof QUERY_METADATA;
@@ -20,8 +20,8 @@ export abstract class BaseBus<T extends Respondable>
   private _subId: string;
 
   constructor(
+    private readonly _explorer: Explorer,
     private readonly _metadataConstant: MetadataConstant,
-    protected readonly _moduleContainer: ModulesContainer,
     protected readonly _observableFactory: ObservableFactory,
     protected readonly _publisher: IPublisher,
   ) {
@@ -68,10 +68,7 @@ export abstract class BaseBus<T extends Respondable>
 
   onApplicationBootstrap() {
     this._status.set(ESState.PREPARING);
-    const providers = [...this._moduleContainer.values()].flatMap((module) => [
-      ...module.providers.values(),
-    ]);
-    providers.forEach((provider) => {
+    this._explorer.getProviders().forEach((provider) => {
       const { instance } = provider;
       if (!instance) return;
       if (Reflect.hasMetadata(this._metadataConstant, instance.constructor)) {

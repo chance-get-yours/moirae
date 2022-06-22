@@ -97,7 +97,7 @@ describe("MemoryCache", () => {
 
     it("will apply the transform function for each element", async () => {
       const key = faker.random.word();
-      const values = faker.random.words(5).split(" ");
+      const values = [...new Set(faker.random.words(5).split(" "))];
       const transform = jest.fn((value) => value);
 
       await Promise.all(values.map((value) => cache.addToSet(key, value)));

@@ -1,4 +1,5 @@
 import { Test } from "@nestjs/testing";
+import { Explorer } from "../classes/explorer.class";
 import { Query } from "../classes/query.class";
 import { QueryHandler } from "../decorators/query-handler.decorator";
 import { RegisterType } from "../decorators/register-type.decorator";
@@ -37,6 +38,7 @@ describe("QueryBus", () => {
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [
+        Explorer,
         ObservableFactory,
         QueryBus,
         {

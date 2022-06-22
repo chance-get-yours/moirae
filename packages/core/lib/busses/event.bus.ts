@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { ModulesContainer } from "@nestjs/core";
 import { randomUUID } from "crypto";
 import { Distributor } from "../classes/distributor.class";
+import { Explorer } from "../classes/explorer.class";
 import { SagaManager } from "../classes/saga-manager.class";
 import { StateTracker } from "../classes/state-tracker.class";
 import { ObservableFactory } from "../factories/observable.factory";
@@ -29,7 +29,7 @@ export class EventBus {
 
   constructor(
     private readonly commandBus: CommandBus,
-    private readonly _moduleContainer: ModulesContainer,
+    private readonly _explorer: Explorer,
     private readonly _observableFactory: ObservableFactory,
     private readonly _sagaManager: SagaManager,
     @Inject(EVENT_SOURCE) private readonly eventSource: IEventSource,
@@ -87,10 +87,7 @@ export class EventBus {
 
   public onApplicationBootstrap() {
     this._status.set(ESState.PREPARING);
-    const providers = [...this._moduleContainer.values()].flatMap((module) => [
-      ...module.providers.values(),
-    ]);
-    providers.forEach((provider) => {
+    this._explorer.getProviders().forEach((provider) => {
       const { instance } = provider;
       if (!instance) return;
       if (Reflect.hasMetadata(EVENT_METADATA, instance.constructor)) {

@@ -10,6 +10,7 @@ import { EventBus } from "./busses/event.bus";
 import { QueryBus } from "./busses/query.bus";
 import { MemoryCache } from "./caches/memory.cache";
 import { ConstructorStorage } from "./classes/constructor-storage.class";
+import { Explorer } from "./classes/explorer.class";
 import { SagaManager } from "./classes/saga-manager.class";
 import { AggregateFactory } from "./factories/aggregate.factory";
 import { ObservableFactory } from "./factories/observable.factory";
@@ -143,6 +144,7 @@ export class MoiraeModule {
         AggregateFactory,
         CommandBus,
         EventBus,
+        Explorer,
         ObservableFactory,
         QueryBus,
         SagaManager,

@@ -6,6 +6,7 @@ import { TestCommand } from "../../testing-classes/test.command";
 import { TestEvent } from "../../testing-classes/test.event";
 import { MemoryCache } from "../caches/memory.cache";
 import { Event } from "../classes/event.class";
+import { Explorer } from "../classes/explorer.class";
 import { SagaManager } from "../classes/saga-manager.class";
 import { Saga } from "../classes/saga.class";
 import { TestRollbackCommand } from "../classes/saga.class.spec";
@@ -65,6 +66,7 @@ describe("EventBus", () => {
       providers: [
         CommandBus,
         EventBus,
+        Explorer,
         ObservableFactory,
         SagaManager,
         {

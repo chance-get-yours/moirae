@@ -2,6 +2,7 @@ import { faker } from "@faker-js/faker";
 import { Test } from "@nestjs/testing";
 import { TestCommand } from "../../testing-classes/test.command";
 import { MemoryCache } from "../caches/memory.cache";
+import { Explorer } from "../classes/explorer.class";
 import { SagaManager } from "../classes/saga-manager.class";
 import { CommandHandler } from "../decorators/command-handler.decorator";
 import { ObservableFactory } from "../factories/observable.factory";
@@ -32,6 +33,7 @@ describe("CommandBus", () => {
     const module = await Test.createTestingModule({
       providers: [
         CommandBus,
+        Explorer,
         ObservableFactory,
         SagaManager,
         {

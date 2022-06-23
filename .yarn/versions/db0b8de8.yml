@@ -1,0 +1,5 @@
+undecided:
+  - moirae
+  - "@moirae/core"
+  - "@moirae/rabbitmq"
+  - "@moirae/redis"

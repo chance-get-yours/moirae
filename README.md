@@ -4,7 +4,7 @@ Moirae is a collection of packages designed to simplify event sourcing and CQRS 
 
 Moirae consists of a single [core](./packages/core/README.md) module and a series of plugins to support interaction with various messaging services and event stores.
 
-The name "Moiae" comes from the Fates of Greek mythology. https://en.wikipedia.org/wiki/Moirai
+The name "Moirae" comes from the Fates of Greek mythology. https://en.wikipedia.org/wiki/Moirai
 
 ## Structure
 ### Core
@@ -15,7 +15,7 @@ Within Moirae, the cache provides ability to store and retrieve data required to
 
 #### Supported
 - [x] Redis
-- [ ] SQL
+- [x] SQL
 
 ### Publisher
 The publisher provides a structure for passing messages between nodes of a distributed system. In Moirae, this provides for functions:

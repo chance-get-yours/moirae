@@ -14,6 +14,7 @@ export interface ICache {
   getKey<T>(key: string): Promise<T>;
   /**
    * Set a key-value pair
+   * @returns Success or Fail boolean
    */
   setKey<T>(key: string, value: T): Promise<boolean>;
 

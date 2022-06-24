@@ -77,6 +77,13 @@ export class MoiraeModule {
         });
         exports.push(RedisConnection);
         break;
+      case "typeorm":
+        const { TypeORMCache } = await import("@moirae/typeorm");
+        providers.push({
+          provide: CACHE_PROVIDER,
+          useClass: TypeORMCache,
+        });
+        break;
       default:
         providers.push({
           provide: CACHE_PROVIDER,

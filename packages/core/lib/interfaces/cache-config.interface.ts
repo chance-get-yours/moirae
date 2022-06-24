@@ -1,4 +1,4 @@
-type CacheType = "memory" | "redis";
+type CacheType = "memory" | "redis" | "typeorm";
 
 export interface ICacheConfig {
   /**

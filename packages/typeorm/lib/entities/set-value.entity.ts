@@ -6,11 +6,12 @@ import {
   RelationId,
   Unique,
 } from "typeorm";
+import { BaseEntity } from "./base.entity";
 import { SetRoot } from "./set-root.entity";
 
 @Entity()
 @Unique(["setKey", "value"])
-export class SetValue {
+export class SetValue extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 

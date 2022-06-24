@@ -7,7 +7,11 @@ import {
 } from "@moirae/core";
 import { IRabbitMQConfig } from "@moirae/rabbitmq";
 import { IRedisCacheConfig } from "@moirae/redis";
-import { EventStore, ITypeORMStoreConfig } from "@moirae/typeorm";
+import {
+  CACHE_ENTITIES,
+  EventStore,
+  ITypeORMStoreConfig,
+} from "@moirae/typeorm";
 import {
   InternalServerErrorException,
   Logger,
@@ -33,6 +37,7 @@ const moiraeConfigGenerator = (): IMoiraeConfig<
       type: "memory",
     },
     externalTypes: [InternalServerErrorException, NotFoundException],
+    imports: [],
     publisher: {
       nodeId: "demo-node",
       type: "memory",
@@ -42,6 +47,7 @@ const moiraeConfigGenerator = (): IMoiraeConfig<
     },
     sagas: [ProcessOrderSaga],
   };
+  const typeormImports = [];
 
   switch (process.env.CACHE_TYPE) {
     case "redis":
@@ -55,6 +61,10 @@ const moiraeConfigGenerator = (): IMoiraeConfig<
         },
         type: "redis",
       };
+      break;
+    case "typeorm":
+      config.cache.type = "typeorm";
+      typeormImports.push(...CACHE_ENTITIES);
       break;
   }
 
@@ -80,11 +90,14 @@ const moiraeConfigGenerator = (): IMoiraeConfig<
       (config.store as ITypeORMStoreConfig) = {
         type: "typeorm",
       };
-      config.imports = [TypeOrmModule.forFeature([EventStore])];
+      typeormImports.push(EventStore);
+      break;
   }
   Logger.log(
     `Start app with\n \tCACHE: ${config.cache.type}\n \tPUBLISHER: ${config.publisher.type}\n \tSTORE: ${config.store.type}`,
   );
+  if (typeormImports.length > 0)
+    config.imports.push(TypeOrmModule.forFeature(typeormImports));
   return config;
 };
 

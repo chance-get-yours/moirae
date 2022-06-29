@@ -44,6 +44,7 @@ export type { IPublisherConfig } from "./lib/interfaces/publisher-config.interfa
 export type { IPublisher } from "./lib/interfaces/publisher.interface";
 export type { IQueryHandler } from "./lib/interfaces/query-handler.interface";
 export type { IQuery } from "./lib/interfaces/query.interface";
+export type { IRequestMetadata } from "./lib/interfaces/request-metadata.interface";
 export type { IRollbackCommand } from "./lib/interfaces/rollback-command.interface";
 export type { SagaHandler } from "./lib/interfaces/saga-handler.interface";
 export type { IStoreConfig } from "./lib/interfaces/store-config.interface";

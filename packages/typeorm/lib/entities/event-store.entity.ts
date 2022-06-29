@@ -1,4 +1,4 @@
-import { EventType, IEvent } from "@moirae/core";
+import { EventType, IEvent, IRequestMetadata } from "@moirae/core";
 import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
@@ -24,6 +24,9 @@ export class EventStore<T = unknown> implements IEvent<T> {
 
   @Column({ name: "timestamp" })
   $timestamp: Date;
+
+  @Column({ name: "metadata", nullable: true, type: "simple-json" })
+  $metadata?: IRequestMetadata;
 
   @Column({ name: "name" })
   $name: string;

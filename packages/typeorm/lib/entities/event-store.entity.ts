@@ -25,8 +25,8 @@ export class EventStore<T = unknown> implements IEvent<T> {
   @Column({ name: "timestamp" })
   $timestamp: Date;
 
-  @Column({ name: "metadata", type: "simple-json" })
-  $metadata: IRequestMetadata;
+  @Column({ name: "metadata", nullable: true, type: "simple-json" })
+  $metadata?: IRequestMetadata;
 
   @Column({ name: "name" })
   $name: string;

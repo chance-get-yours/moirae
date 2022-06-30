@@ -9,6 +9,10 @@ export class WithdrawFundsCommand extends Command implements ICommand {
   @Type(() => WithdrawFundsInput)
   public readonly input: WithdrawFundsInput;
 
+  public get STREAM_ID(): string {
+    return this.input.accountId;
+  }
+
   constructor(input: WithdrawFundsInput) {
     super();
     this.input = input;

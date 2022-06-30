@@ -52,10 +52,7 @@ describe("DepositFundsHandler", () => {
 
       const commitSpy = jest.spyOn(factory, "commitEvents");
 
-      expect(await handler.execute(command)).toMatchObject({
-        streamId,
-        success: true,
-      });
+      await handler.execute(command);
 
       expect(commitSpy).toHaveBeenCalledWith([
         expect.objectContaining({

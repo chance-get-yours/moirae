@@ -27,12 +27,14 @@ export class CommandBus extends BaseBus<ICommand> {
     this._publisher.role = "__command-bus__";
   }
 
-  public execute<TRes>(
+  public async execute<TRes = CommandResponse>(
     command: ICommand,
     options?: ExecuteOptions,
   ): Promise<TRes> {
     if (!command.$correlationId) command.$correlationId = randomUUID();
-    return super.execute(command, options);
+    const response = await super.execute<CommandResponse>(command, options);
+    if (options?.throwError && response.error) throw response.error;
+    return response as unknown as TRes;
   }
 
   protected async executeLocal(command: ICommand): Promise<CommandResponse> {

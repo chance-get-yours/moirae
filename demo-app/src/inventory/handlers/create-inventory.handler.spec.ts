@@ -1,9 +1,5 @@
 import { faker } from "@faker-js/faker";
-import {
-  AggregateFactory,
-  CommandResponse,
-  mockAggregateFactory,
-} from "@moirae/core";
+import { AggregateFactory, mockAggregateFactory } from "@moirae/core";
 import { Test } from "@nestjs/testing";
 import { CreateInventoryCommand } from "../commands/create-inventory.command";
 import { InventoryService } from "../inventory.service";
@@ -55,12 +51,9 @@ describe("CreateInventoryHandler", () => {
 
       (service.nameExists as jest.Mock).mockResolvedValueOnce(false);
       const commitSpy = jest.spyOn(factory, "commitEvents");
+      const streamId = faker.datatype.uuid();
 
-      expect(await handler.execute(command)).toMatchObject<CommandResponse>({
-        correlationId: command.$correlationId,
-        success: true,
-        streamId: expect.any(String),
-      });
+      await handler.execute(command, { streamId });
 
       expect(commitSpy).toHaveBeenCalledWith([
         expect.objectContaining({
@@ -70,6 +63,7 @@ describe("CreateInventoryHandler", () => {
             price: command.input.price,
             quantity: command.input.quantity,
           },
+          $streamId: streamId,
         }),
       ]);
     });

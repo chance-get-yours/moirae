@@ -118,7 +118,7 @@ describe("Order", () => {
     });
   });
 
-  describe.only("create and rollback order", () => {
+  describe("create and rollback order", () => {
     let accountId: string;
     let correlationId: string;
     let inventoryId: string;

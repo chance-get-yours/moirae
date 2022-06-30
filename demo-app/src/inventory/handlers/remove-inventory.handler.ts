@@ -1,7 +1,6 @@
 import {
   AggregateFactory,
   CommandHandler,
-  CommandResponse,
   ICommandHandler,
 } from "@moirae/core";
 import { InventoryAggregate } from "../aggregates/inventory.aggregate";
@@ -15,12 +14,7 @@ export class RemoveInventoryHandler
 {
   constructor(private readonly factory: AggregateFactory) {}
 
-  public async execute(
-    command: RemoveInventoryCommand,
-  ): Promise<CommandResponse> {
-    const response = new CommandResponse();
-    response.correlationId = command.$correlationId;
-
+  public async execute(command: RemoveInventoryCommand): Promise<void> {
     const aggregate = await this.factory.mergeContext(
       command.input.inventoryId,
       InventoryAggregate,
@@ -33,8 +27,5 @@ export class RemoveInventoryHandler
     if (aggregate.quantity < 0)
       throw new InvalidRemoveInventoryException(event);
     await aggregate.commit(command);
-    response.streamId = aggregate.id;
-    response.success = true;
-    return response;
   }
 }

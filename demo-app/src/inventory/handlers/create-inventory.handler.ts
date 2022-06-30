@@ -1,10 +1,9 @@
 import {
   AggregateFactory,
   CommandHandler,
-  CommandResponse,
   ICommandHandler,
+  ICommandHandlerOptions,
 } from "@moirae/core";
-import { randomUUID } from "crypto";
 import { UniqueConstraintError } from "../../common/exceptions/unique-contrstraint.error";
 import { InventoryAggregate } from "../aggregates/inventory.aggregate";
 import { CreateInventoryCommand } from "../commands/create-inventory.command";
@@ -22,27 +21,23 @@ export class CreateInventoryHandler
 
   public async execute(
     command: CreateInventoryCommand,
-  ): Promise<CommandResponse> {
-    const response = new CommandResponse();
-    response.correlationId = command.$correlationId;
-
-    const id = randomUUID();
-
-    const aggregate = await this.factory.mergeContext(id, InventoryAggregate);
+    options: ICommandHandlerOptions,
+  ): Promise<void> {
+    const aggregate = await this.factory.mergeContext(
+      options.streamId,
+      InventoryAggregate,
+    );
 
     if (!(await aggregate.reserveValue("name", command.input.name)))
       throw new UniqueConstraintError(aggregate.constructor.name, "name");
     if (await this.service.nameExists(command.input.name))
       throw new UniqueConstraintError(aggregate.constructor.name, "name");
 
-    const event = new InventoryCreatedEvent(id, {
+    const event = new InventoryCreatedEvent(options.streamId, {
       createdAt: new Date(),
       ...command.input,
     });
     aggregate.apply(event);
     await aggregate.commit(command);
-    response.streamId = id;
-    response.success = true;
-    return response;
   }
 }

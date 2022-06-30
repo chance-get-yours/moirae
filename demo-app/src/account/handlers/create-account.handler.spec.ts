@@ -1,9 +1,5 @@
 import { faker } from "@faker-js/faker";
-import {
-  AggregateFactory,
-  CommandResponse,
-  mockAggregateFactory,
-} from "@moirae/core";
+import { AggregateFactory, mockAggregateFactory } from "@moirae/core";
 import { Test } from "@nestjs/testing";
 import { CreateAccountCommand } from "../commands/create-account.command";
 import { CreateAccountInput } from "../dto/create-account.input";
@@ -44,14 +40,12 @@ describe("CreateAccountHandler", () => {
       const command = new CreateAccountCommand(input);
       command.$correlationId = faker.datatype.uuid();
 
-      expect(await handler.execute(command)).toMatchObject<CommandResponse>({
-        correlationId: command.$correlationId,
-        success: true,
-        streamId: expect.any(String),
-      });
+      const streamId = faker.datatype.uuid();
 
+      await handler.execute(command, { streamId });
       expect(commitSpy).toHaveBeenCalledWith([
         expect.objectContaining({
+          $streamId: streamId,
           $data: {
             balance: 0,
             createdAt: expect.any(Date),

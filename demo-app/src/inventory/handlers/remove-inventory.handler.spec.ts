@@ -1,9 +1,5 @@
 import { faker } from "@faker-js/faker";
-import {
-  AggregateFactory,
-  CommandResponse,
-  mockAggregateFactory,
-} from "@moirae/core";
+import { AggregateFactory, mockAggregateFactory } from "@moirae/core";
 import { Test } from "@nestjs/testing";
 import { InventoryAggregate } from "../aggregates/inventory.aggregate";
 import { RemoveInventoryCommand } from "../commands/remove-inventory.command";
@@ -56,7 +52,7 @@ describe("RemoveInventoryHandler", () => {
 
       const commitSpy = jest.spyOn(factory, "commitEvents");
 
-      expect(await handler.execute(command)).toBeInstanceOf(CommandResponse);
+      await handler.execute(command);
       expect(commitSpy).toHaveBeenCalledWith([
         expect.objectContaining({
           $correlationId: command.$correlationId,

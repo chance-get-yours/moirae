@@ -1,9 +1,5 @@
 import { faker } from "@faker-js/faker";
-import {
-  AggregateFactory,
-  CommandResponse,
-  mockAggregateFactory,
-} from "@moirae/core";
+import { AggregateFactory, mockAggregateFactory } from "@moirae/core";
 import { Test } from "@nestjs/testing";
 import { AccountAggregate } from "../aggregates/account.aggregate";
 import { RollbackAccountCommand } from "../commands/rollback-account.command";
@@ -64,7 +60,7 @@ describe("RollbackAccountHandler", () => {
 
       const commitSpy = jest.spyOn(factory, "commitEvents");
 
-      expect(await handler.execute(command)).toBeInstanceOf(CommandResponse);
+      await handler.execute(command);
       expect(commitSpy).toHaveBeenCalledWith([
         expect.objectContaining({
           $name: RollbackOrderCreatedEvent.name,

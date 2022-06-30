@@ -1,6 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { randomUUID } from "crypto";
 import { BaseBus } from "../classes/base.bus";
+import { CommandResponse } from "../classes/command-response.class";
 import { Explorer } from "../classes/explorer.class";
 import { SagaManager } from "../classes/saga-manager.class";
 import { ObservableFactory } from "../factories/observable.factory";
@@ -33,15 +34,23 @@ export class CommandBus extends BaseBus<ICommand> {
     return super.execute(command, options);
   }
 
-  protected async executeLocal(command: ICommand) {
+  protected async executeLocal(command: ICommand): Promise<CommandResponse> {
     this._status.set(ESState.ACTIVE);
-    const response = await super.executeLocal(command);
-    if (response instanceof Error) {
+
+    const response = new CommandResponse();
+    response.correlationId = command.$correlationId;
+
+    const res: unknown = await super.executeLocal(command);
+    response.success = !(res instanceof Error);
+
+    if (!response.success) {
       const rollbackCommands = await this._sagaManager.rollbackSagas(
         command.$correlationId,
       );
       await Promise.all(rollbackCommands.map((c) => this.publish(c)));
+      response.error = res as Error;
     }
+
     this._status.set(ESState.IDLE);
     return response;
   }

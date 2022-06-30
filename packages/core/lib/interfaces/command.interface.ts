@@ -6,4 +6,9 @@ export interface ICommand extends Respondable {
    * from commands to events to commands etc...
    */
   $correlationId?: string;
+
+  /**
+   * Getter for streamId if it exits in the command
+   */
+  STREAM_ID: string | undefined;
 }

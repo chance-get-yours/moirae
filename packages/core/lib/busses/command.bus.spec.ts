@@ -73,7 +73,9 @@ describe("CommandBus", () => {
     it("will execute the handler", async () => {
       const handlerSpy = jest.spyOn(handler, "execute");
       await bus["executeLocal"](new TestCommand());
-      expect(handlerSpy).toHaveBeenCalled();
+      expect(handlerSpy).toHaveBeenCalledWith(expect.any(TestCommand), {
+        streamId: new TestCommand().STREAM_ID,
+      });
     });
 
     it("will catch, log, and return an error in execution", async () => {

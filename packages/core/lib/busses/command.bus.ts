@@ -5,6 +5,7 @@ import { CommandResponse } from "../classes/command-response.class";
 import { Explorer } from "../classes/explorer.class";
 import { SagaManager } from "../classes/saga-manager.class";
 import { ObservableFactory } from "../factories/observable.factory";
+import { ICommandHandlerOptions } from "../interfaces/command-handler-options.interface";
 import { ICommand } from "../interfaces/command.interface";
 import { ExecuteOptions } from "../interfaces/execute-options.interface";
 import { IPublisher } from "../interfaces/publisher.interface";
@@ -39,8 +40,11 @@ export class CommandBus extends BaseBus<ICommand> {
 
     const response = new CommandResponse();
     response.correlationId = command.$correlationId;
+    response.streamId = command.STREAM_ID || randomUUID();
 
-    const res: unknown = await super.executeLocal(command);
+    const res: unknown = await super.executeLocal(command, {
+      streamId: response.streamId,
+    } as ICommandHandlerOptions);
     response.success = !(res instanceof Error);
 
     if (!response.success) {

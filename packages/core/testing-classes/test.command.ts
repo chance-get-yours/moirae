@@ -7,4 +7,8 @@ export class TestCommand extends Command implements ICommand {
   public $version = 1;
   $responseKey = "hello";
   $routingKey = "world";
+
+  public get STREAM_ID(): string {
+    return "streamID";
+  }
 }

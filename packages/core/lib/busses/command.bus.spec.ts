@@ -1,7 +1,9 @@
 import { faker } from "@faker-js/faker";
+import { Logger } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
 import { TestCommand } from "../../testing-classes/test.command";
 import { MemoryCache } from "../caches/memory.cache";
+import { CommandResponse } from "../classes/command-response.class";
 import { Explorer } from "../classes/explorer.class";
 import { SagaManager } from "../classes/saga-manager.class";
 import { CommandHandler } from "../decorators/command-handler.decorator";
@@ -18,8 +20,9 @@ import { CommandBus } from "./command.bus";
 
 @CommandHandler(TestCommand)
 class TestHandler implements ICommandHandler<TestCommand> {
-  async execute(command: TestCommand): Promise<string> {
-    return "hello world";
+  async execute(command: TestCommand): Promise<void> {
+    const key = command.$name;
+    Logger.log(key);
   }
 }
 
@@ -68,9 +71,11 @@ describe("CommandBus", () => {
 
   describe("executeLocal", () => {
     it("will execute the handler", async () => {
-      expect(await bus["executeLocal"](new TestCommand())).toEqual(
-        "hello world",
-      );
+      const handlerSpy = jest.spyOn(handler, "execute");
+      await bus["executeLocal"](new TestCommand());
+      expect(handlerSpy).toHaveBeenCalledWith(expect.any(TestCommand), {
+        streamId: new TestCommand().STREAM_ID,
+      });
     });
 
     it("will catch, log, and return an error in execution", async () => {
@@ -80,7 +85,8 @@ describe("CommandBus", () => {
       jest.spyOn(handler, "execute").mockRejectedValue(new Error());
       const rollbackSpy = jest.spyOn(sagaManager, "rollbackSagas");
 
-      expect(await bus["executeLocal"](command)).toBeInstanceOf(Error);
+      const response = await bus["executeLocal"](command);
+      expect(response.error).toBeInstanceOf(Error);
       expect(rollbackSpy).toHaveBeenCalledWith(command.$correlationId);
     });
   });
@@ -90,7 +96,7 @@ describe("CommandBus", () => {
       const publishSpy = jest.spyOn(publisher, "publish");
       const command = new TestCommand();
 
-      expect(await bus.execute(command)).toEqual("hello world");
+      expect(await bus.execute(command)).toBeInstanceOf(CommandResponse);
 
       command.$responseKey = expect.any(String);
       expect(publishSpy).toHaveBeenCalledWith(

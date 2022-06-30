@@ -50,7 +50,10 @@ export abstract class BaseBus<T extends Respondable>
   /**
    * @internal Should not be used outside of the context of the library
    */
-  protected async executeLocal(event: T): Promise<unknown> {
+  protected async executeLocal(
+    event: T,
+    options: Record<string, unknown>,
+  ): Promise<unknown> {
     const handler = this._handlerMap.get(event.$name);
     if (!handler)
       throw new HandlerNotFoundError(
@@ -58,7 +61,7 @@ export abstract class BaseBus<T extends Respondable>
       );
     let res: unknown;
     try {
-      res = await handler.execute(event);
+      res = await handler.execute(event, options);
     } catch (err) {
       Logger.error(err);
       res = err;

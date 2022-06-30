@@ -9,6 +9,10 @@ export class CreateOrderCommand extends Command implements ICommand {
   @Type(() => CreateOrderInput)
   public readonly input: CreateOrderInput;
 
+  public get STREAM_ID(): string {
+    return this.input.accountId;
+  }
+
   constructor(input: CreateOrderInput) {
     super();
     this.input = input;

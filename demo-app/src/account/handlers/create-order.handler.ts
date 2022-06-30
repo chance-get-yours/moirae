@@ -1,7 +1,6 @@
 import {
   AggregateFactory,
   CommandHandler,
-  CommandResponse,
   ICommandHandler,
 } from "@moirae/core";
 import { randomUUID } from "crypto";
@@ -16,10 +15,7 @@ import { OrderCreatedEvent } from "../order/events/order-created.event";
 export class CreateOrderHandler implements ICommandHandler<CreateOrderCommand> {
   constructor(private readonly factory: AggregateFactory) {}
 
-  public async execute(command: CreateOrderCommand): Promise<CommandResponse> {
-    const response = new CommandResponse();
-    response.correlationId = command.$correlationId;
-
+  public async execute(command: CreateOrderCommand): Promise<void> {
     const id = randomUUID();
 
     const inventory = await this.factory.mergeContext(
@@ -51,9 +47,5 @@ export class CreateOrderHandler implements ICommandHandler<CreateOrderCommand> {
     account.apply(withdrawFunds);
 
     await account.commit(command);
-
-    response.streamId = account.id;
-    response.success = true;
-    return response;
   }
 }

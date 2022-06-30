@@ -31,6 +31,7 @@ export { ObservableFactory } from "./lib/factories/observable.factory";
 // interfaces
 export type { ICacheConfig } from "./lib/interfaces/cache-config.interface";
 export type { ICache } from "./lib/interfaces/cache.interface";
+export type { ICommandHandlerOptions } from "./lib/interfaces/command-handler-options.interface";
 export type { ICommandHandler } from "./lib/interfaces/command-handler.interface";
 export type { ICommand } from "./lib/interfaces/command.interface";
 export type { IMoiraeConfig } from "./lib/interfaces/config.interface";

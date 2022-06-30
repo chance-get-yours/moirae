@@ -12,6 +12,10 @@ export class RemoveInventoryCommand extends Command implements ICommand {
 
   public readonly input: RemoveInventoryInput;
 
+  public get STREAM_ID(): string {
+    return this.input.inventoryId;
+  }
+
   constructor(input: RemoveInventoryInput) {
     super();
     this.input = input;

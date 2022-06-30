@@ -1,9 +1,5 @@
 import faker from "@faker-js/faker";
-import {
-  AggregateFactory,
-  CommandResponse,
-  mockAggregateFactory,
-} from "@moirae/core";
+import { AggregateFactory, mockAggregateFactory } from "@moirae/core";
 import { Test } from "@nestjs/testing";
 import { InventoryAggregate } from "../../inventory/aggregates/inventory.aggregate";
 import { InventoryCreatedEvent } from "../../inventory/events/inventory-created.event";
@@ -73,7 +69,7 @@ describe("CreateOrderHandler", () => {
 
       const commitSpy = jest.spyOn(factory, "commitEvents");
 
-      expect(await handler.execute(command)).toBeInstanceOf(CommandResponse);
+      await handler.execute(command);
 
       expect(commitSpy).toHaveBeenCalledWith([
         expect.objectContaining({

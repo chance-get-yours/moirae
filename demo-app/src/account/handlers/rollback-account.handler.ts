@@ -1,7 +1,6 @@
 import {
   AggregateFactory,
   CommandHandler,
-  CommandResponse,
   ICommandHandler,
 } from "@moirae/core";
 import { AccountAggregate } from "../aggregates/account.aggregate";
@@ -13,19 +12,12 @@ export class RollbackAccountHandler
 {
   constructor(private readonly factory: AggregateFactory) {}
 
-  public async execute(
-    command: RollbackAccountCommand,
-  ): Promise<CommandResponse> {
+  public async execute(command: RollbackAccountCommand): Promise<void> {
     const aggregate = await this.factory.mergeContext(
       command.$data.streamId,
       AccountAggregate,
     );
     aggregate.rollback(command.$data.correlationId);
     await aggregate.commit(command);
-    const response = new CommandResponse();
-    response.correlationId = command.$correlationId;
-    response.streamId = command.$data.streamId;
-    response.success = true;
-    return response;
   }
 }

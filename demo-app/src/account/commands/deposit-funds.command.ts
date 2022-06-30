@@ -9,6 +9,10 @@ export class DepositFundsCommand extends Command implements ICommand {
   @Type(() => DepositFundsInput)
   public readonly input: DepositFundsInput;
 
+  public get STREAM_ID(): string {
+    return this.input.accountId;
+  }
+
   constructor(input: DepositFundsInput) {
     super();
     this.input = input;

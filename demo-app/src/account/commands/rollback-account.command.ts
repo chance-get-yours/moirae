@@ -8,6 +8,10 @@ export class RollbackAccountCommand
   public readonly $data: { streamId: string; correlationId: string };
   public readonly $version = 1;
 
+  public get STREAM_ID(): string {
+    return this.$data.streamId;
+  }
+
   constructor(streamId: string, correlationId: string) {
     super();
     this.$data = { streamId, correlationId };

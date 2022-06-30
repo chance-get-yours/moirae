@@ -9,6 +9,10 @@ export class CreateInventoryCommand extends Command implements ICommand {
   @Type(() => CreateInventoryInput)
   public readonly input: CreateInventoryInput;
 
+  public get STREAM_ID() {
+    return undefined;
+  }
+
   constructor(input: CreateInventoryInput) {
     super();
     this.input = input;

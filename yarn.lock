@@ -955,7 +955,7 @@ __metadata:
     "@types/jest": ^28.1.1
     "@types/node": ^17.0.31
     jest: ^28.1.1
-    redis: ^4.1.0
+    redis: ^4.2.0
     reflect-metadata: ^0.1.13
     rimraf: ^3.0.2
     rxjs: ^7.5.5
@@ -1286,14 +1286,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@redis/client@npm:1.1.0":
-  version: 1.1.0
-  resolution: "@redis/client@npm:1.1.0"
+"@redis/client@npm:1.2.0":
+  version: 1.2.0
+  resolution: "@redis/client@npm:1.2.0"
   dependencies:
     cluster-key-slot: 1.1.0
     generic-pool: 3.8.2
     yallist: 4.0.0
-  checksum: 4f1f4a079eeb49e29e381f00be7da6ca606e8b744878e9b2e90a5800b902cdba6a631b10a7be4ed6a740d6fa4282f055c0d6d89e44eea5cbcaa8e2da10b397fc
+  checksum: 098a550a6728d9d3babb432a1c32f1678cbda5ad7fa3d59316fc334be42ef05d778fc4cf2e3d873a34817447870a5fc0486e62793698a279404b3b086ba7422e
   languageName: node
   linkType: hard
 
@@ -6881,17 +6881,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"redis@npm:^4.1.0":
-  version: 4.1.0
-  resolution: "redis@npm:4.1.0"
+"redis@npm:^4.2.0":
+  version: 4.2.0
+  resolution: "redis@npm:4.2.0"
   dependencies:
     "@redis/bloom": 1.0.2
-    "@redis/client": 1.1.0
+    "@redis/client": 1.2.0
     "@redis/graph": 1.0.1
     "@redis/json": 1.0.3
     "@redis/search": 1.0.6
     "@redis/time-series": 1.0.3
-  checksum: e3cc90a05a3ea9ada3d771145a0865cd85340a9b54cbeda768f127d86df13beb56ec505b978c464a092ad33ff39b1850101c102842d51b84a1ff6b1f9790901b
+  checksum: 6c35b56c6b685e82973c5698c5736c07ccbc59f3bc18d8de61e45ead2df4b8fc82062e5618452f4d3f8c23f02ff8c0b847c8d6a681f909c403a0fb96adcc2b98
   languageName: node
   linkType: hard
 

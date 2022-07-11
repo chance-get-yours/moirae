@@ -1114,17 +1114,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/platform-ws@npm:^8.4.7":
-  version: 8.4.7
-  resolution: "@nestjs/platform-ws@npm:8.4.7"
+"@nestjs/platform-ws@npm:^9.0.2":
+  version: 9.0.2
+  resolution: "@nestjs/platform-ws@npm:9.0.2"
   dependencies:
     tslib: 2.4.0
-    ws: 8.7.0
+    ws: 8.8.0
   peerDependencies:
-    "@nestjs/common": ^8.0.0
-    "@nestjs/websockets": ^8.0.0
+    "@nestjs/common": ^9.0.0
+    "@nestjs/websockets": ^9.0.0
     rxjs: ^7.1.0
-  checksum: 41ea338e8b0c526b95e02af182c9c55bb6cd4a42d9d02daf448f1ae5e131fb3fa8030fa70c9795f5b471d09b8a61605feea96162cb106db483bccc7c62044dc2
+  checksum: d601d248403434706322c82f7a8841ac7011c180b9ac7ff7f049a1ada46e3efc30bfff41986ed1b3a405dec1b5efec7a9c65e68bcbf0ae04671ae9db0a711fa7
   languageName: node
   linkType: hard
 
@@ -3416,7 +3416,7 @@ __metadata:
     "@nestjs/config": ^2.1.0
     "@nestjs/core": ^8.4.7
     "@nestjs/platform-express": ^8.4.7
-    "@nestjs/platform-ws": ^8.4.7
+    "@nestjs/platform-ws": ^9.0.2
     "@nestjs/schematics": ^8.0.0
     "@nestjs/testing": ^8.4.7
     "@nestjs/typeorm": ^8.0.3
@@ -8560,9 +8560,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ws@npm:8.7.0, ws@npm:^8.6.0":
-  version: 8.7.0
-  resolution: "ws@npm:8.7.0"
+"ws@npm:8.8.0, ws@npm:^8.6.0":
+  version: 8.8.0
+  resolution: "ws@npm:8.8.0"
   peerDependencies:
     bufferutil: ^4.0.1
     utf-8-validate: ^5.0.2
@@ -8571,7 +8571,7 @@ __metadata:
       optional: true
     utf-8-validate:
       optional: true
-  checksum: 078fa2dbc06b31a45e0057b19e2930d26c222622e355955afe019c9b9b25f62eb2a8eff7cceabdad04910ecd2bd6ef4fa48e6f3673f2fdddff02a6e4c2459584
+  checksum: 6ceed1ca1cb800ef60c7fc8346c7d5d73d73be754228eb958765abf5d714519338efa20ffe674167039486eb3a813aae5a497f8d319e16b4d96216a31df5bd95
   languageName: node
   linkType: hard
 

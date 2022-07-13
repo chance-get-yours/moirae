@@ -15,7 +15,7 @@ export const SagaStep =
     rollbackCommand: IRollbackCommandConstructor,
   ): MethodDecorator =>
   (target, propertyKey) => {
-    const sagas = Reflect.getMetadata(SAGA_METADATA, target.constructor) || [];
+    const sagas = Reflect.getMetadata(SAGA_METADATA, target) || [];
     Reflect.defineMetadata(
       SAGA_METADATA,
       [...sagas, { event, propertyKey, rollbackCommand }],

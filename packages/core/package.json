@@ -45,6 +45,6 @@
     "build": "yarn prebuild && tsc",
     "prebuild": "rimraf ./dist",
     "pack": "npm pack",
-    "test": "jest --config=../../jest.config.js --roots=packages/core/lib"
+    "test": "env JEST_ROOT_DIR=core jest --config=../../jest.config.js"
   }
 }

@@ -7,6 +7,8 @@ import { CommandResponse } from "../classes/command-response.class";
 import { Explorer } from "../classes/explorer.class";
 import { SagaManager } from "../classes/saga-manager.class";
 import { CommandHandler } from "../decorators/command-handler.decorator";
+import { RegisterType } from "../decorators/register-type.decorator";
+import { CommandExecutionError } from "../exceptions/command-execution.error";
 import { ObservableFactory } from "../factories/observable.factory";
 import { ICommandHandler } from "../interfaces/command-handler.interface";
 import { IPublisher } from "../interfaces/publisher.interface";
@@ -17,6 +19,21 @@ import {
 } from "../moirae.constants";
 import { MemoryPublisher } from "../publishers/memory.publisher";
 import { CommandBus } from "./command.bus";
+
+@RegisterType()
+class RegisteredError extends Error {
+  constructor() {
+    super("This is an error");
+    this.name = this.constructor.name;
+  }
+}
+
+class UnregisteredError extends Error {
+  constructor() {
+    super("This is an unregistered error");
+    this.name = this.constructor.name;
+  }
+}
 
 @CommandHandler(TestCommand)
 class TestHandler implements ICommandHandler<TestCommand> {
@@ -105,6 +122,26 @@ describe("CommandBus", () => {
           $correlationId: expect.any(String),
         }),
       );
+    });
+
+    it("will handle an error that is registered", async () => {
+      jest.spyOn(handler, "execute").mockRejectedValue(new RegisteredError());
+
+      const command = new TestCommand();
+
+      await expect(() =>
+        bus.execute(command, { throwError: true }),
+      ).rejects.toBeInstanceOf(RegisteredError);
+    });
+
+    it("will handle an error that is unregistered", async () => {
+      jest.spyOn(handler, "execute").mockRejectedValue(new UnregisteredError());
+
+      const command = new TestCommand();
+
+      await expect(() =>
+        bus.execute(command, { throwError: true }),
+      ).rejects.toBeInstanceOf(CommandExecutionError);
     });
   });
 });

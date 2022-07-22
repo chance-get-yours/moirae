@@ -44,6 +44,6 @@
   "scripts": {
     "build": "yarn prebuild && tsc",
     "prebuild": "rimraf ./dist",
-    "test": "jest --config=../../jest.config.js --roots=packages/rabbitmq/lib"
+    "test": "env JEST_ROOT_DIR=rabbitmq jest --config=../../jest.config.js"
   }
 }

@@ -1,9 +1,12 @@
 import { Inject, Injectable } from "@nestjs/common";
+import { plainToInstance } from "class-transformer";
 import { randomUUID } from "crypto";
 import { BaseBus } from "../classes/base.bus";
 import { CommandResponse } from "../classes/command-response.class";
+import { ConstructorStorage } from "../classes/constructor-storage.class";
 import { Explorer } from "../classes/explorer.class";
 import { SagaManager } from "../classes/saga-manager.class";
+import { CommandExecutionError } from "../exceptions/command-execution.error";
 import { ObservableFactory } from "../factories/observable.factory";
 import { ICommandHandlerOptions } from "../interfaces/command-handler-options.interface";
 import { ICommand } from "../interfaces/command.interface";
@@ -33,7 +36,16 @@ export class CommandBus extends BaseBus<ICommand> {
   ): Promise<TRes> {
     if (!command.$correlationId) command.$correlationId = randomUUID();
     const response = await super.execute<CommandResponse>(command, options);
-    if (options?.throwError && response.error) throw response.error;
+    if (options?.throwError && response.error) {
+      const ErrorConstructor = ConstructorStorage.getInstance().get(
+        response.error.name,
+      );
+      if (ErrorConstructor) {
+        throw plainToInstance(ErrorConstructor, response.error);
+      } else {
+        throw new CommandExecutionError(command);
+      }
+    }
     return response as unknown as TRes;
   }
 

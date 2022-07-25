@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@knodes/typedoc-plugin-monorepo-readmes": "^0.23.1",
-    "@nestjs/cli": "^8.2.5",
+    "@nestjs/cli": "^9.0.0",
     "@nestjs/schematics": "^8.0.11",
     "@typescript-eslint/eslint-plugin": "^5.21.0",
     "@typescript-eslint/parser": "^5.29.0",

@@ -901,7 +901,7 @@ __metadata:
     "@faker-js/faker": ^6.3.1
     "@nestjs/common": ^8.4.7
     "@nestjs/core": ^8.4.7
-    "@nestjs/testing": ^8.4.7
+    "@nestjs/testing": ^9.0.7
     "@swc/core": ^1.2.205
     "@swc/jest": ^0.2.21
     "@types/jest": ^28.1.1
@@ -928,7 +928,7 @@ __metadata:
     "@faker-js/faker": ^6.3.1
     "@nestjs/common": ^8.4.7
     "@nestjs/core": ^8.4.7
-    "@nestjs/testing": ^8.4.7
+    "@nestjs/testing": ^9.0.7
     "@swc/core": ^1.2.205
     "@swc/jest": ^0.2.21
     "@types/amqplib": ^0.8.2
@@ -955,7 +955,7 @@ __metadata:
     "@faker-js/faker": ^6.3.1
     "@nestjs/common": ^8.4.7
     "@nestjs/core": ^8.4.7
-    "@nestjs/testing": ^8.4.7
+    "@nestjs/testing": ^9.0.7
     "@swc/core": ^1.2.205
     "@swc/jest": ^0.2.21
     "@types/jest": ^28.1.1
@@ -980,7 +980,7 @@ __metadata:
     "@faker-js/faker": ^6.3.1
     "@nestjs/common": ^8.4.7
     "@nestjs/core": ^8.4.7
-    "@nestjs/testing": ^8.4.7
+    "@nestjs/testing": ^9.0.7
     "@nestjs/typeorm": ^8.0.4
     "@swc/core": ^1.2.205
     "@swc/jest": ^0.2.21
@@ -1164,22 +1164,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/testing@npm:^8.4.7":
-  version: 8.4.7
-  resolution: "@nestjs/testing@npm:8.4.7"
+"@nestjs/testing@npm:^9.0.7":
+  version: 9.0.7
+  resolution: "@nestjs/testing@npm:9.0.7"
   dependencies:
     tslib: 2.4.0
   peerDependencies:
-    "@nestjs/common": ^8.0.0
-    "@nestjs/core": ^8.0.0
-    "@nestjs/microservices": ^8.0.0
-    "@nestjs/platform-express": ^8.0.0
+    "@nestjs/common": ^9.0.0
+    "@nestjs/core": ^9.0.0
+    "@nestjs/microservices": ^9.0.0
+    "@nestjs/platform-express": ^9.0.0
   peerDependenciesMeta:
     "@nestjs/microservices":
       optional: true
     "@nestjs/platform-express":
       optional: true
-  checksum: 5514f2638ad1dcdabe3c13fa35f8d73dbae5924c051a9747f19c2bbb5491998a3261e6a43562af8a4f67af4fe4a5b6b97406712e3aa28da5d5e3ace0fbab7112
+  checksum: cb8ede80d37c35866c64aba2ad4d7dab1150e8bfae96862b61b865bdd314fc2fa67d9fdaf8d51ba31c48125b1c8298868f389ff52eb5b725c72f37d2fe5cbbf2
   languageName: node
   linkType: hard
 
@@ -3432,7 +3432,7 @@ __metadata:
     "@nestjs/platform-express": ^8.4.7
     "@nestjs/platform-ws": ^9.0.5
     "@nestjs/schematics": ^8.0.0
-    "@nestjs/testing": ^8.4.7
+    "@nestjs/testing": ^9.0.7
     "@nestjs/typeorm": ^8.0.3
     "@nestjs/websockets": ^8.4.7
     "@types/express": ^4.17.13

@@ -8,7 +8,7 @@ import { ObservableFactory } from "../factories/observable.factory";
 import { IPublisherConfig } from "../interfaces/publisher-config.interface";
 import { Respondable } from "../interfaces/respondable.interface";
 import { EventProcessor } from "../mixins/event-processor.mixin";
-import { ESState } from "../moirae.constants";
+import { ESState, PublisherRole } from "../moirae.constants";
 import { Distributor } from "./distributor.class";
 import { ResponseWrapper } from "./response.class";
 import { StateTracker } from "./state-tracker.class";
@@ -27,7 +27,7 @@ export abstract class BasePublisher<Evt extends Respondable>
   protected _status: StateTracker<ESState>;
   protected readonly _uuid: string;
 
-  public role: string;
+  public role: PublisherRole;
 
   constructor(
     observableFactory: ObservableFactory,

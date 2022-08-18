@@ -12,7 +12,12 @@ import { ICommandHandlerOptions } from "../interfaces/command-handler-options.in
 import { ICommand } from "../interfaces/command.interface";
 import { ExecuteOptions } from "../interfaces/execute-options.interface";
 import { IPublisher } from "../interfaces/publisher.interface";
-import { COMMAND_METADATA, ESState, PUBLISHER } from "../moirae.constants";
+import {
+  COMMAND_METADATA,
+  ESState,
+  PUBLISHER,
+  PublisherRole,
+} from "../moirae.constants";
 
 /**
  * Provide the ability to run commands either locally or on remote systems
@@ -27,7 +32,7 @@ export class CommandBus extends BaseBus<ICommand> {
     private readonly _sagaManager: SagaManager,
   ) {
     super(explorer, COMMAND_METADATA, observableFactory, publisher);
-    this._publisher.role = "__command-bus__";
+    this._publisher.role = PublisherRole.COMMAND_BUS;
   }
 
   public async execute<TRes = CommandResponse>(

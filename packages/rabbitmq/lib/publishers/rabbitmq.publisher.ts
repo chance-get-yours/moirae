@@ -5,6 +5,7 @@ import {
   IEventLike,
   IPublisher,
   ObservableFactory,
+  PublisherRole,
   PUBLISHER_OPTIONS,
 } from "@moirae/core";
 import { Inject, Injectable, Scope } from "@nestjs/common";
@@ -78,7 +79,10 @@ export class RabbitMQPublisher
     this._workChannel =
       await this.rabbitMQConnection.connection.createChannel();
     await this._workChannel.prefetch(1);
-    await this._workChannel.assertExchange(this._WORK_EXCHANGE, "topic");
+    await this._workChannel.assertExchange(
+      this._WORK_EXCHANGE,
+      this.role === PublisherRole.EVENT_STORE ? "fanout" : "topic",
+    );
     await this._workChannel.assertQueue(this._WORK_QUEUE);
     await this._workChannel.bindQueue(
       this._WORK_QUEUE,

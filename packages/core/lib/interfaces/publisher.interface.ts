@@ -1,4 +1,5 @@
 import { ResponseWrapper } from "../classes/response.class";
+import { PublisherRole } from "../moirae.constants";
 import { IEventLike } from "./event-like.interface";
 
 /**
@@ -23,7 +24,7 @@ export interface IPublisher<Evt = IEventLike> {
   /**
    * Define the role of the publisher within the application. Set via the using class
    */
-  role: string;
+  role: PublisherRole;
   /**
    * Subscribe to the bus. Should only be called ONCE by the relevant
    * bus as will trigger acknowledgements.

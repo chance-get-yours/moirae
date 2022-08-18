@@ -22,7 +22,7 @@ The publisher provides a structure for passing messages between nodes of a distr
 - Request/Response for Commands
 - Request/Response for Queries
 - Event processing
-- Post-processing distribution of events
+- Pre and Post processing distribution of events
 
 #### Supported
 - [x] RabbitMQ

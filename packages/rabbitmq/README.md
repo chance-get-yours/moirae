@@ -19,3 +19,14 @@ A Moirae publisher leveraging RabbitMQ as a transport layer providing:
 
 **`onApplicationShutdown`**
 - Tear down connection to RabbitMQ
+
+## External Systems
+In cases where events should be published externally to the application (in the case of analytics for instance), there are two ways to subscribe to the event stream.
+
+### Pre-processing
+To subscribe pre-processing, meaning before the core application has processed but after storing the event, first create a queue for the service and bind the queue to the event store exchange.
+
+Related: [Fanout Exchange](https://www.rabbitmq.com/tutorials/tutorial-three-python.html)
+
+### Post-processing
+To subscribe post-processing within the core application, simply create a queue and bind it to the pubsub exchange. 

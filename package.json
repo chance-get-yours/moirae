@@ -13,7 +13,7 @@
     "demo": "yarn workspace demo-app",
     "document": "typedoc",
     "lint": "eslint --fix",
-    "packages": "yarn workspaces foreach --exclude=demo-app --exclude=moirae",
+    "packages": "yarn workspaces foreach --exclude=demo-app --exclude=moirae run",
     "prepare": "husky install",
     "redis": "yarn workspace @moirae/redis",
     "rmq": "yarn workspace @moirae/rabbitmq",

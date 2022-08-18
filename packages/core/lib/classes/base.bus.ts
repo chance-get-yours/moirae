@@ -41,6 +41,7 @@ export abstract class BaseBus<T extends Respondable>
     const { throwError = false } = options;
     const _key = randomUUID();
     event.$responseKey = _key;
+    if (!event.$executionDomain) event.$executionDomain = "default";
     await this._publisher.publish(event);
     const res = await this._publisher.awaitResponse(_key);
     if (res.payload instanceof Error && throwError) throw res.payload;

@@ -1,5 +1,7 @@
 import faker from "@faker-js/faker";
 import {
+  AsyncMap,
+  Distributor,
   Event,
   IEvent,
   ObservableFactory,
@@ -7,6 +9,7 @@ import {
 } from "@moirae/core";
 import { Test } from "@nestjs/testing";
 import { Channel, Message } from "amqplib";
+import { EventEmitter } from "events";
 import { IRabbitMQConfig } from "../interfaces/rabbitmq.config";
 import { RabbitMQConnection } from "../providers/rabbitmq.connection";
 import { createMockChannel } from "../testing/channel.mock";
@@ -59,7 +62,9 @@ describe("RabbitMQPublisher", () => {
 
     beforeEach(() => {
       event = new TestEvent();
-      publisher["_activeInbound"] = new Map();
+      publisher["_activeInbound"] = new AsyncMap(
+        new Distributor(new EventEmitter(), faker.datatype.uuid()),
+      );
       publisher["_workChannel"] = createMockChannel();
     });
 
@@ -97,7 +102,7 @@ describe("RabbitMQPublisher", () => {
 
       expect(resMock).toHaveBeenCalled();
       expect(responseChannel.assertExchange).toHaveBeenCalledWith(
-        publisher["_EXCHANGE"],
+        publisher["_RESPONSE_EXCHANGE"],
         "direct",
       );
       expect(responseChannel.assertQueue).toHaveBeenCalledWith(
@@ -106,7 +111,7 @@ describe("RabbitMQPublisher", () => {
       );
       expect(responseChannel.bindQueue).toHaveBeenCalledWith(
         publisher["_RESPONSE_QUEUE"],
-        publisher["_EXCHANGE"],
+        publisher["_RESPONSE_EXCHANGE"],
         options.nodeId,
       );
       expect(responseChannel.consume).toHaveBeenCalledWith(
@@ -150,10 +155,11 @@ describe("RabbitMQPublisher", () => {
 
     it("will call work channel send to queue", async () => {
       const eventString = faker.datatype.json();
-      await publisher["handlePublish"](eventString);
+      await publisher["handlePublish"](eventString, "default");
 
-      expect(channel.sendToQueue).toHaveBeenCalledWith(
-        publisher["_WORK_QUEUE"],
+      expect(channel.publish).toHaveBeenCalledWith(
+        publisher["_WORK_EXCHANGE"],
+        "default",
         Buffer.from(eventString),
       );
     });
@@ -164,7 +170,7 @@ describe("RabbitMQPublisher", () => {
     beforeEach(() => {
       channel = createMockChannel();
       publisher["_responseChannel"] = channel;
-      publisher["_EXCHANGE"] = faker.name.firstName();
+      publisher["_RESPONSE_EXCHANGE"] = faker.name.firstName();
     });
 
     it("will call response publish", async () => {
@@ -174,7 +180,7 @@ describe("RabbitMQPublisher", () => {
       await publisher["handleResponse"](routingKey, responseJSON);
 
       expect(channel.publish).toHaveBeenCalledWith(
-        publisher["_EXCHANGE"],
+        publisher["_RESPONSE_EXCHANGE"],
         routingKey,
         Buffer.from(responseJSON),
       );
@@ -188,7 +194,7 @@ describe("RabbitMQPublisher", () => {
       response = createMockChannel();
       work = createMockChannel();
 
-      publisher["_EXCHANGE"] = faker.random.alphaNumeric(4);
+      publisher["_RESPONSE_EXCHANGE"] = faker.random.alphaNumeric(4);
       publisher["_responseChannel"] = response;
       publisher["_responseConsumer"] = faker.random.alphaNumeric(4);
       publisher["_workChannel"] = work;
@@ -207,7 +213,7 @@ describe("RabbitMQPublisher", () => {
 
       expect(response.unbindQueue).toBeCalledWith(
         publisher["_RESPONSE_QUEUE"],
-        publisher["_EXCHANGE"],
+        publisher["_RESPONSE_EXCHANGE"],
         options.nodeId,
       );
       expect(response.cancel).toHaveBeenCalledWith(

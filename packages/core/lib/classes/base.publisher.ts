@@ -8,14 +8,13 @@ import { ObservableFactory } from "../factories/observable.factory";
 import { IPublisherConfig } from "../interfaces/publisher-config.interface";
 import { Respondable } from "../interfaces/respondable.interface";
 import { EventProcessor } from "../mixins/event-processor.mixin";
-import { ESState } from "../moirae.constants";
+import { ESState, PublisherRole } from "../moirae.constants";
 import { Distributor } from "./distributor.class";
 import { ResponseWrapper } from "./response.class";
 import { StateTracker } from "./state-tracker.class";
 
 export const EVENT_KEY = "__event_key__";
 
-// @AddMixin(EventProcessor)
 export abstract class BasePublisher<Evt extends Respondable>
   extends EventProcessor<Evt>
   implements
@@ -28,7 +27,7 @@ export abstract class BasePublisher<Evt extends Respondable>
   protected _status: StateTracker<ESState>;
   protected readonly _uuid: string;
 
-  public role: string;
+  public role: PublisherRole;
 
   constructor(
     observableFactory: ObservableFactory,
@@ -71,7 +70,10 @@ export abstract class BasePublisher<Evt extends Respondable>
 
   protected abstract handleAcknowledge(event: Evt): Promise<void>;
   protected abstract handleBootstrap(): Promise<void>;
-  protected abstract handlePublish(eventString: string): Promise<void>;
+  protected abstract handlePublish(
+    eventString: string,
+    executionDomain: string,
+  ): Promise<void>;
   /**
    * Handle publishing the response outbound
    */
@@ -102,7 +104,7 @@ export abstract class BasePublisher<Evt extends Respondable>
   public async publish(event: Evt): Promise<void> {
     event.$routingKey = this.publisherOptions.nodeId;
     const serialized = this.serializeEvent(event);
-    await this.handlePublish(serialized);
+    await this.handlePublish(serialized, event.$executionDomain || "default");
   }
 
   protected parseResponse(responseString: string): ResponseWrapper<unknown> {

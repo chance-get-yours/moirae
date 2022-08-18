@@ -25,3 +25,12 @@ export enum ESState {
   ACTIVE,
   SHUTTING_DOWN,
 }
+
+/**
+ * @internal
+ */
+export enum PublisherRole {
+  COMMAND_BUS = "COMMAND_BUS",
+  EVENT_STORE = "EVENT_STORE",
+  QUERY_BUS = "QUERY_BUS",
+}

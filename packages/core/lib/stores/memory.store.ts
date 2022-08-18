@@ -3,7 +3,7 @@ import { ObservableFactory } from "../factories/observable.factory";
 import { IEventSource } from "../interfaces/event-source.interface";
 import { IEvent } from "../interfaces/event.interface";
 import { IPublisherConfig } from "../interfaces/publisher-config.interface";
-import { PUBLISHER_OPTIONS } from "../moirae.constants";
+import { PublisherRole, PUBLISHER_OPTIONS } from "../moirae.constants";
 import { MemoryPublisher } from "../publishers/memory.publisher";
 
 @Injectable()
@@ -18,7 +18,7 @@ export class MemoryStore
     @Inject(PUBLISHER_OPTIONS) publisherOptions: IPublisherConfig,
   ) {
     super(observableFactory, publisherOptions);
-    this.role = "__event-store__";
+    this.role = PublisherRole.EVENT_STORE;
   }
 
   public async appendToStream(eventList: IEvent[]): Promise<IEvent[]> {

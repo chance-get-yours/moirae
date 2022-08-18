@@ -5,6 +5,7 @@ import {
   IEventLike,
   IPublisher,
   ObservableFactory,
+  PublisherRole,
   PUBLISHER_OPTIONS,
 } from "@moirae/core";
 import { Inject, Injectable, Scope } from "@nestjs/common";
@@ -18,12 +19,13 @@ export class RabbitMQPublisher
   implements IPublisher
 {
   private _activeInbound: AsyncMap<Message>;
-  private _EXCHANGE: string;
   private _responseChannel: Channel;
   private _responseConsumer: string;
+  private _RESPONSE_EXCHANGE: string;
   private _RESPONSE_QUEUE: string;
   private _workChannel: Channel;
   private _workConsumer: string;
+  private _WORK_EXCHANGE: string;
   private _WORK_QUEUE: string;
 
   protected publisherOptions: IRabbitMQConfig;
@@ -45,19 +47,23 @@ export class RabbitMQPublisher
   }
 
   protected async handleBootstrap(): Promise<void> {
-    this._EXCHANGE = `${this.publisherOptions.namespaceRoot}-responseExchange-${this.role}`;
+    this._RESPONSE_EXCHANGE = `${this.publisherOptions.namespaceRoot}-responseExchange-${this.role}`;
     this._RESPONSE_QUEUE = `${this.publisherOptions.namespaceRoot}-responses-${this.role}-${this.publisherOptions.nodeId}`;
-    this._WORK_QUEUE = `${this.publisherOptions.namespaceRoot}-work-${this.role}`;
+    this._WORK_EXCHANGE = `${this.publisherOptions.namespaceRoot}-workExchange-${this.role}`;
+    this._WORK_QUEUE = `${this.publisherOptions.namespaceRoot}-work-${this.role}-${this.publisherOptions.domain}`;
 
     this._responseChannel =
       await this.rabbitMQConnection.connection.createChannel();
-    await this._responseChannel.assertExchange(this._EXCHANGE, "direct");
+    await this._responseChannel.assertExchange(
+      this._RESPONSE_EXCHANGE,
+      "direct",
+    );
     await this._responseChannel.assertQueue(this._RESPONSE_QUEUE, {
       exclusive: true,
     });
     await this._responseChannel.bindQueue(
       this._RESPONSE_QUEUE,
-      this._EXCHANGE,
+      this._RESPONSE_EXCHANGE,
       this.publisherOptions.nodeId,
     );
 
@@ -73,7 +79,17 @@ export class RabbitMQPublisher
     this._workChannel =
       await this.rabbitMQConnection.connection.createChannel();
     await this._workChannel.prefetch(1);
+    await this._workChannel.assertExchange(
+      this._WORK_EXCHANGE,
+      this.role === PublisherRole.EVENT_STORE ? "fanout" : "topic",
+    );
     await this._workChannel.assertQueue(this._WORK_QUEUE);
+    await this._workChannel.bindQueue(
+      this._WORK_QUEUE,
+      this._WORK_EXCHANGE,
+      this.publisherOptions.domain,
+    );
+
     ({ consumerTag: this._workConsumer } = await this._workChannel.consume(
       this._WORK_QUEUE,
       (msg) => {
@@ -91,8 +107,15 @@ export class RabbitMQPublisher
     ));
   }
 
-  protected async handlePublish(eventString: string): Promise<void> {
-    this._workChannel.sendToQueue(this._WORK_QUEUE, Buffer.from(eventString));
+  protected async handlePublish(
+    eventString: string,
+    executionDomain: string,
+  ): Promise<void> {
+    this._workChannel.publish(
+      this._WORK_EXCHANGE,
+      executionDomain,
+      Buffer.from(eventString),
+    );
   }
 
   protected async handleResponse(
@@ -100,7 +123,7 @@ export class RabbitMQPublisher
     responseJSON: string,
   ): Promise<void> {
     this._responseChannel.publish(
-      this._EXCHANGE,
+      this._RESPONSE_EXCHANGE,
       routingKey,
       Buffer.from(responseJSON),
     );
@@ -112,7 +135,7 @@ export class RabbitMQPublisher
 
     await this._responseChannel.unbindQueue(
       this._RESPONSE_QUEUE,
-      this._EXCHANGE,
+      this._RESPONSE_EXCHANGE,
       this.publisherOptions.nodeId,
     );
     await this._responseChannel.cancel(this._responseConsumer);

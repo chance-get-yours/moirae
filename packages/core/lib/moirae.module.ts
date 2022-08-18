@@ -45,6 +45,7 @@ export class MoiraeModule {
       },
       externalTypes = [],
       publisher = {
+        domain: "default",
         type: "memory",
       },
       sagas = [],
@@ -53,6 +54,7 @@ export class MoiraeModule {
       },
       imports,
     } = config;
+    if (!publisher.domain) publisher.domain = "default";
     externalTypes.forEach((type) => ConstructorStorage.getInstance().set(type));
 
     const providers: Provider[] = [

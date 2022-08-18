@@ -70,7 +70,10 @@ export abstract class BasePublisher<Evt extends Respondable>
 
   protected abstract handleAcknowledge(event: Evt): Promise<void>;
   protected abstract handleBootstrap(): Promise<void>;
-  protected abstract handlePublish(eventString: string): Promise<void>;
+  protected abstract handlePublish(
+    eventString: string,
+    executionDomain: string,
+  ): Promise<void>;
   /**
    * Handle publishing the response outbound
    */
@@ -101,7 +104,7 @@ export abstract class BasePublisher<Evt extends Respondable>
   public async publish(event: Evt): Promise<void> {
     event.$routingKey = this.publisherOptions.nodeId;
     const serialized = this.serializeEvent(event);
-    await this.handlePublish(serialized);
+    await this.handlePublish(serialized, event.$executionDomain || "default");
   }
 
   protected parseResponse(responseString: string): ResponseWrapper<unknown> {

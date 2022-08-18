@@ -15,7 +15,6 @@ import { StateTracker } from "./state-tracker.class";
 
 export const EVENT_KEY = "__event_key__";
 
-// @AddMixin(EventProcessor)
 export abstract class BasePublisher<Evt extends Respondable>
   extends EventProcessor<Evt>
   implements

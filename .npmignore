@@ -4,3 +4,4 @@ testing-classes
 tsconfig.json
 tsconfig.tsbuildinfo
 index.ts
+node_modules

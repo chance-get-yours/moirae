@@ -921,6 +921,29 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@moirae/node-plugin@workspace:^, @moirae/node-plugin@workspace:packages/node-plugin":
+  version: 0.0.0-use.local
+  resolution: "@moirae/node-plugin@workspace:packages/node-plugin"
+  dependencies:
+    "@faker-js/faker": ^6.3.1
+    "@swc/core": ^1.2.205
+    "@swc/jest": ^0.2.21
+    "@types/jest": ^28.1.1
+    "@types/node": ^17.0.31
+    "@types/object-hash": ^2.2.1
+    class-transformer: ^0.5.1
+    jest: ^28.1.1
+    object-hash: ^3.0.0
+    reflect-metadata: ^0.1.13
+    rimraf: ^3.0.2
+    rxjs: ^7.5.5
+    typescript: ^4.6.4
+  peerDependencies:
+    "@moirae/core": "*"
+    reflect-metadata: ^0.1.13
+  languageName: unknown
+  linkType: soft
+
 "@moirae/rabbitmq@workspace:^, @moirae/rabbitmq@workspace:packages/rabbitmq":
   version: 0.0.0-use.local
   resolution: "@moirae/rabbitmq@workspace:packages/rabbitmq"
@@ -3422,6 +3445,7 @@ __metadata:
   dependencies:
     "@faker-js/faker": ^6.3.1
     "@moirae/core": "workspace:^"
+    "@moirae/node-plugin": "workspace:^"
     "@moirae/rabbitmq": "workspace:^"
     "@moirae/redis": "workspace:^"
     "@moirae/typeorm": "workspace:^"
@@ -3444,6 +3468,7 @@ __metadata:
     "@typescript-eslint/parser": ^5.33.1
     class-transformer: ^0.5.1
     class-validator: ^0.13.2
+    dotenv: ^16.0.1
     eslint: ^8.20.0
     eslint-config-prettier: ^8.3.0
     eslint-plugin-prettier: ^4.2.1
@@ -3557,7 +3582,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:16.0.1, dotenv@npm:^16.0.0":
+"dotenv@npm:16.0.1, dotenv@npm:^16.0.0, dotenv@npm:^16.0.1":
   version: 16.0.1
   resolution: "dotenv@npm:16.0.1"
   checksum: f459ffce07b977b7f15d8cc4ee69cdff77d4dd8c5dc8c85d2d485ee84655352c2415f9dd09d42b5b5985ced3be186130871b34e2f3e2569ebc72fbc2e8096792

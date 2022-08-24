@@ -11,8 +11,10 @@ export { CommandResponse } from "./lib/classes/command-response.class";
 export { Command } from "./lib/classes/command.class";
 export { Distributor } from "./lib/classes/distributor.class";
 export { Event } from "./lib/classes/event.class";
+export { Explorer } from "./lib/classes/explorer.class";
 export { Query } from "./lib/classes/query.class";
 export { ResponseWrapper } from "./lib/classes/response.class";
+export { SagaManager } from "./lib/classes/saga-manager.class";
 export { Saga } from "./lib/classes/saga.class";
 export { StateTracker } from "./lib/classes/state-tracker.class";
 // decorators
@@ -40,6 +42,7 @@ export { EventType } from "./lib/interfaces/event-like.interface";
 export type { IEventLike } from "./lib/interfaces/event-like.interface";
 export type { IEventSource } from "./lib/interfaces/event-source.interface";
 export type { IEvent } from "./lib/interfaces/event.interface";
+export type { IHandler } from "./lib/interfaces/handler.interface";
 export type { IPubSub } from "./lib/interfaces/pub-sub.interface";
 export type { IPublisherConfig } from "./lib/interfaces/publisher-config.interface";
 export type { IPublisher } from "./lib/interfaces/publisher.interface";

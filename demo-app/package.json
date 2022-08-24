@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@moirae/core": "workspace:^",
+    "@moirae/node-plugin": "workspace:^",
     "@moirae/rabbitmq": "workspace:^",
     "@moirae/redis": "workspace:^",
     "@moirae/typeorm": "workspace:^",
@@ -52,6 +53,7 @@
     "@types/ws": "^8.5.3",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.33.1",
+    "dotenv": "^16.0.1",
     "eslint": "^8.20.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.2.1",

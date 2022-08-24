@@ -14,7 +14,7 @@
     "document": "typedoc",
     "lint": "eslint --fix",
     "node-plugin": "yarn workspace @moirae/node-plugin",
-    "packages": "yarn workspaces foreach --exclude=demo-app --exclude=moirae run",
+    "packages": "yarn workspaces foreach --exclude=demo-app --exclude=moirae",
     "prepare": "husky install",
     "redis": "yarn workspace @moirae/redis",
     "rmq": "yarn workspace @moirae/rabbitmq",

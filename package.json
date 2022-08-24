@@ -13,6 +13,7 @@
     "demo": "yarn workspace demo-app",
     "document": "typedoc",
     "lint": "eslint --fix",
+    "node-plugin": "yarn workspace @moirae/node-plugin",
     "packages": "yarn workspaces foreach --exclude=demo-app --exclude=moirae run",
     "prepare": "husky install",
     "redis": "yarn workspace @moirae/redis",
@@ -39,7 +40,7 @@
     "typescript": "^4.6.4"
   },
   "lint-staged": {
-    "*.{js,ts}": [
+    "*.{ts}": [
       "eslint --fix --quiet"
     ]
   }

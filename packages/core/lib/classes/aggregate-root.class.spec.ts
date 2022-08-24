@@ -1,9 +1,11 @@
 import { faker } from "@faker-js/faker";
 import "reflect-metadata";
+import { MakeDynamicEvent } from "../../testing-classes/make-dynamic.event";
 import { OtherTestEvent } from "../../testing-classes/other-test.event";
 import { TestAggregate } from "../../testing-classes/test.aggregate";
 import { TestCommand } from "../../testing-classes/test.command";
 import { TestEvent } from "../../testing-classes/test.event";
+import { ThirdTestEvent } from "../../testing-classes/third-test.event";
 import { AggregateDeletedError } from "../exceptions/aggregate-deleted.error";
 import { UnavailableCommitError } from "../exceptions/commit-unavailable.error";
 import { InvalidMultipleSetError } from "../exceptions/invalid-mutliple-set.error";
@@ -16,60 +18,68 @@ describe("AggregateRoot", () => {
     testAggregate = new TestAggregate(faker.datatype.uuid());
   });
 
-  it("will apply events to the aggregate", () => {
-    expect(testAggregate.foo).not.toBeDefined();
+  describe("apply", () => {
+    it("will apply events to the aggregate", () => {
+      expect(testAggregate.foo).not.toBeDefined();
 
-    testAggregate.apply(new TestEvent());
+      testAggregate.apply(new TestEvent());
 
-    expect(testAggregate.foo).toEqual("bar");
-  });
+      expect(testAggregate.foo).toEqual("bar");
+    });
 
-  it("will store a history of events applied to the aggregate", () => {
-    expect(testAggregate.eventHistory).toHaveLength(0);
+    it("will store a history of events applied to the aggregate", () => {
+      expect(testAggregate.eventHistory).toHaveLength(0);
 
-    testAggregate.apply(new TestEvent());
+      testAggregate.apply(new TestEvent());
 
-    expect(testAggregate.eventHistory).toHaveLength(1);
-    expect(testAggregate.eventHistory[0]).toBeInstanceOf(TestEvent);
+      expect(testAggregate.eventHistory).toHaveLength(1);
+      expect(testAggregate.eventHistory[0]).toBeInstanceOf(TestEvent);
 
-    expect(testAggregate.uncommittedEventHistory).toHaveLength(1);
-    expect(testAggregate.uncommittedEventHistory[0]).toBeInstanceOf(TestEvent);
-  });
+      expect(testAggregate.uncommittedEventHistory).toHaveLength(1);
+      expect(testAggregate.uncommittedEventHistory[0]).toBeInstanceOf(
+        TestEvent,
+      );
+    });
 
-  it("will mark track events not yet committed to the database", () => {
-    expect(testAggregate.eventHistory).toHaveLength(0);
+    it("will mark track events not yet committed to the database", () => {
+      expect(testAggregate.eventHistory).toHaveLength(0);
 
-    testAggregate.apply(new TestEvent(), true);
+      testAggregate.apply(new TestEvent(), true);
 
-    expect(testAggregate.eventHistory).toHaveLength(1);
+      expect(testAggregate.eventHistory).toHaveLength(1);
 
-    testAggregate.apply(new TestEvent());
+      testAggregate.apply(new TestEvent());
 
-    expect(testAggregate.eventHistory).toHaveLength(2);
-    expect(testAggregate.uncommittedEventHistory).toHaveLength(1);
-    expect(testAggregate.uncommittedEventHistory[0]).toBeInstanceOf(TestEvent);
-  });
+      expect(testAggregate.eventHistory).toHaveLength(2);
+      expect(testAggregate.uncommittedEventHistory).toHaveLength(1);
+      expect(testAggregate.uncommittedEventHistory[0]).toBeInstanceOf(
+        TestEvent,
+      );
+    });
 
-  it("will throw an unhandled error if no handler is defined", () => {
-    class ErrorEvent extends TestEvent {}
+    it("will throw an unhandled error if no handler is defined", () => {
+      class ErrorEvent extends TestEvent {}
 
-    expect(() => testAggregate.apply(new ErrorEvent())).toThrowError(
-      UnhandledEventError,
-    );
-  });
+      expect(() => testAggregate.apply(new ErrorEvent())).toThrowError(
+        UnhandledEventError,
+      );
+    });
 
-  it("will throw an AggregateDeletedError if an event is applied normally but the aggregate is deleted", () => {
-    testAggregate.deleted = true;
+    it("will throw an AggregateDeletedError if an event is applied normally but the aggregate is deleted", () => {
+      testAggregate.deleted = true;
 
-    expect(() => testAggregate.apply(new TestEvent())).toThrowError(
-      AggregateDeletedError,
-    );
-  });
+      expect(() => testAggregate.apply(new TestEvent())).toThrowError(
+        AggregateDeletedError,
+      );
+    });
 
-  it("will not throw an AggregateDeletedError if applied from history", () => {
-    testAggregate.deleted = true;
+    it("will not throw an AggregateDeletedError if applied from history", () => {
+      testAggregate.deleted = true;
 
-    expect(() => testAggregate.apply(new TestEvent(), true)).not.toThrowError();
+      expect(() =>
+        testAggregate.apply(new TestEvent(), true),
+      ).not.toThrowError();
+    });
   });
 
   describe("commit", () => {
@@ -135,6 +145,24 @@ describe("AggregateRoot", () => {
           $metadata: metadata,
         }),
       ]);
+    });
+  });
+
+  describe("dynamic aggregates", () => {
+    let thirdTest: ThirdTestEvent;
+
+    beforeEach(() => {
+      thirdTest = new ThirdTestEvent();
+    });
+
+    it("will throw a handler not found error for ThirdTestEvent initially", () => {
+      expect(() => testAggregate.apply(thirdTest)).toThrowError();
+    });
+
+    it("will apply a MakeDynamicEvent and then handle a ThirdTestEvent", () => {
+      testAggregate.apply(new MakeDynamicEvent());
+      testAggregate.apply(thirdTest);
+      expect(testAggregate.foo).toEqual(thirdTest.$data.foo);
     });
   });
 

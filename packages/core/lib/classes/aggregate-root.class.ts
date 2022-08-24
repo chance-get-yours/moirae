@@ -62,7 +62,8 @@ export abstract class AggregateRoot<Projection = Record<string, unknown>> {
   public apply(event: IEvent): void;
   /**
    * Apply an event to the aggregate from the database. Generally not meant to be called
-   * outside aggregate population.
+   * outside aggregate population. Will NOT call AggregateRoot.postApply if `fromHistory`
+   * is true.
    */
   public apply(event: IEvent, fromHistory: boolean): void;
   public apply(event: IEvent, fromHistory = false): void {

@@ -2,7 +2,7 @@
   "name": "@moirae/node-plugin",
   "packageManager": "yarn@3.2.0",
   "main": "dist/index.js",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "license": "MIT",
   "repository": {
     "type": "git",

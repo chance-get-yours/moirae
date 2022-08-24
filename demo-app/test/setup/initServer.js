@@ -30,8 +30,11 @@ module.exports = async () => {
         execute: () => 'Hello World'
     }
 
-    const moirae = await new MoiraePlugin({getPublisher: () => new RabbitMQPublisher(new ObservableFactory(), rabbitMQConfig, rmqConnection)})
-    .injectQueryHandler(handler, HelloQuery);
+    const moirae = new MoiraePlugin(
+        {getPublisher: () => 
+            new RabbitMQPublisher(new ObservableFactory(), rabbitMQConfig, rmqConnection)
+        })
+        .injectQueryHandler(handler, HelloQuery);
 
     return new Promise((res) => {
         const server = app.listen(0, '127.0.0.1', async () => {

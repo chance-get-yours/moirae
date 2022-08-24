@@ -42,6 +42,14 @@ export class MoiraePlugin {
     );
   }
 
+  public getCommandBus(): CommandBus {
+    return this._commandBus;
+  }
+
+  public getQueryBus(): QueryBus {
+    return this._queryBus;
+  }
+
   /**
    * Inject a command handler for use in the application
    */
@@ -84,6 +92,9 @@ export class MoiraePlugin {
     return this;
   }
 
+  /**
+   * Tear down all elements of Moirae for shutdown
+   */
   public async tearDown(): Promise<MoiraePlugin> {
     await this._commandPublisher["beforeApplicationShutdown"]?.();
     await this._queryPublisher["beforeApplicationShutdown"]?.();

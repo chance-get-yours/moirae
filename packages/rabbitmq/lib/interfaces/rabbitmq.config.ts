@@ -7,7 +7,9 @@ export interface IRabbitMQConfig extends IPublisherConfig {
    */
   amqplib: Options.Connect;
   /**
-   * Namespace root that prefixes all queues and exchanges used in the system
+   * Namespace root that prefixes all queues and exchanges used in the
+   * system. Should reflect the total system namespace rather than the `domain` of
+   * a specific system.
    */
   namespaceRoot: string;
   type: "rabbitmq";

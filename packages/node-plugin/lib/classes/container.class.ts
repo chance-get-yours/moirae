@@ -10,6 +10,9 @@ type RegisterInput =
   | RegisterCommandHandlerInput
   | RegisterQueryHandlerInput;
 
+/**
+ * Internal replacement for the @moirae/core Explorer class
+ */
 export class Container implements Omit<Explorer, "_modulesContainer"> {
   private _providers: RegisterInput[];
 

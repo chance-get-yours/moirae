@@ -17,7 +17,6 @@ export abstract class BaseBus<T extends Respondable>
 {
   protected _handlerMap: Map<string, IHandler<T>>;
   protected _status: StateTracker<ESState>;
-  private _subId: string;
 
   constructor(
     private readonly _explorer: Explorer,
@@ -83,7 +82,7 @@ export abstract class BaseBus<T extends Respondable>
         this._handlerMap.set(command.name, instance as IHandler<T>);
       }
     });
-    this._subId = this._publisher.subscribe(this.executeLocal.bind(this));
+    this._publisher.subscribe(this.executeLocal.bind(this));
     this._status.set(ESState.IDLE);
   }
 

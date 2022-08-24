@@ -2,12 +2,16 @@ import { Explorer } from "@moirae/core";
 import {
   RegisterCommandHandlerInput,
   RegisterContainerInput,
+  RegisterQueryHandlerInput,
 } from "../interfaces/register-container-input.interface";
 
-type RegisterInput = RegisterContainerInput & RegisterCommandHandlerInput;
+type RegisterInput =
+  | RegisterContainerInput
+  | RegisterCommandHandlerInput
+  | RegisterQueryHandlerInput;
 
 export class Container implements Omit<Explorer, "_modulesContainer"> {
-  private _providers: RegisterContainerInput[];
+  private _providers: RegisterInput[];
 
   constructor() {
     this._providers = [];

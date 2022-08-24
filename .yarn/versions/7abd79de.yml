@@ -1,0 +1,6 @@
+undecided:
+  - moirae
+  - "@moirae/core"
+  - "@moirae/node-plugin"
+  - "@moirae/rabbitmq"
+  - "@moirae/redis"

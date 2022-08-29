@@ -1,0 +1,5 @@
+export enum UserType {
+  CUSTOMER = "CUSTOMER",
+  MANAGER = "MANAGER",
+  UNASSIGNED = "UNASSIGNED",
+}

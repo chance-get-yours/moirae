@@ -21,7 +21,7 @@ export { StateTracker } from "./lib/classes/state-tracker.class";
 export { Apply } from "./lib/decorators/apply.decorator";
 export { CommandHandler } from "./lib/decorators/command-handler.decorator";
 export { EventHandler } from "./lib/decorators/event-handler.decorator";
-export { AddMixin } from "./lib/decorators/mixin.decorator";
+export { AddMixin, applyMixins } from "./lib/decorators/mixin.decorator";
 export { Projection } from "./lib/decorators/projection.decorator";
 export { QueryHandler } from "./lib/decorators/query-handler.decorator";
 export { RegisterType } from "./lib/decorators/register-type.decorator";

@@ -1,4 +1,4 @@
-import faker from "@faker-js/faker";
+import { faker } from "@faker-js/faker";
 import { AggregateFactory, mockAggregateFactory } from "@moirae/core";
 import { Test } from "@nestjs/testing";
 import { InventoryAggregate } from "../../inventory/aggregates/inventory.aggregate";

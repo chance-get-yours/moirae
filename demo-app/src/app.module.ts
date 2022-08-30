@@ -26,6 +26,7 @@ import { AppService } from "./app.service";
 import { ProcessOrderSaga } from "./common/sagas/process-order.saga";
 import { InventoryModule } from "./inventory/inventory.module";
 import { MoiraeWsGateway } from "./moirae-ws.gateway";
+import { UserManagementModule } from "./user-management/user-management.module";
 
 const moiraeConfigGenerator = (): IMoiraeConfig<
   ICacheConfig,
@@ -116,6 +117,7 @@ const moiraeConfigGenerator = (): IMoiraeConfig<
       type: "sqlite",
       synchronize: true,
     }),
+    UserManagementModule,
   ],
   controllers: [AppController],
   providers: [AppService, MoiraeWsGateway],

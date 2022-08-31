@@ -1228,23 +1228,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/websockets@npm:^8.4.7":
-  version: 8.4.7
-  resolution: "@nestjs/websockets@npm:8.4.7"
+"@nestjs/websockets@npm:^9.0.11":
+  version: 9.0.11
+  resolution: "@nestjs/websockets@npm:9.0.11"
   dependencies:
     iterare: 1.2.1
     object-hash: 3.0.0
     tslib: 2.4.0
   peerDependencies:
-    "@nestjs/common": ^8.0.0
-    "@nestjs/core": ^8.0.0
-    "@nestjs/platform-socket.io": ^8.0.0
+    "@nestjs/common": ^9.0.0
+    "@nestjs/core": ^9.0.0
+    "@nestjs/platform-socket.io": ^9.0.0
     reflect-metadata: ^0.1.12
     rxjs: ^7.1.0
   peerDependenciesMeta:
     "@nestjs/platform-socket.io":
       optional: true
-  checksum: 8aa5a4c85d67d6257a63816e706c5b67058dbdbc0244d8966bc37b8357e571bc019f6387c9d21ef54ec5b309046e623b5bc73dfd490b60a0a681a52b668338df
+  checksum: 1e00f5186408bc0896a5ac6f7fc17379fdc627ea6ae2c39eb321f083ad156d07d2279a91828bae1bfcc07a986ec60fbfa3f803e934a09696ce9cc7673e245af8
   languageName: node
   linkType: hard
 
@@ -3465,7 +3465,7 @@ __metadata:
     "@nestjs/schematics": ^8.0.0
     "@nestjs/testing": ^8.4.7
     "@nestjs/typeorm": ^8.0.3
-    "@nestjs/websockets": ^8.4.7
+    "@nestjs/websockets": ^9.0.11
     "@types/express": ^4.17.13
     "@types/jest": 28.1.1
     "@types/node": ^16.0.0

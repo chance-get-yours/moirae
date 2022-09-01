@@ -14,6 +14,7 @@ export class ObservableFactory {
 
   constructor() {
     this._ee = new EventEmitter();
+    this._ee.setMaxListeners(1000);
   }
 
   public get emitter(): EventEmitter {

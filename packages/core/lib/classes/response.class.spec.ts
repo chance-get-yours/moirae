@@ -23,7 +23,7 @@ function jsonify<T = unknown>(payload: T): T {
 }
 
 describe("ResponseWrapper", () => {
-  const primitives = [23, false, "hello"];
+  const primitives = [23, false, "hello", undefined, null];
 
   describe("toPlain", () => {
     it.each(primitives)(

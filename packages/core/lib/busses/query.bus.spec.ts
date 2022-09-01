@@ -67,14 +67,16 @@ describe("QueryBus", () => {
 
   describe("executeLocal", () => {
     it("will execute the handler", async () => {
-      expect(await bus["executeLocal"](new TestQuery())).toStrictEqual(
+      expect(await bus["executeLocal"](new TestQuery(), {})).toStrictEqual(
         new QueryResponse(),
       );
     });
 
     it("will catch, log, and return an error in execution", async () => {
       jest.spyOn(handler, "execute").mockRejectedValue(new Error());
-      expect(await bus["executeLocal"](new TestQuery())).toBeInstanceOf(Error);
+      expect(await bus["executeLocal"](new TestQuery(), {})).toBeInstanceOf(
+        Error,
+      );
     });
   });
 
@@ -87,6 +89,24 @@ describe("QueryBus", () => {
 
       query.$responseKey = expect.any(String);
       expect(publishSpy).toHaveBeenCalledWith(query);
+    });
+
+    it("will handle the case of an undefined response", async () => {
+      jest.spyOn(handler, "execute").mockResolvedValue(undefined);
+      const query = new TestQuery();
+
+      expect(await bus.execute(query)).toStrictEqual(undefined);
+
+      query.$responseKey = expect.any(String);
+    });
+
+    it("will handle the case of a null response", async () => {
+      jest.spyOn(handler, "execute").mockResolvedValue(null);
+      const query = new TestQuery();
+
+      expect(await bus.execute(query)).toStrictEqual(null);
+
+      query.$responseKey = expect.any(String);
     });
   });
 });

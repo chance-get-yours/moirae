@@ -118,12 +118,7 @@ export abstract class BasePublisher<Evt extends Respondable>
   public subscribe(handlerFn: (event: Evt) => Promise<any> | any): string {
     return this._distributor.subscribe(async (evt: Evt) => {
       const res = await handlerFn(evt);
-      if (
-        !!res &&
-        !evt.$disableResponse &&
-        !!evt.$responseKey &&
-        !!evt.$routingKey
-      ) {
+      if (!evt.$disableResponse && !!evt.$responseKey && !!evt.$routingKey) {
         const response = new ResponseWrapper(
           res,
           evt.$responseKey,

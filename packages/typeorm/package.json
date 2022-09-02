@@ -2,7 +2,7 @@
   "name": "@moirae/typeorm",
   "packageManager": "yarn@3.2.0",
   "main": "dist/index.js",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "license": "MIT",
   "repository": {
     "type": "git",

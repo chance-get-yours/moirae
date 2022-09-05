@@ -1150,9 +1150,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/platform-ws@npm:^9.0.5":
-  version: 9.0.5
-  resolution: "@nestjs/platform-ws@npm:9.0.5"
+"@nestjs/platform-ws@npm:^9.0.11":
+  version: 9.0.11
+  resolution: "@nestjs/platform-ws@npm:9.0.11"
   dependencies:
     tslib: 2.4.0
     ws: 8.8.1
@@ -1160,7 +1160,7 @@ __metadata:
     "@nestjs/common": ^9.0.0
     "@nestjs/websockets": ^9.0.0
     rxjs: ^7.1.0
-  checksum: c2361a4b52950eb3c6520936fa82bccd59df8b24880d26828b0f6871fd81fd42f47d6e1d4600e4e8d96bb3525ab35eb3e73f329ff6f787056ae2ce39e8852a61
+  checksum: 235b907cb32da7d5e0b40c41c6b55d7e23f529537cca0e11a9abd21cf667d1173e06eee4455e5251bac991121ff03be2e7f63246fe1143d56aeb17fb05d2a68c
   languageName: node
   linkType: hard
 
@@ -3461,7 +3461,7 @@ __metadata:
     "@nestjs/config": ^2.1.0
     "@nestjs/core": ^8.4.7
     "@nestjs/platform-express": ^9.0.11
-    "@nestjs/platform-ws": ^9.0.5
+    "@nestjs/platform-ws": ^9.0.11
     "@nestjs/schematics": ^8.0.0
     "@nestjs/testing": ^9.0.11
     "@nestjs/typeorm": ^8.0.3

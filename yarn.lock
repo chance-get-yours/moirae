@@ -5,6 +5,17 @@ __metadata:
   version: 6
   cacheKey: 8
 
+"@acuminous/bitsyntax@npm:^0.1.2":
+  version: 0.1.2
+  resolution: "@acuminous/bitsyntax@npm:0.1.2"
+  dependencies:
+    buffer-more-ints: ~1.0.0
+    debug: ^4.3.4
+    safe-buffer: ~5.1.2
+  checksum: d2f9f30dfc8ddb10673e4780fa997fbe43fe3b6cd996b9930803d1b3c5db42fd964f9dab225f9e1cc06a2a22832b5a04e37076f2d283365768c7bd9718642db4
+  languageName: node
+  linkType: hard
+
 "@ampproject/remapping@npm:^2.1.0":
   version: 2.2.0
   resolution: "@ampproject/remapping@npm:2.2.0"
@@ -964,7 +975,7 @@ __metadata:
     "@types/amqplib": ^0.8.2
     "@types/jest": ^28.1.1
     "@types/node": ^17.0.31
-    amqplib: ^0.10.0
+    amqplib: ^0.10.3
     class-transformer: ^0.5.1
     jest: ^28.1.1
     reflect-metadata: ^0.1.13
@@ -2395,15 +2406,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"amqplib@npm:^0.10.0":
-  version: 0.10.0
-  resolution: "amqplib@npm:0.10.0"
+"amqplib@npm:^0.10.3":
+  version: 0.10.3
+  resolution: "amqplib@npm:0.10.3"
   dependencies:
-    bitsyntax: ~0.1.0
+    "@acuminous/bitsyntax": ^0.1.2
     buffer-more-ints: ~1.0.0
     readable-stream: 1.x >=1.1.9
     url-parse: ~1.5.10
-  checksum: d4273af395e4fbb0c0c17b9b93ef6f8e64394788a01e9722f785ef17e6062c4caad07824d610e879fcd2e4098e317492a876ae26cd4a08aa956c927050ab6cb3
+  checksum: 999f0fae748fd29d4d4ec1067c389ecb8cb03f9c060f854a4cab757e911e9690da643419553b0291ec45693996a959b87ec87ae7e72268b818be0e284e60da7a
   languageName: node
   linkType: hard
 
@@ -2689,17 +2700,6 @@ __metadata:
   version: 2.2.0
   resolution: "binary-extensions@npm:2.2.0"
   checksum: ccd267956c58d2315f5d3ea6757cf09863c5fc703e50fbeb13a7dc849b812ef76e3cf9ca8f35a0c48498776a7478d7b4a0418e1e2b8cb9cb9731f2922aaad7f8
-  languageName: node
-  linkType: hard
-
-"bitsyntax@npm:~0.1.0":
-  version: 0.1.0
-  resolution: "bitsyntax@npm:0.1.0"
-  dependencies:
-    buffer-more-ints: ~1.0.0
-    debug: ~2.6.9
-    safe-buffer: ~5.1.2
-  checksum: b9f1548eeea950a59021b58bd2caf0bc402de94e2797fa274ed5a57dfc54240a9acbf2115b342e698c7e398949c6a13e87fb9da15388e9d007411080dd195f07
   languageName: node
   linkType: hard
 
@@ -3381,7 +3381,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:2.6.9, debug@npm:~2.6.9":
+"debug@npm:2.6.9":
   version: 2.6.9
   resolution: "debug@npm:2.6.9"
   dependencies:

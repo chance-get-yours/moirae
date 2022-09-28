@@ -3486,7 +3486,7 @@ __metadata:
     rxjs: ^7.2.0
     source-map-support: ^0.5.20
     sqlite: ^4.1.1
-    sqlite3: ^5.0.9
+    sqlite3: ^5.1.1
     supertest: ^6.2.4
     ts-jest: 28.0.8
     ts-loader: ^9.3.1
@@ -7427,9 +7427,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sqlite3@npm:^5.0.9":
-  version: 5.0.9
-  resolution: "sqlite3@npm:5.0.9"
+"sqlite3@npm:^5.1.1":
+  version: 5.1.1
+  resolution: "sqlite3@npm:5.1.1"
   dependencies:
     "@mapbox/node-pre-gyp": ^1.0.0
     node-addon-api: ^4.2.0
@@ -7443,7 +7443,7 @@ __metadata:
   peerDependenciesMeta:
     node-gyp:
       optional: true
-  checksum: 8e76caaea3e9eba91940442c827bb88ede9d2a9494b4609982fe93f01fd21aee6922476e9b92947daa2128d257f806085da9608f84448191c0dee68bac2db577
+  checksum: aaedb724b3b3df8c5a5f2df0b1691b8d0c19a93407c792796ef736f173198c28fdd31ddb414e7bd52d82717233abb183fc161ab515b081d6f640c92ce84d3b7a
   languageName: node
   linkType: hard
 

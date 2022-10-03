@@ -42,6 +42,6 @@
     "test": "env JEST_ROOT_DIR=redis jest --config=../../jest.config.js"
   },
   "dependencies": {
-    "redis": "^4.2.0"
+    "redis": "^4.3.1"
   }
 }

@@ -11,7 +11,7 @@ export class AccountService {
   ) {}
 
   public findOne(id: Account["id"]): Promise<Account> {
-    return this.repository.findOne(id);
+    return this.repository.findOne({ where: { id } });
   }
 
   public save(account: IAccount): Promise<Account> {

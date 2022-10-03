@@ -12,7 +12,7 @@ export class OrderService {
   ) {}
 
   public findOne(id: Order["id"]): Promise<Order> {
-    return this.repository.findOne(id);
+    return this.repository.findOne({ where: { id } });
   }
 
   public async remove(id: Order["id"]): Promise<Order> {

@@ -22,10 +22,10 @@
     "@nestjs/core": "^8.4.7"
   },
   "dependencies": {
-    "@nestjs/typeorm": "^8.0.4",
+    "@nestjs/typeorm": "^9.0.1",
     "class-transformer": "^0.5.1",
     "object-hash": "^3.0.0",
-    "typeorm": "^0.3.6"
+    "typeorm": "^0.3.10"
   },
   "devDependencies": {
     "@faker-js/faker": "^6.3.1",

@@ -12,11 +12,11 @@ export class InventoryService {
   ) {}
 
   public async nameExists(name: string): Promise<boolean> {
-    return (await this.repository.count({ name })) > 0;
+    return (await this.repository.count({ where: { name } })) > 0;
   }
 
   public findOne(id: Inventory["id"]): Promise<Inventory> {
-    return this.repository.findOne(id);
+    return this.repository.findOne({ where: { id } });
   }
 
   public save(account: IInventory): Promise<Inventory> {

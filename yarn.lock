@@ -918,7 +918,7 @@ __metadata:
   dependencies:
     "@faker-js/faker": ^6.3.1
     "@nestjs/common": ^8.4.7
-    "@nestjs/core": ^8.4.7
+    "@nestjs/core": ^9.1.2
     "@nestjs/testing": ^9.0.11
     "@swc/core": ^1.2.205
     "@swc/jest": ^0.2.21
@@ -934,7 +934,7 @@ __metadata:
     typescript: ^4.6.4
   peerDependencies:
     "@nestjs/common": ^8.4.7
-    "@nestjs/core": ^8.4.7
+    "@nestjs/core": ^9.1.2
     reflect-metadata: ^0.1.13
   languageName: unknown
   linkType: soft
@@ -968,7 +968,7 @@ __metadata:
   dependencies:
     "@faker-js/faker": ^6.3.1
     "@nestjs/common": ^8.4.7
-    "@nestjs/core": ^8.4.7
+    "@nestjs/core": ^9.1.2
     "@nestjs/testing": ^9.0.11
     "@swc/core": ^1.2.205
     "@swc/jest": ^0.2.21
@@ -985,7 +985,7 @@ __metadata:
   peerDependencies:
     "@moirae/core": "*"
     "@nestjs/common": ^8.4.7
-    "@nestjs/core": ^8.4.7
+    "@nestjs/core": ^9.1.2
   languageName: unknown
   linkType: soft
 
@@ -995,7 +995,7 @@ __metadata:
   dependencies:
     "@faker-js/faker": ^6.3.1
     "@nestjs/common": ^8.4.7
-    "@nestjs/core": ^8.4.7
+    "@nestjs/core": ^9.1.2
     "@nestjs/testing": ^9.0.11
     "@swc/core": ^1.2.205
     "@swc/jest": ^0.2.21
@@ -1010,7 +1010,7 @@ __metadata:
   peerDependencies:
     "@moirae/core": "*"
     "@nestjs/common": ^8.4.7
-    "@nestjs/core": ^8.4.7
+    "@nestjs/core": ^9.1.2
   languageName: unknown
   linkType: soft
 
@@ -1020,7 +1020,7 @@ __metadata:
   dependencies:
     "@faker-js/faker": ^6.3.1
     "@nestjs/common": ^8.4.7
-    "@nestjs/core": ^8.4.7
+    "@nestjs/core": ^9.1.2
     "@nestjs/testing": ^9.0.11
     "@nestjs/typeorm": ^9.0.1
     "@swc/core": ^1.2.205
@@ -1039,7 +1039,7 @@ __metadata:
   peerDependencies:
     "@moirae/core": "*"
     "@nestjs/common": ^8.4.7
-    "@nestjs/core": ^8.4.7
+    "@nestjs/core": ^9.1.2
   languageName: unknown
   linkType: soft
 
@@ -1116,9 +1116,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/core@npm:^8.4.7":
-  version: 8.4.7
-  resolution: "@nestjs/core@npm:8.4.7"
+"@nestjs/core@npm:^9.1.2":
+  version: 9.1.2
+  resolution: "@nestjs/core@npm:9.1.2"
   dependencies:
     "@nuxtjs/opencollective": 0.3.2
     fast-safe-stringify: 2.1.1
@@ -1126,12 +1126,12 @@ __metadata:
     object-hash: 3.0.0
     path-to-regexp: 3.2.0
     tslib: 2.4.0
-    uuid: 8.3.2
+    uuid: 9.0.0
   peerDependencies:
-    "@nestjs/common": ^8.0.0
-    "@nestjs/microservices": ^8.0.0
-    "@nestjs/platform-express": ^8.0.0
-    "@nestjs/websockets": ^8.0.0
+    "@nestjs/common": ^9.0.0
+    "@nestjs/microservices": ^9.0.0
+    "@nestjs/platform-express": ^9.0.0
+    "@nestjs/websockets": ^9.0.0
     reflect-metadata: ^0.1.12
     rxjs: ^7.1.0
   peerDependenciesMeta:
@@ -1141,7 +1141,7 @@ __metadata:
       optional: true
     "@nestjs/websockets":
       optional: true
-  checksum: 58d18b04e03cdae4b06e06f1a60705cdbe2e81824e0a85d0be422cf8dbd39c263287196b85939718659d7eeedc2856f29744487931dbe5c2695fcd374a5fbe40
+  checksum: fe5cbe04c4393abc47e12373dd4a98ef3b1412bd2627710d72b96b907d5a0c22aa9278e1b3569fc9b90964619b13f5d9248a4f833bdf51876ca027ff3ed328f6
   languageName: node
   linkType: hard
 
@@ -3459,7 +3459,7 @@ __metadata:
     "@nestjs/cli": ^9.0.0
     "@nestjs/common": ^8.4.7
     "@nestjs/config": ^2.1.0
-    "@nestjs/core": ^8.4.7
+    "@nestjs/core": ^9.1.2
     "@nestjs/platform-express": ^9.0.11
     "@nestjs/platform-ws": ^9.1.2
     "@nestjs/schematics": ^8.0.0
@@ -8265,6 +8265,15 @@ __metadata:
   bin:
     uuid: dist/bin/uuid
   checksum: 5575a8a75c13120e2f10e6ddc801b2c7ed7d8f3c8ac22c7ed0c7b2ba6383ec0abda88c905085d630e251719e0777045ae3236f04c812184b7c765f63a70e58df
+  languageName: node
+  linkType: hard
+
+"uuid@npm:9.0.0":
+  version: 9.0.0
+  resolution: "uuid@npm:9.0.0"
+  bin:
+    uuid: dist/bin/uuid
+  checksum: 8dd2c83c43ddc7e1c71e36b60aea40030a6505139af6bee0f382ebcd1a56f6cd3028f7f06ffb07f8cf6ced320b76aea275284b224b002b289f89fe89c389b028
   languageName: node
   linkType: hard
 

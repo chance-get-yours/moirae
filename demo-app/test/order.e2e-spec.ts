@@ -88,7 +88,6 @@ describe("Order", () => {
         .expect(({ body }) => {
           expect(body.streamId).toBeDefined();
           expect(body.correlationId).toBeDefined();
-          expect(body.success).toEqual(true);
           correlationId = body.correlationId;
           client.send(
             JSON.stringify({
@@ -166,7 +165,6 @@ describe("Order", () => {
         .expect(({ body }) => {
           expect(body.streamId).toBeDefined();
           expect(body.correlationId).toBeDefined();
-          expect(body.success).toEqual(true);
           correlationId = body.correlationId;
           client.send(
             JSON.stringify({

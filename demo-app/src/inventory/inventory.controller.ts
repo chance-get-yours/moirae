@@ -13,7 +13,6 @@ export class InventoryController {
   ): Promise<CommandResponse> {
     return this.commandBus.execute<CommandResponse>(
       new CreateInventoryCommand(input),
-      { throwError: true },
     );
   }
 }

@@ -953,7 +953,7 @@ __metadata:
     object-hash: ^3.0.0
     reflect-metadata: ^0.1.13
     rimraf: ^3.0.2
-    rxjs: ^7.5.5
+    rxjs: ^7.5.7
     typescript: ^4.6.4
   peerDependencies:
     "@nestjs/common": ^8.4.7
@@ -977,7 +977,7 @@ __metadata:
     object-hash: ^3.0.0
     reflect-metadata: ^0.1.13
     rimraf: ^3.0.2
-    rxjs: ^7.5.5
+    rxjs: ^7.5.7
     typescript: ^4.6.4
   peerDependencies:
     "@moirae/core": "*"
@@ -1003,7 +1003,7 @@ __metadata:
     jest: ^28.1.1
     reflect-metadata: ^0.1.13
     rimraf: ^3.0.2
-    rxjs: ^7.5.5
+    rxjs: ^7.5.7
     typescript: ^4.6.4
   peerDependencies:
     "@moirae/core": "*"
@@ -1028,7 +1028,7 @@ __metadata:
     redis: ^4.3.1
     reflect-metadata: ^0.1.13
     rimraf: ^3.0.2
-    rxjs: ^7.5.5
+    rxjs: ^7.5.7
     typescript: ^4.6.4
   peerDependencies:
     "@moirae/core": "*"
@@ -1056,7 +1056,7 @@ __metadata:
     object-hash: ^3.0.0
     reflect-metadata: ^0.1.13
     rimraf: ^3.0.2
-    rxjs: ^7.5.5
+    rxjs: ^7.5.7
     typeorm: ^0.3.10
     typescript: ^4.6.4
   peerDependencies:
@@ -3506,7 +3506,7 @@ __metadata:
     prettier: ^2.7.1
     reflect-metadata: ^0.1.13
     rimraf: ^3.0.2
-    rxjs: ^7.2.0
+    rxjs: ^7.5.7
     source-map-support: ^0.5.20
     sqlite: ^4.1.1
     sqlite3: ^5.1.1
@@ -7139,12 +7139,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rxjs@npm:^7.2.0, rxjs@npm:^7.5.5":
+"rxjs@npm:^7.5.5":
   version: 7.5.5
   resolution: "rxjs@npm:7.5.5"
   dependencies:
     tslib: ^2.1.0
   checksum: e034f60805210cce756dd2f49664a8108780b117cf5d0e2281506e9e6387f7b4f1532d974a8c8b09314fa7a16dd2f6cff3462072a5789672b5dcb45c4173f3c6
+  languageName: node
+  linkType: hard
+
+"rxjs@npm:^7.5.7":
+  version: 7.5.7
+  resolution: "rxjs@npm:7.5.7"
+  dependencies:
+    tslib: ^2.1.0
+  checksum: edabcdb73b0f7e0f5f6e05c2077aff8c52222ac939069729704357d6406438acca831c24210db320aba269e86dbe1a400f3769c89101791885121a342fb15d9c
   languageName: node
   linkType: hard
 

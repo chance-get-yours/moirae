@@ -7139,16 +7139,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rxjs@npm:^7.5.5":
-  version: 7.5.5
-  resolution: "rxjs@npm:7.5.5"
-  dependencies:
-    tslib: ^2.1.0
-  checksum: e034f60805210cce756dd2f49664a8108780b117cf5d0e2281506e9e6387f7b4f1532d974a8c8b09314fa7a16dd2f6cff3462072a5789672b5dcb45c4173f3c6
-  languageName: node
-  linkType: hard
-
-"rxjs@npm:^7.5.7":
+"rxjs@npm:^7.5.5, rxjs@npm:^7.5.7":
   version: 7.5.7
   resolution: "rxjs@npm:7.5.7"
   dependencies:

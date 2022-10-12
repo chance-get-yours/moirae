@@ -5,6 +5,7 @@ import {
   Event,
   IEvent,
   ObservableFactory,
+  PublisherRole,
   PUBLISHER_OPTIONS,
 } from "@moirae/core";
 import { Test } from "@nestjs/testing";
@@ -50,6 +51,7 @@ describe("RabbitMQPublisher", () => {
     }).compile();
 
     publisher = await module.resolve(RabbitMQPublisher);
+    publisher.role = PublisherRole.QUERY_BUS;
     connection = module.get(RabbitMQConnection);
   });
 

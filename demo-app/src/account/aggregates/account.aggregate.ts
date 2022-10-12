@@ -1,6 +1,7 @@
 import { AggregateRoot, Apply, Projection, Rollback } from "@moirae/core";
 import { AccountCreatedEvent } from "../events/account-created.event";
 import { FundsDepositedEvent } from "../events/funds-deposited.event";
+import { FundsWithdrawalFailedEvent } from "../events/funds-withdrawal-failed.event";
 import { FundsWithdrawnEvent } from "../events/funds-withdrawn.event";
 import { RollbackFundsWithdrawnEvent } from "../events/rollback-funds-withdrawn.event";
 import { IAccount } from "../interfaces/account.interface";
@@ -91,5 +92,11 @@ export class AccountAggregate
   @Apply(RollbackOrderCreatedEvent)
   handleRollbackOrderCreated(event: RollbackOrderCreatedEvent): void {
     this.orders = this.orders.filter((order) => order.id !== event.$data.id);
+  }
+
+  // Void sink
+  @Apply(FundsWithdrawalFailedEvent)
+  void() {
+    // stub function for non-processing events
   }
 }

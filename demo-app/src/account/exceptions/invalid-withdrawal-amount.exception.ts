@@ -3,7 +3,7 @@ import { FundsWithdrawnEvent } from "../events/funds-withdrawn.event";
 
 @RegisterType()
 export class InvalidWithdrawalAmountException extends Error {
-  constructor(event: FundsWithdrawnEvent) {
+  constructor(public readonly event: FundsWithdrawnEvent) {
     super(
       `Cannot withdraw ${event.$data.funds} from account ${event.$streamId}`,
     );

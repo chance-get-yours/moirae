@@ -33,6 +33,7 @@ describe("Inventory", () => {
 
   describe("create inventory", () => {
     let id: string;
+    let failedId: string;
     const input: CreateInventoryInput = {
       name: faker.lorem.word(),
       price: 4,
@@ -45,7 +46,6 @@ describe("Inventory", () => {
         .send(input)
         .expect(201)
         .expect(({ body }) => {
-          // expect(body).toHaveProperty("success", true);
           expect(body).toHaveProperty("streamId", expect.any(String));
           id = body.streamId;
         });
@@ -69,9 +69,18 @@ describe("Inventory", () => {
       await request(app.getHttpServer())
         .post("/inventory")
         .send(input)
-        .expect(201);
+        .expect(201)
+        .then((res) => {
+          failedId = res.body.streamId;
+        });
 
-      // TODO: Add wait for event
+      expect(failedId).toBeDefined();
+    });
+
+    it("will return a 404 for a failed creation", () => {
+      return request(app.getHttpServer())
+        .get(`/inventory/${failedId}`)
+        .expect(404);
     });
   });
 });

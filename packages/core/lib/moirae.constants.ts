@@ -6,6 +6,7 @@ export const CORRELATION_PREFIX = "moirae__correlation";
 export const EVENT_METADATA = "__event_handler__";
 export const EVENT_PUBSUB_ENGINE = "__event-pubsub-engine__";
 export const EVENT_SOURCE = "__event_source__";
+export const EXCEPTION_METADATA = "__command_filter__";
 export const MANAGER = "__manager__";
 export const PROJECTION_METADATA = "__aggregate_projection__";
 export const PUBLISHER = "__publisher__";

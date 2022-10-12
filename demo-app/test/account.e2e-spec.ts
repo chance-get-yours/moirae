@@ -6,6 +6,7 @@ import * as request from "supertest";
 import { CreateAccountInput } from "../src/account/dto/create-account.input";
 import { DepositFundsInput } from "../src/account/dto/deposit-funds.input";
 import { WithdrawFundsInput } from "../src/account/dto/withdraw-funds.input";
+import { FundsWithdrawalFailedEvent } from "../src/account/events/funds-withdrawal-failed.event";
 import { FundsWithdrawnEvent } from "../src/account/events/funds-withdrawn.event";
 import { AppModule } from "../src/app.module";
 import { Subscriptions } from "../src/moirae-ws.gateway";
@@ -180,10 +181,6 @@ describe("Account", () => {
           data: { id },
         }),
       );
-      // await wsClient.awaitMatch(
-      //   (event) =>
-      //     event.$name === "AccountCreatedEvent" && event.$streamId === id,
-      // );
     });
 
     it("will fail if account would go to a negative balance", async () => {
@@ -197,7 +194,12 @@ describe("Account", () => {
         .send(input)
         .expect(200);
 
-      // TODO: add check for command failed event
+      const event = await wsClient.awaitMatch(
+        (event) =>
+          event.$streamId === id &&
+          event.$name === FundsWithdrawalFailedEvent.name,
+      );
+      expect(event).toBeDefined();
     });
 
     it("will remove funds from the account", async () => {

@@ -95,7 +95,7 @@ const moiraeConfigGenerator = (): IMoiraeConfig<
       break;
   }
   Logger.log(
-    `Start app with\n \tCACHE: ${config.cache.type}\n \tPUBLISHER: ${config.publisher.type}\n \tSTORE: ${config.store.type}`,
+    `Start app with\n \tCACHE_TYPE: ${config.cache.type}\n \tPUB_TYPE: ${config.publisher.type}\n \tSTORE_TYPE: ${config.store.type}`,
   );
   if (typeormImports.length > 0)
     config.imports.push(TypeOrmModule.forFeature(typeormImports));

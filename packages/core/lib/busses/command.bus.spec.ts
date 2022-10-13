@@ -7,10 +7,11 @@ import { CommandResponse } from "../classes/command-response.class";
 import { Explorer } from "../classes/explorer.class";
 import { SagaManager } from "../classes/saga-manager.class";
 import { CommandHandler } from "../decorators/command-handler.decorator";
-import { RegisterType } from "../decorators/register-type.decorator";
-import { CommandExecutionError } from "../exceptions/command-execution.error";
+import { MoiraeFilter } from "../decorators/moirae-filter.decorator";
 import { ObservableFactory } from "../factories/observable.factory";
 import { ICommandHandler } from "../interfaces/command-handler.interface";
+import { ICommand } from "../interfaces/command.interface";
+import { IMoiraeFilter } from "../interfaces/moirae-filter.interface";
 import { IPublisher } from "../interfaces/publisher.interface";
 import {
   CACHE_PROVIDER,
@@ -20,17 +21,9 @@ import {
 import { MemoryPublisher } from "../publishers/memory.publisher";
 import { CommandBus } from "./command.bus";
 
-@RegisterType()
-class RegisteredError extends Error {
+class TestError extends Error {
   constructor() {
-    super("This is an error");
-    this.name = this.constructor.name;
-  }
-}
-
-class UnregisteredError extends Error {
-  constructor() {
-    super("This is an unregistered error");
+    super();
     this.name = this.constructor.name;
   }
 }
@@ -43,11 +36,19 @@ class TestHandler implements ICommandHandler<TestCommand> {
   }
 }
 
+@MoiraeFilter(TestError)
+class TestFilter implements IMoiraeFilter<TestError> {
+  catch(command: ICommand, error: TestError): void | Promise<void> {
+    // pass
+  }
+}
+
 describe("CommandBus", () => {
   let bus: CommandBus;
   let handler: TestHandler;
   let publisher: IPublisher;
   let sagaManager: SagaManager;
+  let errorHandler: TestFilter;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -55,6 +56,7 @@ describe("CommandBus", () => {
         CommandBus,
         Explorer,
         ObservableFactory,
+        TestFilter,
         SagaManager,
         {
           provide: CACHE_PROVIDER,
@@ -76,6 +78,7 @@ describe("CommandBus", () => {
     handler = module.get(TestHandler);
     publisher = bus["_publisher"];
     sagaManager = module.get(SagaManager);
+    errorHandler = module.get(TestFilter);
 
     await publisher["onApplicationBootstrap"]();
     sagaManager.onApplicationBootstrap();
@@ -89,22 +92,21 @@ describe("CommandBus", () => {
   describe("executeLocal", () => {
     it("will execute the handler", async () => {
       const handlerSpy = jest.spyOn(handler, "execute");
-      await bus["executeLocal"](new TestCommand());
+      expect(await bus["executeLocal"](new TestCommand())).toBeUndefined();
+
       expect(handlerSpy).toHaveBeenCalledWith(expect.any(TestCommand), {
         streamId: new TestCommand().STREAM_ID,
       });
     });
 
-    it("will catch, log, and return an error in execution", async () => {
+    it("will catch, log, and handle an error in execution", async () => {
       const command = new TestCommand();
       command.$correlationId = faker.datatype.uuid();
 
-      jest.spyOn(handler, "execute").mockRejectedValue(new Error());
-      const rollbackSpy = jest.spyOn(sagaManager, "rollbackSagas");
-
-      const response = await bus["executeLocal"](command);
-      expect(response.error).toBeInstanceOf(Error);
-      expect(rollbackSpy).toHaveBeenCalledWith(command.$correlationId);
+      jest.spyOn(handler, "execute").mockRejectedValue(new TestError());
+      const errorSpy = jest.spyOn(errorHandler, "catch");
+      await bus["executeLocal"](command);
+      expect(errorSpy).toHaveBeenCalled();
     });
   });
 
@@ -122,26 +124,6 @@ describe("CommandBus", () => {
           $correlationId: expect.any(String),
         }),
       );
-    });
-
-    it("will handle an error that is registered", async () => {
-      jest.spyOn(handler, "execute").mockRejectedValue(new RegisteredError());
-
-      const command = new TestCommand();
-
-      await expect(() =>
-        bus.execute(command, { throwError: true }),
-      ).rejects.toBeInstanceOf(RegisteredError);
-    });
-
-    it("will handle an error that is unregistered", async () => {
-      jest.spyOn(handler, "execute").mockRejectedValue(new UnregisteredError());
-
-      const command = new TestCommand();
-
-      await expect(() =>
-        bus.execute(command, { throwError: true }),
-      ).rejects.toBeInstanceOf(CommandExecutionError);
     });
   });
 });

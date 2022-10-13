@@ -9,9 +9,7 @@ export class CreateAccountCommand extends Command implements ICommand {
   @Type(() => CreateAccountInput)
   public readonly input: CreateAccountInput;
 
-  public get STREAM_ID() {
-    return undefined;
-  }
+  public STREAM_ID: string;
 
   constructor(input: CreateAccountInput) {
     super();

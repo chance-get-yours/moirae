@@ -1,4 +1,5 @@
 import { RegisterType } from "../decorators/register-type.decorator";
+import { ICommand } from "../interfaces/command.interface";
 
 /**
  * Response from a command execution. Reading the result should happen
@@ -10,10 +11,15 @@ export class CommandResponse {
    * Transactional id generated as part of execution
    */
   correlationId: string;
-  error?: Error;
   /**
    * StreamID of the aggregate processed
    */
-  streamId?: string;
-  success: boolean;
+  streamId: string;
+
+  public static fromCommand(command: ICommand): CommandResponse {
+    const response = new CommandResponse();
+    response.correlationId = command.$correlationId;
+    response.streamId = command.STREAM_ID;
+    return response;
+  }
 }

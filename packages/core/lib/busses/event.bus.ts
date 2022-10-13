@@ -62,7 +62,6 @@ export class EventBus {
         .map((command) => {
           if (event.$correlationId)
             command.$correlationId = event.$correlationId;
-          command.$disableResponse = true;
           return this.commandBus.publish(command);
         }),
     );

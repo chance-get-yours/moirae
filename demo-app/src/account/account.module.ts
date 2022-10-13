@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { AccountController } from "./account.controller";
 import { AccountService } from "./account.service";
+import { InvalidWithdrawalAmountFilter } from "./filters/invalid-withdrawl-amount.filter";
 import { AccountCreatedHandler } from "./handlers/account-created.handler";
 import { CreateAccountHandler } from "./handlers/create-account.handler";
 import { CreateOrderHandler } from "./handlers/create-order.handler";
@@ -26,6 +27,7 @@ import { Account } from "./projections/account.entity";
     FindAccountByIdHandler,
     FundsDepositedHandler,
     FundsWithdrawnHandler,
+    InvalidWithdrawalAmountFilter,
     RollbackAccountHandler,
     WithdrawFundsHandler,
   ],

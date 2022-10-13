@@ -1,5 +1,6 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { InventoryCreatedFailedFilter } from "./filters/inventory-created-failed.filter";
 import { CreateInventoryHandler } from "./handlers/create-inventory.handler";
 import { InventoryCreatedHandler } from "./handlers/inventory-created.handler";
 import { InventoryRemovedHandler } from "./handlers/inventory-removed.handler";
@@ -15,6 +16,7 @@ import { Inventory } from "./projections/inventory.entity";
     InventoryCreatedHandler,
     InventoryRemovedHandler,
     InventoryService,
+    InventoryCreatedFailedFilter,
     RemoveInventoryHandler,
   ],
   controllers: [InventoryController],

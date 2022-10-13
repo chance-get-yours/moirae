@@ -52,29 +52,31 @@ export class RabbitMQPublisher
     this._WORK_EXCHANGE = `${this.publisherOptions.namespaceRoot}-workExchange-${this.role}`;
     this._WORK_QUEUE = `${this.publisherOptions.namespaceRoot}-work-${this.role}-${this.publisherOptions.domain}`;
 
-    this._responseChannel =
-      await this.rabbitMQConnection.connection.createChannel();
-    await this._responseChannel.assertExchange(
-      this._RESPONSE_EXCHANGE,
-      "direct",
-    );
-    await this._responseChannel.assertQueue(this._RESPONSE_QUEUE, {
-      exclusive: true,
-    });
-    await this._responseChannel.bindQueue(
-      this._RESPONSE_QUEUE,
-      this._RESPONSE_EXCHANGE,
-      this.publisherOptions.nodeId,
-    );
+    if (this.role === PublisherRole.QUERY_BUS) {
+      this._responseChannel =
+        await this.rabbitMQConnection.connection.createChannel();
+      await this._responseChannel.assertExchange(
+        this._RESPONSE_EXCHANGE,
+        "direct",
+      );
+      await this._responseChannel.assertQueue(this._RESPONSE_QUEUE, {
+        exclusive: true,
+      });
+      await this._responseChannel.bindQueue(
+        this._RESPONSE_QUEUE,
+        this._RESPONSE_EXCHANGE,
+        this.publisherOptions.nodeId,
+      );
 
-    ({ consumerTag: this._responseConsumer } =
-      await this._responseChannel.consume(this._RESPONSE_QUEUE, (msg) => {
-        // TODO: break into own function
-        if (msg === null) return;
-        const response = this.parseResponse(msg.content.toString());
-        this._responseMap.set(response.responseKey, response);
-        this._responseChannel.ack(msg);
-      }));
+      ({ consumerTag: this._responseConsumer } =
+        await this._responseChannel.consume(this._RESPONSE_QUEUE, (msg) => {
+          // TODO: break into own function
+          if (msg === null) return;
+          const response = this.parseResponse(msg.content.toString());
+          this._responseMap.set(response.responseKey, response);
+          this._responseChannel.ack(msg);
+        }));
+    }
 
     this._workChannel =
       await this.rabbitMQConnection.connection.createChannel();
@@ -133,12 +135,14 @@ export class RabbitMQPublisher
     await this._workChannel.cancel(this._workConsumer);
     await this._workChannel.close();
 
-    await this._responseChannel.unbindQueue(
-      this._RESPONSE_QUEUE,
-      this._RESPONSE_EXCHANGE,
-      this.publisherOptions.nodeId,
-    );
-    await this._responseChannel.cancel(this._responseConsumer);
-    await this._responseChannel.close();
+    if (this._responseChannel) {
+      await this._responseChannel.unbindQueue(
+        this._RESPONSE_QUEUE,
+        this._RESPONSE_EXCHANGE,
+        this.publisherOptions.nodeId,
+      );
+      await this._responseChannel.cancel(this._responseConsumer);
+      await this._responseChannel.close();
+    }
   }
 }

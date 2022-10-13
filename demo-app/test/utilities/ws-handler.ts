@@ -25,7 +25,7 @@ export class WsHandler {
   }
 
   private awaitOpen(): Promise<void> {
-    if (!this._socket.OPEN)
+    if (this._socket.readyState.toString() !== WebSocket.OPEN.toString())
       return new Promise<void>((res) => {
         this._socket.onopen = function () {
           res();

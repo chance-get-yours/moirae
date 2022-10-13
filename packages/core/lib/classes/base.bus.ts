@@ -1,4 +1,5 @@
 import { Logger, OnApplicationBootstrap } from "@nestjs/common";
+import { InstanceWrapper } from "@nestjs/core/injector/instance-wrapper";
 import { randomUUID } from "crypto";
 import { HandlerNotFoundError } from "../exceptions/handler-not-found.error";
 import { ObservableFactory } from "../factories/observable.factory";
@@ -40,7 +41,6 @@ export abstract class BaseBus<T extends Respondable>
     const { throwError = false } = options;
     const _key = randomUUID();
     event.$responseKey = _key;
-    if (!event.$executionDomain) event.$executionDomain = "default";
     await this._publisher.publish(event);
     const res = await this._publisher.awaitResponse(_key);
     if (res.payload instanceof Error && throwError) throw res.payload;
@@ -69,6 +69,12 @@ export abstract class BaseBus<T extends Respondable>
     return res;
   }
 
+  protected handleInstanceImport(
+    instance: InstanceWrapper<any>["instance"],
+  ): void {
+    // stub
+  }
+
   onApplicationBootstrap() {
     this._status.set(ESState.PREPARING);
     this._explorer.getProviders().forEach((provider) => {
@@ -81,12 +87,14 @@ export abstract class BaseBus<T extends Respondable>
         );
         this._handlerMap.set(command.name, instance as IHandler<T>);
       }
+      this.handleInstanceImport(instance);
     });
     this._publisher.subscribe(this.executeLocal.bind(this));
     this._status.set(ESState.IDLE);
   }
 
   public publish(event: T): Promise<void> {
+    if (!event.$executionDomain) event.$executionDomain = "default";
     return this._publisher.publish(event);
   }
 }

@@ -2,15 +2,18 @@ import { faker } from "@faker-js/faker";
 import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { WsAdapter } from "@nestjs/platform-ws";
 import { Test, TestingModule } from "@nestjs/testing";
+import { randomUUID } from "crypto";
 import * as request from "supertest";
 import { AppModule } from "../src/app.module";
 import { CreateInventoryInput } from "../src/inventory/dto/create-inventory.input";
+import { InventoryCreatedFailedEvent } from "../src/inventory/events/inventory-created-failed.event";
 import { InventoryCreatedEvent } from "../src/inventory/events/inventory-created.event";
 import { WsHandler } from "./utilities/ws-handler";
 
 describe("Inventory", () => {
   let app: INestApplication;
   let client: WsHandler;
+  let requestorId: string;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -24,6 +27,13 @@ describe("Inventory", () => {
     await app.init();
 
     client = await WsHandler.fromApp(app);
+    requestorId = randomUUID();
+    client.send(
+      JSON.stringify({
+        event: "@moirae/requestor",
+        data: { requestorId },
+      }),
+    );
   });
 
   afterAll(async () => {
@@ -33,6 +43,7 @@ describe("Inventory", () => {
 
   describe("create inventory", () => {
     let id: string;
+    let failedId: string;
     const input: CreateInventoryInput = {
       name: faker.lorem.word(),
       price: 4,
@@ -45,7 +56,6 @@ describe("Inventory", () => {
         .send(input)
         .expect(201)
         .expect(({ body }) => {
-          expect(body).toHaveProperty("success", true);
           expect(body).toHaveProperty("streamId", expect.any(String));
           id = body.streamId;
         });
@@ -68,8 +78,23 @@ describe("Inventory", () => {
     it("will not allow two inventory with the same name", async () => {
       await request(app.getHttpServer())
         .post("/inventory")
+        .set("x-requestorId", requestorId)
         .send(input)
-        .expect(500);
+        .expect(201)
+        .then((res) => {
+          failedId = res.body.streamId;
+        });
+
+      expect(failedId).toBeDefined();
+    });
+
+    it("will emit a failed event", async () => {
+      const event = await client.awaitMatch(
+        (event) =>
+          event.$streamId === failedId &&
+          event.$name === InventoryCreatedFailedEvent.name,
+      );
+      expect(event).toBeDefined();
     });
   });
 });

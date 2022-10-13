@@ -1,6 +1,8 @@
 import { faker } from "@faker-js/faker";
+import { IEvent } from "@moirae/core";
 import { AccountCreatedEvent } from "../events/account-created.event";
 import { FundsDepositedEvent } from "../events/funds-deposited.event";
+import { FundsWithdrawalFailedEvent } from "../events/funds-withdrawal-failed.event";
 import { FundsWithdrawnEvent } from "../events/funds-withdrawn.event";
 import { OrderCreatedEvent } from "../order/events/order-created.event";
 import { AccountAggregate } from "./account.aggregate";
@@ -115,5 +117,20 @@ describe("AccountAggregate", () => {
       aggregate.apply(rollbackEvent);
       expect(aggregate.orders).toHaveLength(0);
     });
+  });
+
+  describe("Void Sink", () => {
+    const voidEvents = [
+      (id: string) => new FundsWithdrawalFailedEvent(id, { funds: 100 }),
+    ];
+
+    it.each(voidEvents)(
+      "will apply but do nothing for %s event",
+      (eventMaker: (id: string) => IEvent) => {
+        const initial = { ...aggregate };
+        aggregate.apply(eventMaker(aggregate.id));
+        expect(aggregate).toMatchObject(initial);
+      },
+    );
   });
 });

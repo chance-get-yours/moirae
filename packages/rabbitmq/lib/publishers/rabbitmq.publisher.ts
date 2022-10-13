@@ -135,12 +135,14 @@ export class RabbitMQPublisher
     await this._workChannel.cancel(this._workConsumer);
     await this._workChannel.close();
 
-    await this._responseChannel.unbindQueue(
-      this._RESPONSE_QUEUE,
-      this._RESPONSE_EXCHANGE,
-      this.publisherOptions.nodeId,
-    );
-    await this._responseChannel.cancel(this._responseConsumer);
-    await this._responseChannel.close();
+    if (this._responseChannel) {
+      await this._responseChannel.unbindQueue(
+        this._RESPONSE_QUEUE,
+        this._RESPONSE_EXCHANGE,
+        this.publisherOptions.nodeId,
+      );
+      await this._responseChannel.cancel(this._responseConsumer);
+      await this._responseChannel.close();
+    }
   }
 }

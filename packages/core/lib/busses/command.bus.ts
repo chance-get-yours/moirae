@@ -44,18 +44,6 @@ export class CommandBus extends BaseBus<ICommand> {
     // const response = await super.execute<CommandResponse>(command, options);
     await this._publisher.publish(command);
     return CommandResponse.fromCommand(command) as unknown as TRes;
-
-    // if (options?.throwError && response.error) {
-    //   const ErrorConstructor = ConstructorStorage.getInstance().get(
-    //     response.error.name,
-    //   );
-    //   if (ErrorConstructor) {
-    //     throw plainToInstance(ErrorConstructor, response.error);
-    //   } else {
-    //     throw new CommandExecutionError(command);
-    //   }
-    // }
-    // return response as unknown as TRes;
   }
 
   protected async executeLocal(command: ICommand): Promise<void> {
@@ -67,12 +55,12 @@ export class CommandBus extends BaseBus<ICommand> {
       streamId: _streamId,
     } as ICommandHandlerOptions);
 
-    // this._status.set(ESState.IDLE);
     if (res instanceof Error) {
       const rollbackCommands = await this._sagaManager.rollbackSagas(
         command.$correlationId,
       );
       await Promise.all(rollbackCommands.map((c) => this.publish(c)));
+      console.log(this._errorHandlers.get(res.name));
       if (this._errorHandlers.has(res.name))
         await this._errorHandlers.get(res.name).catch(res);
     }

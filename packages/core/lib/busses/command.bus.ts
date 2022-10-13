@@ -60,10 +60,10 @@ export class CommandBus extends BaseBus<ICommand> {
         command.$correlationId,
       );
       await Promise.all(rollbackCommands.map((c) => this.publish(c)));
-      console.log(this._errorHandlers.get(res.name));
       if (this._errorHandlers.has(res.name))
         await this._errorHandlers.get(res.name).catch(res);
     }
+    this._status.set(ESState.IDLE);
   }
 
   protected handleInstanceImport(instance: InstanceWrapper["instance"]) {

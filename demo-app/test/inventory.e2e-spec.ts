@@ -2,15 +2,18 @@ import { faker } from "@faker-js/faker";
 import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { WsAdapter } from "@nestjs/platform-ws";
 import { Test, TestingModule } from "@nestjs/testing";
+import { randomUUID } from "crypto";
 import * as request from "supertest";
 import { AppModule } from "../src/app.module";
 import { CreateInventoryInput } from "../src/inventory/dto/create-inventory.input";
+import { InventoryCreatedFailedEvent } from "../src/inventory/events/inventory-created-failed.event";
 import { InventoryCreatedEvent } from "../src/inventory/events/inventory-created.event";
 import { WsHandler } from "./utilities/ws-handler";
 
 describe("Inventory", () => {
   let app: INestApplication;
   let client: WsHandler;
+  let requestorId: string;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -24,6 +27,13 @@ describe("Inventory", () => {
     await app.init();
 
     client = await WsHandler.fromApp(app);
+    requestorId = randomUUID();
+    client.send(
+      JSON.stringify({
+        event: "@moirae/requestor",
+        data: { requestorId },
+      }),
+    );
   });
 
   afterAll(async () => {
@@ -68,6 +78,7 @@ describe("Inventory", () => {
     it("will not allow two inventory with the same name", async () => {
       await request(app.getHttpServer())
         .post("/inventory")
+        .set("x-requestorId", requestorId)
         .send(input)
         .expect(201)
         .then((res) => {
@@ -77,10 +88,13 @@ describe("Inventory", () => {
       expect(failedId).toBeDefined();
     });
 
-    it("will return a 404 for a failed creation", () => {
-      return request(app.getHttpServer())
-        .get(`/inventory/${failedId}`)
-        .expect(404);
+    it("will emit a failed event", async () => {
+      const event = await client.awaitMatch(
+        (event) =>
+          event.$streamId === failedId &&
+          event.$name === InventoryCreatedFailedEvent.name,
+      );
+      expect(event).toBeDefined();
     });
   });
 });

@@ -41,7 +41,6 @@ export class CommandBus extends BaseBus<ICommand> {
   ): Promise<TRes> {
     if (!command.$correlationId) command.$correlationId = randomUUID();
     if (!command.STREAM_ID) command.STREAM_ID = randomUUID();
-    // const response = await super.execute<CommandResponse>(command, options);
     await this._publisher.publish(command);
     return CommandResponse.fromCommand(command) as unknown as TRes;
   }
@@ -61,7 +60,7 @@ export class CommandBus extends BaseBus<ICommand> {
       );
       await Promise.all(rollbackCommands.map((c) => this.publish(c)));
       if (this._errorHandlers.has(res.name))
-        await this._errorHandlers.get(res.name).catch(res);
+        await this._errorHandlers.get(res.name).catch(command, res);
     }
     this._status.set(ESState.IDLE);
   }

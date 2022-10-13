@@ -1,3 +1,5 @@
+import { ICommand } from "./command.interface";
+
 export interface IMoiraeFilter<T extends Error> {
-  catch(error: T): void | Promise<void>;
+  catch(command: ICommand, error: T): void | Promise<void>;
 }

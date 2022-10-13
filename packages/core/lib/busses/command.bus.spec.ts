@@ -10,6 +10,7 @@ import { CommandHandler } from "../decorators/command-handler.decorator";
 import { MoiraeFilter } from "../decorators/moirae-filter.decorator";
 import { ObservableFactory } from "../factories/observable.factory";
 import { ICommandHandler } from "../interfaces/command-handler.interface";
+import { ICommand } from "../interfaces/command.interface";
 import { IMoiraeFilter } from "../interfaces/moirae-filter.interface";
 import { IPublisher } from "../interfaces/publisher.interface";
 import {
@@ -37,7 +38,7 @@ class TestHandler implements ICommandHandler<TestCommand> {
 
 @MoiraeFilter(TestError)
 class TestFilter implements IMoiraeFilter<TestError> {
-  catch(error: TestError): void | Promise<void> {
+  catch(command: ICommand, error: TestError): void | Promise<void> {
     // pass
   }
 }

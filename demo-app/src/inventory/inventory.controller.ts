@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Get,
+  Headers,
   NotFoundException,
   Param,
   Post,
@@ -22,9 +23,10 @@ export class InventoryController {
   @Post()
   async createInventory(
     @Body() input: CreateInventoryInput,
+    @Headers("x-requestorId") requestorId: string,
   ): Promise<CommandResponse> {
     return this.commandBus.execute<CommandResponse>(
-      new CreateInventoryCommand(input),
+      new CreateInventoryCommand(input, requestorId),
     );
   }
 

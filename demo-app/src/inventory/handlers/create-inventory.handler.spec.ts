@@ -42,11 +42,14 @@ describe("CreateInventoryHandler", () => {
 
   describe("execute", () => {
     it("will create a new inventory item", async () => {
-      const command = new CreateInventoryCommand({
-        name: faker.lorem.word(),
-        quantity: 4,
-        price: 1,
-      });
+      const command = new CreateInventoryCommand(
+        {
+          name: faker.lorem.word(),
+          quantity: 4,
+          price: 1,
+        },
+        faker.datatype.uuid(),
+      );
       command.$correlationId = faker.datatype.uuid();
 
       (service.nameExists as jest.Mock).mockResolvedValueOnce(false);

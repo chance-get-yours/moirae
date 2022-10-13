@@ -11,8 +11,8 @@ export class CreateInventoryCommand extends Command implements ICommand {
 
   public STREAM_ID: string;
 
-  constructor(input: CreateInventoryInput) {
-    super();
+  constructor(input: CreateInventoryInput, requestorId: string) {
+    super({ requestorId });
     this.input = input;
   }
 }

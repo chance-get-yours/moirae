@@ -1,4 +1,5 @@
 import { EventBus, IMoiraeFilter, MoiraeFilter } from "@moirae/core";
+import { WithdrawFundsCommand } from "../commands/withdraw-funds.command";
 import { FundsWithdrawalFailedEvent } from "../events/funds-withdrawal-failed.event";
 import { InvalidWithdrawalAmountException } from "../exceptions/invalid-withdrawal-amount.exception";
 
@@ -8,7 +9,10 @@ export class InvalidWithdrawalAmountFilter
 {
   constructor(private readonly eventBus: EventBus) {}
 
-  catch(error: InvalidWithdrawalAmountException): void | Promise<void> {
+  catch(
+    _: WithdrawFundsCommand,
+    error: InvalidWithdrawalAmountException,
+  ): void | Promise<void> {
     return this.eventBus.publish(FundsWithdrawalFailedEvent.fromError(error));
   }
 }

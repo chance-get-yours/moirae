@@ -82,13 +82,13 @@ describe("QueryBus", () => {
 
   describe("execute", () => {
     it("will call executeLocal on query and return a response", async () => {
+      const localSpy = jest.spyOn(bus, "executeLocal" as never);
       const publishSpy = jest.spyOn(publisher, "publish");
       const query = new TestQuery();
 
       expect(await bus.execute(query)).toStrictEqual(new QueryResponse());
-
-      query.$responseKey = expect.any(String);
-      expect(publishSpy).toHaveBeenCalledWith(query);
+      expect(localSpy).toHaveBeenCalledWith(query, {});
+      expect(publishSpy).not.toHaveBeenCalled();
     });
 
     it("will handle the case of an undefined response", async () => {
@@ -107,6 +107,17 @@ describe("QueryBus", () => {
       expect(await bus.execute(query)).toStrictEqual(null);
 
       query.$responseKey = expect.any(String);
+    });
+
+    it("will call IPublisher.publish for queries in a separate domain", async () => {
+      const publishSpy = jest.spyOn(publisher, "publish");
+      const query = new TestQuery();
+      query.$executionDomain = "hello world";
+
+      expect(await bus.execute(query)).toStrictEqual(new QueryResponse());
+
+      query.$responseKey = expect.any(String);
+      expect(publishSpy).toHaveBeenCalledWith(query);
     });
   });
 });

@@ -1,9 +1,7 @@
 import { Logger, OnApplicationBootstrap } from "@nestjs/common";
 import { InstanceWrapper } from "@nestjs/core/injector/instance-wrapper";
-import { randomUUID } from "crypto";
 import { HandlerNotFoundError } from "../exceptions/handler-not-found.error";
 import { ObservableFactory } from "../factories/observable.factory";
-import { ExecuteOptions } from "../interfaces/execute-options.interface";
 import { IHandler } from "../interfaces/handler.interface";
 import { IPublisher } from "../interfaces/publisher.interface";
 import { Respondable } from "../interfaces/respondable.interface";
@@ -29,22 +27,6 @@ export abstract class BaseBus<T extends Respondable>
     this._status = this._observableFactory.generateStateTracker<ESState>(
       ESState.NOT_READY,
     );
-  }
-
-  /**
-   * Execute the provided command or query on a remote system
-   */
-  public async execute<TRes>(
-    event: T,
-    options: ExecuteOptions = {},
-  ): Promise<TRes> {
-    const { throwError = false } = options;
-    const _key = randomUUID();
-    event.$responseKey = _key;
-    await this._publisher.publish(event);
-    const res = await this._publisher.awaitResponse(_key);
-    if (res.payload instanceof Error && throwError) throw res.payload;
-    return res.payload as TRes;
   }
 
   /**

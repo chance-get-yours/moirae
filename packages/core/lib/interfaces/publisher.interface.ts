@@ -7,6 +7,7 @@ import { IEventLike } from "./event-like.interface";
  * the bus. This defines the interactions the bus has with the publisher.
  */
 export interface IPublisher<Evt = IEventLike> {
+  domain: string;
   /**
    * Await the response from a remote system
    */

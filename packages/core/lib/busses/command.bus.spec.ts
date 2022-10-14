@@ -111,9 +111,22 @@ describe("CommandBus", () => {
   });
 
   describe("execute", () => {
-    it("will call executeLocal on command and return a response", async () => {
+    it("will call executeLocal on a local command and return a response", async () => {
+      const command = new TestCommand();
+      command.$executionDomain = publisher.domain;
+
+      const localSpy = jest.spyOn(bus, "executeLocal" as never);
+      const publishSpy = jest.spyOn(publisher, "publish");
+
+      expect(await bus.execute(command)).toBeInstanceOf(CommandResponse);
+      expect(localSpy).toHaveBeenCalledWith(command);
+      expect(publishSpy).not.toHaveBeenCalled();
+    });
+
+    it("will call IPublisher.publish for commands in a different domain", async () => {
       const publishSpy = jest.spyOn(publisher, "publish");
       const command = new TestCommand();
+      command.$executionDomain = "hello world";
 
       expect(await bus.execute(command)).toBeInstanceOf(CommandResponse);
 

@@ -41,7 +41,12 @@ export class CommandBus extends BaseBus<ICommand> {
   ): Promise<TRes> {
     if (!command.$correlationId) command.$correlationId = randomUUID();
     if (!command.STREAM_ID) command.STREAM_ID = randomUUID();
-    await this._publisher.publish(command);
+    if (!command.$executionDomain) command.$executionDomain = "default";
+    if (command.$executionDomain === this._publisher.domain) {
+      await this.executeLocal(command);
+    } else {
+      await this._publisher.publish(command);
+    }
     return CommandResponse.fromCommand(command) as unknown as TRes;
   }
 

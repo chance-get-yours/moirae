@@ -28,6 +28,8 @@ export { QueryHandler } from "./lib/decorators/query-handler.decorator";
 export { RegisterType } from "./lib/decorators/register-type.decorator";
 export { Rollback } from "./lib/decorators/rollback.decorator";
 export { SagaStep } from "./lib/decorators/saga-step.decorator";
+// errors
+export { InvalidConfigurationError } from "./lib/exceptions/invalid-configuration.error";
 // factories
 export { AggregateFactory } from "./lib/factories/aggregate.factory";
 export { ObservableFactory } from "./lib/factories/observable.factory";

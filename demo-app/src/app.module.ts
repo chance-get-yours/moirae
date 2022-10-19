@@ -5,7 +5,6 @@ import {
   IStoreConfig,
   MoiraeModule,
 } from "@moirae/core";
-import { IRabbitMQConfig } from "@moirae/rabbitmq";
 import { IRedisCacheConfig } from "@moirae/redis";
 import {
   CACHE_ENTITIES,
@@ -30,18 +29,34 @@ import { UserManagementModule } from "./user-management/user-management.module";
 
 const moiraeConfigGenerator = (): IMoiraeConfig<
   ICacheConfig,
+  IStoreConfig,
   IPublisherConfig,
-  IStoreConfig
+  IPublisherConfig,
+  IPublisherConfig
 > => {
-  const config: IMoiraeConfig<ICacheConfig, IPublisherConfig, IStoreConfig> = {
+  const config: IMoiraeConfig<
+    ICacheConfig,
+    IStoreConfig,
+    IPublisherConfig,
+    IPublisherConfig,
+    IPublisherConfig
+  > = {
     cache: {
       type: "memory",
     },
     externalTypes: [InternalServerErrorException, NotFoundException],
     imports: [],
     publisher: {
+      command: {
+        type: "memory",
+      },
+      event: {
+        type: "memory",
+      },
       nodeId: "demo-node",
-      type: "memory",
+      query: {
+        type: "memory",
+      },
     },
     store: {
       type: "memory",
@@ -73,8 +88,7 @@ const moiraeConfigGenerator = (): IMoiraeConfig<
 
   switch (process.env.PUB_TYPE) {
     case "rabbitmq":
-      (config.publisher as IRabbitMQConfig) = {
-        ...config.publisher,
+      const rmqConfig = {
         amqplib: {
           hostname: process.env.RABBIT_MQ_HOST,
           password: process.env.RABBIT_MQ_PASS,
@@ -84,6 +98,24 @@ const moiraeConfigGenerator = (): IMoiraeConfig<
         namespaceRoot: "__demo-app__",
         type: "rabbitmq",
       };
+      config.publisher = {
+        ...config.publisher,
+        command: rmqConfig as IPublisherConfig,
+        event: rmqConfig as IPublisherConfig,
+        query: rmqConfig as IPublisherConfig,
+      };
+      break;
+    // (config.publisher as IRabbitMQConfig) = {
+    //   ...config.publisher,
+    //   amqplib: {
+    //     hostname: process.env.RABBIT_MQ_HOST,
+    //     password: process.env.RABBIT_MQ_PASS,
+    //     port: +process.env.RABBIT_MQ_PORT,
+    //     username: process.env.RABBIT_MQ_USER,
+    //   },
+    //   namespaceRoot: "__demo-app__",
+    //   type: "rabbitmq",
+    // };
   }
 
   switch (process.env.STORE_TYPE) {
@@ -95,7 +127,7 @@ const moiraeConfigGenerator = (): IMoiraeConfig<
       break;
   }
   Logger.log(
-    `Start app with\n \tCACHE_TYPE: ${config.cache.type}\n \tPUB_TYPE: ${config.publisher.type}\n \tSTORE_TYPE: ${config.store.type}`,
+    `Start app with\n \tCACHE_TYPE: ${config.cache.type}\n \tPUB_TYPE: ${config.publisher.command.type}\n \tSTORE_TYPE: ${config.store.type}`,
   );
   if (typeormImports.length > 0)
     config.imports.push(TypeOrmModule.forFeature(typeormImports));

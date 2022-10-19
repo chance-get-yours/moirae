@@ -25,10 +25,10 @@ export class MoiraePlugin {
   private readonly _observableFactory: ObservableFactory;
 
   constructor(config: MoiraePluginConfig) {
-    this._commandPublisher = config.getPublisher();
+    this._commandPublisher = config.getCommandPublisher();
     this._container = new Container();
     this._observableFactory = new ObservableFactory();
-    this._queryPublisher = config.getPublisher();
+    this._queryPublisher = config.getQueryPublisher();
 
     this._commandBus = new CommandBus(
       this._container,

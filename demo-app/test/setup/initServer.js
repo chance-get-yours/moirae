@@ -19,20 +19,32 @@ module.exports = async () => {
             port: +process.env.RABBIT_MQ_PORT,
             username: process.env.RABBIT_MQ_USER,
           },
-        domain: 'second_app',
         namespaceRoot: "__demo-app__",
-        nodeId: 'second_app',
         type: "rabbitmq",
     }
 
-    const rmqConnection = new RabbitMQConnection(rabbitMQConfig);
+    const publisherConfig = {
+        command: rabbitMQConfig,
+        domain: 'second_app',
+        event: rabbitMQConfig,
+        nodeId: 'second_app',
+        query: rabbitMQConfig
+    }
+
+    const rmqConnection = new RabbitMQConnection(publisherConfig);
+
     const handler = {
         execute: () => 'Hello World'
     }
 
     const moirae = new MoiraePlugin(
-        {getPublisher: () => 
-            new RabbitMQPublisher(new ObservableFactory(), rabbitMQConfig, rmqConnection)
+        {
+            getCommandPublisher: () => 
+                new RabbitMQPublisher(new ObservableFactory(), publisherConfig, rmqConnection),
+            getEventPublisher: () => 
+                new RabbitMQPublisher(new ObservableFactory(), publisherConfig, rmqConnection),
+            getQueryPublisher: () => 
+                new RabbitMQPublisher(new ObservableFactory(), publisherConfig, rmqConnection)
         })
         .injectQueryHandler(handler, HelloQuery);
 

@@ -1,4 +1,4 @@
-import { PUBLISHER_OPTIONS } from "@moirae/core";
+import { InvalidConfigurationError, PUBLISHER_OPTIONS } from "@moirae/core";
 import {
   Inject,
   Injectable,
@@ -7,14 +7,15 @@ import {
   OnModuleInit,
 } from "@nestjs/common";
 import { connect, Connection } from "amqplib";
-import { IRabbitMQConfig } from "../interfaces/rabbitmq.config";
+import { IRabbitMQPublisherConfig } from "../interfaces/rabbitmq-publisher.config";
 
 @Injectable()
 export class RabbitMQConnection implements OnModuleInit, OnApplicationShutdown {
   private _connection: Connection;
 
   constructor(
-    @Inject(PUBLISHER_OPTIONS) private readonly config: IRabbitMQConfig,
+    @Inject(PUBLISHER_OPTIONS)
+    private readonly config: IRabbitMQPublisherConfig,
   ) {}
 
   /**
@@ -28,7 +29,14 @@ export class RabbitMQConnection implements OnModuleInit, OnApplicationShutdown {
    * @internal
    */
   public async onModuleInit() {
-    this._connection = await connect(this.config.amqplib);
+    const amqplibConfig = [
+      this.config.command,
+      this.config.event,
+      this.config.query,
+    ].find((c) => !!c.amqplib);
+    if (!amqplibConfig)
+      throw new InvalidConfigurationError("Missing amqplib configuration");
+    this._connection = await connect(amqplibConfig.amqplib);
   }
 
   /**

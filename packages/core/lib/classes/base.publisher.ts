@@ -61,6 +61,9 @@ export abstract class BasePublisher<Evt extends Respondable>
     return `${this._uuid}:${EVENT_KEY}`;
   }
 
+  /**
+   * Get specific configuration given the publisher role
+   */
   protected getRoleConfig<T extends IPublisherConfig>(): T {
     switch (this.role) {
       case COMMAND_PUBLISHER:

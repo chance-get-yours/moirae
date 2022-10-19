@@ -21,7 +21,9 @@ export interface IMoiraeConfig<
    */
   externalTypes?: ClassConstructor<unknown>[];
   /**
-   * Publisher provides messaging and communication for Commands, Events, and Queries
+   * Publisher provides messaging and communication for Commands, Events, and Queries. This
+   * can be specialized for each distribution type, having a different publisher configuration
+   * for each of Commands, Events, and Queries.
    */
   publisher?: IPublisherMeta & {
     command: TCommand;

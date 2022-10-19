@@ -15,7 +15,6 @@ import {
   COMMAND_PUBLISHER,
   ESState,
   EXCEPTION_METADATA,
-  PublisherRole,
 } from "../moirae.constants";
 
 /**
@@ -32,7 +31,7 @@ export class CommandBus extends BaseBus<ICommand> {
     private readonly _sagaManager: SagaManager,
   ) {
     super(explorer, COMMAND_METADATA, observableFactory, publisher);
-    this._publisher.role = PublisherRole.COMMAND_BUS;
+    this._publisher.role = COMMAND_PUBLISHER;
     this._errorHandlers = new Map();
   }
 

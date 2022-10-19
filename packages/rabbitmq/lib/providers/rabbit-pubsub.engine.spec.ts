@@ -1,5 +1,9 @@
 import { faker } from "@faker-js/faker";
-import { ObservableFactory, PUBLISHER_OPTIONS } from "@moirae/core";
+import {
+  IPublisherMeta,
+  ObservableFactory,
+  PUBLISHER_OPTIONS,
+} from "@moirae/core";
 import { Test } from "@nestjs/testing";
 import { Channel } from "amqplib";
 import { IRabbitMQConfig } from "../interfaces/rabbitmq.config";
@@ -13,11 +17,9 @@ describe("RabbitPubSubEngine", () => {
   let connection: RabbitMQConnection;
   let engine: RabbitPubSubEngine;
 
-  const options: IRabbitMQConfig = {
-    amqplib: {},
-    namespaceRoot: "__testing__",
+  const options: IPublisherMeta & { event: IRabbitMQConfig } = {
+    event: { amqplib: {}, namespaceRoot: "__testing__", type: "rabbitmq" },
     nodeId: "__testing__",
-    type: "rabbitmq",
   };
 
   beforeEach(async () => {

@@ -5,12 +5,13 @@ import {
   Event,
   IEvent,
   ObservableFactory,
-  PublisherRole,
   PUBLISHER_OPTIONS,
+  QUERY_PUBLISHER,
 } from "@moirae/core";
 import { Test } from "@nestjs/testing";
 import { Channel, Message } from "amqplib";
 import { EventEmitter } from "events";
+import { IRabbitMQPublisherConfig } from "../interfaces/rabbitmq-publisher.config";
 import { IRabbitMQConfig } from "../interfaces/rabbitmq.config";
 import { RabbitMQConnection } from "../providers/rabbitmq.connection";
 import { createMockChannel } from "../testing/channel.mock";
@@ -27,11 +28,16 @@ describe("RabbitMQPublisher", () => {
   let publisher: RabbitMQPublisher;
   let connection: RabbitMQConnection;
 
-  const options: IRabbitMQConfig = {
-    amqplib: {},
-    namespaceRoot: "__testing__",
+  const options: IRabbitMQPublisherConfig = {
+    command: {} as IRabbitMQConfig,
+    event: {} as IRabbitMQConfig,
+    query: {
+      amqplib: {},
+      namespaceRoot: "__testing__",
+      type: "rabbitmq",
+    },
+    domain: "default",
     nodeId: "__testing__",
-    type: "rabbitmq",
   };
 
   beforeEach(async () => {
@@ -51,7 +57,7 @@ describe("RabbitMQPublisher", () => {
     }).compile();
 
     publisher = await module.resolve(RabbitMQPublisher);
-    publisher.role = PublisherRole.QUERY_BUS;
+    publisher.role = QUERY_PUBLISHER;
     connection = module.get(RabbitMQConnection);
   });
 

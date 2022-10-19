@@ -4,7 +4,6 @@ import {
   IEvent,
   IEventSource,
   IPublisher,
-  PublisherRole,
 } from "@moirae/core";
 import { Inject, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -23,7 +22,7 @@ export class TypeORMStore
     private readonly repository: Repository<EventStore>,
   ) {
     super();
-    this.publisher.role = PublisherRole.EVENT_STORE;
+    this.publisher.role = EVENT_PUBLISHER;
   }
 
   public async appendToStream(

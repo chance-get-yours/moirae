@@ -67,7 +67,6 @@ export {
   EVENT_PUBLISHER,
   EVENT_PUBSUB_ENGINE,
   EVENT_SOURCE,
-  PublisherRole,
   PUBLISHER_OPTIONS,
   QUERY_PUBLISHER,
 } from "./lib/moirae.constants";

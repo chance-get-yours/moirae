@@ -2,14 +2,16 @@ import {
   AsyncMap,
   BasePublisher,
   ESState,
+  EVENT_PUBLISHER,
   IEventLike,
   IPublisher,
   ObservableFactory,
-  PublisherRole,
   PUBLISHER_OPTIONS,
+  QUERY_PUBLISHER,
 } from "@moirae/core";
 import { Inject, Injectable, Scope } from "@nestjs/common";
 import { Channel, Message } from "amqplib";
+import { IRabbitMQPublisherConfig } from "../interfaces/rabbitmq-publisher.config";
 import { IRabbitMQConfig } from "../interfaces/rabbitmq.config";
 import { RabbitMQConnection } from "../providers/rabbitmq.connection";
 
@@ -28,11 +30,11 @@ export class RabbitMQPublisher
   private _WORK_EXCHANGE: string;
   private _WORK_QUEUE: string;
 
-  protected publisherOptions: IRabbitMQConfig;
+  protected publisherOptions: IRabbitMQPublisherConfig;
 
   constructor(
     observableFactory: ObservableFactory,
-    @Inject(PUBLISHER_OPTIONS) publisherOptions: IRabbitMQConfig,
+    @Inject(PUBLISHER_OPTIONS) publisherOptions: IRabbitMQPublisherConfig,
     private readonly rabbitMQConnection: RabbitMQConnection,
   ) {
     super(observableFactory, publisherOptions);
@@ -47,12 +49,13 @@ export class RabbitMQPublisher
   }
 
   protected async handleBootstrap(): Promise<void> {
-    this._RESPONSE_EXCHANGE = `${this.publisherOptions.namespaceRoot}-responseExchange-${this.role}`;
-    this._RESPONSE_QUEUE = `${this.publisherOptions.namespaceRoot}-responses-${this.role}-${this.publisherOptions.nodeId}`;
-    this._WORK_EXCHANGE = `${this.publisherOptions.namespaceRoot}-workExchange-${this.role}`;
-    this._WORK_QUEUE = `${this.publisherOptions.namespaceRoot}-work-${this.role}-${this.publisherOptions.domain}`;
+    const config = this.getRoleConfig<IRabbitMQConfig>();
+    this._RESPONSE_EXCHANGE = `${config.namespaceRoot}-responseExchange-${this.role}`;
+    this._RESPONSE_QUEUE = `${config.namespaceRoot}-responses-${this.role}-${this.publisherOptions.nodeId}`;
+    this._WORK_EXCHANGE = `${config.namespaceRoot}-workExchange-${this.role}`;
+    this._WORK_QUEUE = `${config.namespaceRoot}-work-${this.role}-${this.publisherOptions.domain}`;
 
-    if (this.role === PublisherRole.QUERY_BUS) {
+    if (this.role === QUERY_PUBLISHER) {
       this._responseChannel =
         await this.rabbitMQConnection.connection.createChannel();
       await this._responseChannel.assertExchange(
@@ -83,7 +86,7 @@ export class RabbitMQPublisher
     await this._workChannel.prefetch(1);
     await this._workChannel.assertExchange(
       this._WORK_EXCHANGE,
-      this.role === PublisherRole.EVENT_STORE ? "fanout" : "topic",
+      this.role === EVENT_PUBLISHER ? "fanout" : "topic",
     );
     await this._workChannel.assertQueue(this._WORK_QUEUE);
     await this._workChannel.bindQueue(

@@ -5,7 +5,7 @@ import {
 import { randomUUID } from "crypto";
 import { AsyncMap } from "../classes/async-map.class";
 import { ObservableFactory } from "../factories/observable.factory";
-import { IPublisherConfig } from "../interfaces/publisher-config.interface";
+import { IPublisherMeta } from "../interfaces/publisher-config.interface";
 import { Respondable } from "../interfaces/respondable.interface";
 import { EventProcessor } from "../mixins/event-processor.mixin";
 import { ESState, PublisherRole } from "../moirae.constants";
@@ -31,7 +31,7 @@ export abstract class BasePublisher<Evt extends Respondable>
 
   constructor(
     observableFactory: ObservableFactory,
-    protected readonly publisherOptions: IPublisherConfig,
+    protected readonly publisherOptions: IPublisherMeta,
   ) {
     super();
     this._uuid = randomUUID();

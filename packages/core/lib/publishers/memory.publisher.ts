@@ -3,7 +3,7 @@ import { BasePublisher } from "../classes/base.publisher";
 import { Queue } from "../classes/queue.class";
 import { ObservableFactory } from "../factories/observable.factory";
 import { IEventLike } from "../interfaces/event-like.interface";
-import { IPublisherConfig } from "../interfaces/publisher-config.interface";
+import { IPublisherMeta } from "../interfaces/publisher-config.interface";
 import { IPublisher } from "../interfaces/publisher.interface";
 import { ESState, PUBLISHER_OPTIONS } from "../moirae.constants";
 
@@ -16,7 +16,7 @@ export class MemoryPublisher<Evt extends IEventLike>
 
   constructor(
     observableFactory: ObservableFactory,
-    @Inject(PUBLISHER_OPTIONS) publisherOptions: IPublisherConfig,
+    @Inject(PUBLISHER_OPTIONS) publisherOptions: IPublisherMeta,
   ) {
     super(observableFactory, publisherOptions);
   }

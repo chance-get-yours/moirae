@@ -15,7 +15,7 @@ import { IMoiraeFilter } from "../interfaces/moirae-filter.interface";
 import { IPublisher } from "../interfaces/publisher.interface";
 import {
   CACHE_PROVIDER,
-  PUBLISHER,
+  COMMAND_PUBLISHER,
   PUBLISHER_OPTIONS,
 } from "../moirae.constants";
 import { MemoryPublisher } from "../publishers/memory.publisher";
@@ -63,7 +63,7 @@ describe("CommandBus", () => {
           useClass: MemoryCache,
         },
         {
-          provide: PUBLISHER,
+          provide: COMMAND_PUBLISHER,
           useClass: MemoryPublisher,
         },
         {

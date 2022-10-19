@@ -19,9 +19,10 @@ import { IEventSource } from "../interfaces/event-source.interface";
 import { IEvent } from "../interfaces/event.interface";
 import {
   CACHE_PROVIDER,
+  COMMAND_PUBLISHER,
+  EVENT_PUBLISHER,
   EVENT_PUBSUB_ENGINE,
   EVENT_SOURCE,
-  PUBLISHER,
   PUBLISHER_OPTIONS,
 } from "../moirae.constants";
 import { MemoryPublisher } from "../publishers/memory.publisher";
@@ -78,7 +79,11 @@ describe("EventBus", () => {
           useClass: MemoryStore,
         },
         {
-          provide: PUBLISHER,
+          provide: EVENT_PUBLISHER,
+          useClass: MemoryPublisher,
+        },
+        {
+          provide: COMMAND_PUBLISHER,
           useClass: MemoryPublisher,
         },
         {

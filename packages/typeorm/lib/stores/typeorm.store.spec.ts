@@ -1,10 +1,10 @@
 import {
   Event,
+  EVENT_PUBLISHER,
   IEvent,
   IPublisher,
   MemoryPublisher,
   ObservableFactory,
-  PUBLISHER,
   PUBLISHER_OPTIONS,
   RegisterType,
 } from "@moirae/core";
@@ -33,7 +33,7 @@ describe("TypeORMStore", () => {
         TypeORMStore,
         ObservableFactory,
         {
-          provide: PUBLISHER,
+          provide: EVENT_PUBLISHER,
           useClass: MemoryPublisher,
         },
         {

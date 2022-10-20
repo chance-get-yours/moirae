@@ -5,6 +5,6 @@
     "includeVersion": true,
     "name": "Moirae",
     "exclude": [
-        "node_modules"
+        "node_modules/@types/node/**"
     ]
 }

@@ -19,15 +19,21 @@ import { IMoiraeConfig } from "./interfaces/config.interface";
 import { IMemoryCacheConfig } from "./interfaces/memory-cache-config.interface";
 import { IMemoryPublisherConfig } from "./interfaces/memory-publisher-config.interface";
 import { IMemoryStoreConfig } from "./interfaces/memory-store-config.interface";
-import { IPublisherConfig } from "./interfaces/publisher-config.interface";
+import {
+  IPublisherConfig,
+  PublisherType,
+} from "./interfaces/publisher-config.interface";
 import { IStoreConfig } from "./interfaces/store-config.interface";
 import {
   CACHE_OPTIONS,
   CACHE_PROVIDER,
+  COMMAND_PUBLISHER,
+  EVENT_PUBLISHER,
   EVENT_PUBSUB_ENGINE,
   EVENT_SOURCE,
-  PUBLISHER,
+  PublisherToken,
   PUBLISHER_OPTIONS,
+  QUERY_PUBLISHER,
 } from "./moirae.constants";
 import { MemoryPublisher } from "./publishers/memory.publisher";
 import { MemoryStore } from "./stores/memory.store";
@@ -36,17 +42,29 @@ import { MemoryStore } from "./stores/memory.store";
 export class MoiraeModule {
   public static async forRootAsync<
     TCache extends ICacheConfig = IMemoryCacheConfig,
-    TPub extends IPublisherConfig = IMemoryPublisherConfig,
     TStore extends IStoreConfig = IMemoryStoreConfig,
-  >(config: IMoiraeConfig<TCache, TPub, TStore> = {}): Promise<DynamicModule> {
+    TCommand extends IPublisherConfig = IMemoryPublisherConfig,
+    TEvent extends IPublisherConfig = IMemoryPublisherConfig,
+    TQuery extends IPublisherConfig = IMemoryStoreConfig,
+  >(
+    config: IMoiraeConfig<TCache, TStore, TCommand, TEvent, TQuery> = {},
+  ): Promise<DynamicModule> {
     const {
       cache = {
         type: "memory",
       },
       externalTypes = [],
       publisher = {
+        command: {
+          type: "memory",
+        },
         domain: "default",
-        type: "memory",
+        event: {
+          type: "memory",
+        },
+        query: {
+          type: "memory",
+        },
       },
       sagas = [],
       store = {
@@ -93,40 +111,67 @@ export class MoiraeModule {
         });
     }
 
-    // Configure the publisher providers
-    switch (publisher.type) {
-      case "rabbitmq":
-        const { RabbitMQConnection, RabbitMQPublisher, RabbitPubSubEngine } =
-          await import("@moirae/rabbitmq");
+    const configurePublisher = async (
+      type: PublisherType,
+      token: PublisherToken,
+      providers: Provider[],
+      exports: InjectionToken[],
+    ): Promise<void> => {
+      switch (type) {
+        case "rabbitmq":
+          const { RabbitMQConnection, RabbitMQPublisher, RabbitPubSubEngine } =
+            await import("@moirae/rabbitmq");
 
-        providers.push(
-          RabbitMQConnection,
-          {
-            provide: EVENT_PUBSUB_ENGINE,
-            useClass: RabbitPubSubEngine,
-          },
-          {
-            provide: PUBLISHER,
+          if (token === EVENT_PUBLISHER)
+            providers.push({
+              provide: EVENT_PUBSUB_ENGINE,
+              useClass: RabbitPubSubEngine,
+            });
+
+          providers.push(RabbitMQConnection, {
+            provide: token,
             useClass: RabbitMQPublisher,
-          },
-        );
+          });
 
-        exports.push(RabbitMQConnection);
-        break;
-      default:
-        providers.push(
-          {
-            provide: PUBLISHER,
-            useClass: MemoryPublisher,
-          },
-          {
-            provide: EVENT_PUBSUB_ENGINE,
-            inject: [ObservableFactory],
-            useFactory: (factory: ObservableFactory) =>
-              factory.generateDistributor(randomUUID()),
-          },
-        );
-    }
+          exports.push(RabbitMQConnection);
+          break;
+        default:
+          providers.push(
+            {
+              provide: token,
+              useClass: MemoryPublisher,
+            },
+            {
+              provide: EVENT_PUBSUB_ENGINE,
+              inject: [ObservableFactory],
+              useFactory: (factory: ObservableFactory) =>
+                factory.generateDistributor(randomUUID()),
+            },
+          );
+      }
+    };
+
+    // Configure the publisher providers
+    await Promise.all([
+      configurePublisher(
+        publisher.command.type,
+        COMMAND_PUBLISHER,
+        providers,
+        exports,
+      ),
+      configurePublisher(
+        publisher.event.type,
+        EVENT_PUBLISHER,
+        providers,
+        exports,
+      ),
+      configurePublisher(
+        publisher.query.type,
+        QUERY_PUBLISHER,
+        providers,
+        exports,
+      ),
+    ]);
 
     // Configure the event store providers
     switch (store.type) {

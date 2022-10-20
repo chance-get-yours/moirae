@@ -14,7 +14,7 @@ import {
 } from "@nestjs/common";
 import { Channel, ConsumeMessage } from "amqplib";
 import { randomUUID } from "crypto";
-import { IRabbitMQConfig } from "../interfaces/rabbitmq.config";
+import { IRabbitMQPublisherConfig } from "../interfaces/rabbitmq-publisher.config";
 import { RabbitMQConnection } from "./rabbitmq.connection";
 
 @Injectable()
@@ -31,12 +31,12 @@ export class RabbitPubSubEngine
   constructor(
     private readonly _connection: RabbitMQConnection,
     observableFactory: ObservableFactory,
-    @Inject(PUBLISHER_OPTIONS) publisherOptions: IRabbitMQConfig,
+    @Inject(PUBLISHER_OPTIONS) publisherOptions: IRabbitMQPublisherConfig,
   ) {
     super();
     this._distributor = observableFactory.generateDistributor(randomUUID());
-    this._PUB_EXCHANGE = `${publisherOptions.namespaceRoot}-pubsub`;
-    this._SUB_QUEUE = `${publisherOptions.namespaceRoot}-subqueue-${publisherOptions.nodeId}`;
+    this._PUB_EXCHANGE = `${publisherOptions.event.namespaceRoot}-pubsub`;
+    this._SUB_QUEUE = `${publisherOptions.event.namespaceRoot}-subqueue-${publisherOptions.nodeId}`;
   }
 
   public async beforeApplicationShutdown() {

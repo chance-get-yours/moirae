@@ -5,10 +5,19 @@ import {
 import { randomUUID } from "crypto";
 import { AsyncMap } from "../classes/async-map.class";
 import { ObservableFactory } from "../factories/observable.factory";
-import { IPublisherConfig } from "../interfaces/publisher-config.interface";
+import {
+  IPublisherConfig,
+  IPublisherMeta,
+} from "../interfaces/publisher-config.interface";
 import { Respondable } from "../interfaces/respondable.interface";
 import { EventProcessor } from "../mixins/event-processor.mixin";
-import { ESState, PublisherRole } from "../moirae.constants";
+import {
+  COMMAND_PUBLISHER,
+  ESState,
+  EVENT_PUBLISHER,
+  PublisherToken,
+  QUERY_PUBLISHER,
+} from "../moirae.constants";
 import { Distributor } from "./distributor.class";
 import { ResponseWrapper } from "./response.class";
 import { StateTracker } from "./state-tracker.class";
@@ -27,11 +36,11 @@ export abstract class BasePublisher<Evt extends Respondable>
   protected _status: StateTracker<ESState>;
   protected readonly _uuid: string;
 
-  public role: PublisherRole;
+  public role: PublisherToken;
 
   constructor(
     observableFactory: ObservableFactory,
-    protected readonly publisherOptions: IPublisherConfig,
+    protected readonly publisherOptions: IPublisherMeta,
   ) {
     super();
     this._uuid = randomUUID();
@@ -50,6 +59,20 @@ export abstract class BasePublisher<Evt extends Respondable>
 
   protected get _key(): string {
     return `${this._uuid}:${EVENT_KEY}`;
+  }
+
+  /**
+   * Get specific configuration given the publisher role
+   */
+  protected getRoleConfig<T extends IPublisherConfig>(): T {
+    switch (this.role) {
+      case COMMAND_PUBLISHER:
+        return this.publisherOptions["command"];
+      case EVENT_PUBLISHER:
+        return this.publisherOptions["event"];
+      case QUERY_PUBLISHER:
+        return this.publisherOptions["query"];
+    }
   }
 
   public async acknowledgeEvent(event: Evt): Promise<void> {

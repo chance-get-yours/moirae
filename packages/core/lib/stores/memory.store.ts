@@ -2,8 +2,8 @@ import { Inject, Injectable } from "@nestjs/common";
 import { ObservableFactory } from "../factories/observable.factory";
 import { IEventSource } from "../interfaces/event-source.interface";
 import { IEvent } from "../interfaces/event.interface";
-import { IPublisherConfig } from "../interfaces/publisher-config.interface";
-import { PublisherRole, PUBLISHER_OPTIONS } from "../moirae.constants";
+import { IPublisherMeta } from "../interfaces/publisher-config.interface";
+import { EVENT_PUBLISHER, PUBLISHER_OPTIONS } from "../moirae.constants";
 import { MemoryPublisher } from "../publishers/memory.publisher";
 
 @Injectable()
@@ -15,10 +15,10 @@ export class MemoryStore
 
   constructor(
     observableFactory: ObservableFactory,
-    @Inject(PUBLISHER_OPTIONS) publisherOptions: IPublisherConfig,
+    @Inject(PUBLISHER_OPTIONS) publisherOptions: IPublisherMeta,
   ) {
     super(observableFactory, publisherOptions);
-    this.role = PublisherRole.EVENT_STORE;
+    this.role = EVENT_PUBLISHER;
   }
 
   public async appendToStream(eventList: IEvent[]): Promise<IEvent[]> {

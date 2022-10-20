@@ -6,7 +6,7 @@ import { ObservableFactory } from "../factories/observable.factory";
 import { ExecuteOptions } from "../interfaces/execute-options.interface";
 import { IPublisher } from "../interfaces/publisher.interface";
 import { IQuery } from "../interfaces/query.interface";
-import { PUBLISHER, PublisherRole, QUERY_METADATA } from "../moirae.constants";
+import { QUERY_METADATA, QUERY_PUBLISHER } from "../moirae.constants";
 
 /**
  * Provide the ability to run queries either locally or on remote systems
@@ -17,10 +17,10 @@ export class QueryBus extends BaseBus<IQuery> {
   constructor(
     explorer: Explorer,
     observableFactory: ObservableFactory,
-    @Inject(PUBLISHER) publisher: IPublisher,
+    @Inject(QUERY_PUBLISHER) publisher: IPublisher,
   ) {
     super(explorer, QUERY_METADATA, observableFactory, publisher);
-    this._publisher.role = PublisherRole.QUERY_BUS;
+    this._publisher.role = QUERY_PUBLISHER;
   }
 
   /**

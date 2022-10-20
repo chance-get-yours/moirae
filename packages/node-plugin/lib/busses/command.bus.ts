@@ -1,5 +1,6 @@
 import {
   CommandBus as MoiraeCommandBus,
+  COMMAND_PUBLISHER,
   ESState,
   Explorer,
   ICommand,
@@ -26,6 +27,7 @@ export class CommandBus extends MoiraeCommandBus {
       new SagaManagerMock() as unknown as SagaManager,
     );
     this.container = container;
+    this._publisher.role = COMMAND_PUBLISHER;
   }
 
   onApplicationBootstrap() {

@@ -28,6 +28,8 @@ export { QueryHandler } from "./lib/decorators/query-handler.decorator";
 export { RegisterType } from "./lib/decorators/register-type.decorator";
 export { Rollback } from "./lib/decorators/rollback.decorator";
 export { SagaStep } from "./lib/decorators/saga-step.decorator";
+// errors
+export { InvalidConfigurationError } from "./lib/exceptions/invalid-configuration.error";
 // factories
 export { AggregateFactory } from "./lib/factories/aggregate.factory";
 export { ObservableFactory } from "./lib/factories/observable.factory";
@@ -46,7 +48,10 @@ export type { IEvent } from "./lib/interfaces/event.interface";
 export type { IHandler } from "./lib/interfaces/handler.interface";
 export type { IMoiraeFilter } from "./lib/interfaces/moirae-filter.interface";
 export type { IPubSub } from "./lib/interfaces/pub-sub.interface";
-export type { IPublisherConfig } from "./lib/interfaces/publisher-config.interface";
+export type {
+  IPublisherConfig,
+  IPublisherMeta,
+} from "./lib/interfaces/publisher-config.interface";
 export type { IPublisher } from "./lib/interfaces/publisher.interface";
 export type { IQueryHandler } from "./lib/interfaces/query-handler.interface";
 export type { IQuery } from "./lib/interfaces/query.interface";
@@ -59,12 +64,13 @@ export { EventProcessor } from "./lib/mixins/event-processor.mixin";
 // constants
 export {
   CACHE_OPTIONS,
+  COMMAND_PUBLISHER,
   ESState,
+  EVENT_PUBLISHER,
   EVENT_PUBSUB_ENGINE,
   EVENT_SOURCE,
-  PUBLISHER,
-  PublisherRole,
   PUBLISHER_OPTIONS,
+  QUERY_PUBLISHER,
 } from "./lib/moirae.constants";
 // modules
 export { MoiraeModule } from "./lib/moirae.module";

@@ -24,8 +24,12 @@ const rabbitMQConfig = {/* config contents */};
 const connection = new RabbitMQConnection(rabbitMQConfig);
 
 const moirae = new MoiraePlugin({
-    getPublisher: () =>
-        // Provide a way to instantiate new Publisher instances
+    // Provide a way to instantiate new Publisher instances
+    getCommandPublisher: () =>
+        new RabbitMQPublisher(new ObservableFactory(), rabbitMQConfig, rmqConnection),
+    getEventPublisher: () =>
+        new RabbitMQPublisher(new ObservableFactory(), rabbitMQConfig, rmqConnection),  
+    getQueryPublisher: () =>
         new RabbitMQPublisher(new ObservableFactory(), rabbitMQConfig, rmqConnection)
 });
 

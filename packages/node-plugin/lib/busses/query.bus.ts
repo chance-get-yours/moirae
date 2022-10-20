@@ -6,6 +6,7 @@ import {
   IQuery,
   ObservableFactory,
   QueryBus as MoiraeQueryBus,
+  QUERY_PUBLISHER,
 } from "@moirae/core";
 import { Container } from "../classes/container.class";
 import { RegisterQueryHandlerInput } from "../interfaces/register-container-input.interface";
@@ -19,6 +20,7 @@ export class QueryBus extends MoiraeQueryBus {
   ) {
     super(container as unknown as Explorer, observableFactory, publisher);
     this.container = container;
+    this._publisher.role = QUERY_PUBLISHER;
   }
 
   onApplicationBootstrap() {

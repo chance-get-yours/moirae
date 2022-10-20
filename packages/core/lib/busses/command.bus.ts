@@ -12,10 +12,9 @@ import { IMoiraeFilter } from "../interfaces/moirae-filter.interface";
 import { IPublisher } from "../interfaces/publisher.interface";
 import {
   COMMAND_METADATA,
+  COMMAND_PUBLISHER,
   ESState,
   EXCEPTION_METADATA,
-  PUBLISHER,
-  PublisherRole,
 } from "../moirae.constants";
 
 /**
@@ -28,11 +27,11 @@ export class CommandBus extends BaseBus<ICommand> {
   constructor(
     explorer: Explorer,
     observableFactory: ObservableFactory,
-    @Inject(PUBLISHER) publisher: IPublisher,
+    @Inject(COMMAND_PUBLISHER) publisher: IPublisher,
     private readonly _sagaManager: SagaManager,
   ) {
     super(explorer, COMMAND_METADATA, observableFactory, publisher);
-    this._publisher.role = PublisherRole.COMMAND_BUS;
+    this._publisher.role = COMMAND_PUBLISHER;
     this._errorHandlers = new Map();
   }
 

@@ -7,7 +7,7 @@ import { ObservableFactory } from "../factories/observable.factory";
 import { IPublisher } from "../interfaces/publisher.interface";
 import { IQueryHandler } from "../interfaces/query-handler.interface";
 import { IQuery } from "../interfaces/query.interface";
-import { PUBLISHER, PUBLISHER_OPTIONS } from "../moirae.constants";
+import { PUBLISHER_OPTIONS, QUERY_PUBLISHER } from "../moirae.constants";
 import { MemoryPublisher } from "../publishers/memory.publisher";
 import { QueryBus } from "./query.bus";
 
@@ -42,7 +42,7 @@ describe("QueryBus", () => {
         ObservableFactory,
         QueryBus,
         {
-          provide: PUBLISHER,
+          provide: QUERY_PUBLISHER,
           useClass: MemoryPublisher,
         },
         {

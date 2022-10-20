@@ -1,13 +1,15 @@
 import { ModuleMetadata, Provider } from "@nestjs/common";
 import { ClassConstructor } from "class-transformer";
 import { ICacheConfig } from "./cache-config.interface";
-import { IPublisherConfig } from "./publisher-config.interface";
+import { IPublisherConfig, IPublisherMeta } from "./publisher-config.interface";
 import { IStoreConfig } from "./store-config.interface";
 
 export interface IMoiraeConfig<
   TCache extends ICacheConfig,
-  TPub extends IPublisherConfig,
   TStore extends IStoreConfig,
+  TCommand extends IPublisherConfig,
+  TEvent extends IPublisherConfig,
+  TQuery extends IPublisherConfig,
 > extends Pick<ModuleMetadata, "imports"> {
   /**
    * Cache provides a storage mechanism internal to Moirae for rapid
@@ -19,9 +21,15 @@ export interface IMoiraeConfig<
    */
   externalTypes?: ClassConstructor<unknown>[];
   /**
-   * Publisher provides messaging and communication for Commands and Queries
+   * Publisher provides messaging and communication for Commands, Events, and Queries. This
+   * can be specialized for each distribution type, having a different publisher configuration
+   * for each of Commands, Events, and Queries.
    */
-  publisher?: TPub;
+  publisher?: IPublisherMeta & {
+    command: TCommand;
+    event: TEvent;
+    query: TQuery;
+  };
   sagas?: Provider[];
   /**
    * Store provides an event store to persist all events processed in the system.

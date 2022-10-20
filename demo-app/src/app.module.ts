@@ -105,17 +105,6 @@ const moiraeConfigGenerator = (): IMoiraeConfig<
         query: rmqConfig as IPublisherConfig,
       };
       break;
-    // (config.publisher as IRabbitMQConfig) = {
-    //   ...config.publisher,
-    //   amqplib: {
-    //     hostname: process.env.RABBIT_MQ_HOST,
-    //     password: process.env.RABBIT_MQ_PASS,
-    //     port: +process.env.RABBIT_MQ_PORT,
-    //     username: process.env.RABBIT_MQ_USER,
-    //   },
-    //   namespaceRoot: "__demo-app__",
-    //   type: "rabbitmq",
-    // };
   }
 
   switch (process.env.STORE_TYPE) {

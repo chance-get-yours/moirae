@@ -1,5 +1,5 @@
 // interfaces
-export type { IRabbitMQConfig } from "./lib/interfaces/rabbitmq.config";
+export type { IRabbitMQPublisherConfig } from "./lib/interfaces/rabbitmq-publisher.config";
 export { RabbitPubSubEngine } from "./lib/providers/rabbit-pubsub.engine";
 // providers
 export { RabbitMQConnection } from "./lib/providers/rabbitmq.connection";

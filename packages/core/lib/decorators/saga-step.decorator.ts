@@ -4,7 +4,7 @@ import { IRollbackCommandConstructor } from "../interfaces/rollback-command.inte
 import { SAGA_METADATA } from "../moirae.constants";
 
 /**
- * Define a step in a saga. Related to {@link core.Saga}
+ * Define a step in a saga. Related to {@link @moirae/core!Saga}
  *
  * @param event Triggering event class
  * @param rollbackCommand Rollback command related to the aggregate that applies the triggering event

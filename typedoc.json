@@ -3,5 +3,8 @@
     "entryPointStrategy": "Packages",
     "external-modulemap": ".*\/packages\/([^\/]+)\/.*",
     "includeVersion": true,
-    "name": "Moirae"
+    "name": "Moirae",
+    "exclude": [
+        "node_modules/@types/node/**"
+    ]
 }

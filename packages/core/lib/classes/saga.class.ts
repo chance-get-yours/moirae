@@ -20,7 +20,7 @@ interface SagaMetadataPayload {
  * provides transactional tracking and ability to rollback a given transaction automatically should
  * a related command/event handler fail to process.
  *
- * The saga should be extended with a series of methods decorated with the {@link core.SagaStep} decorator where
+ * The saga should be extended with a series of methods decorated with the {@link @moirae/core!SagaStep} decorator where
  * each method defines the `IF... THEN...` progression of the saga.
  */
 export abstract class Saga implements OnApplicationBootstrap {

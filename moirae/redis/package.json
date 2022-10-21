@@ -1,0 +1,46 @@
+{
+  "name": "@moirae/redis",
+  "main": "dist/index.js",
+  "version": "0.4.2",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chance-get-yours/moirae",
+    "directory": "packages/redis"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^9.1.4",
+    "@nestjs/core": "^9.1.4"
+  },
+  "devDependencies": {
+    "@moirae/core": "workspace:*",
+    "@faker-js/faker": "^6.3.1",
+    "@nestjs/common": "^9.1.4",
+    "@nestjs/core": "^9.1.4",
+    "@nestjs/testing": "^9.0.11",
+    "@swc/core": "^1.2.205",
+    "@swc/jest": "^0.2.23",
+    "@types/jest": "^28.1.1",
+    "@types/node": "18.8.4",
+    "jest": "^28.1.1",
+    "reflect-metadata": "^0.1.13",
+    "rimraf": "^3.0.2",
+    "rxjs": "^7.5.7",
+    "typescript": "^4.6.4"
+  },
+  "scripts": {
+    "build": "yarn prebuild && tsc",
+    "prebuild": "rimraf ./dist",
+    "test": "env JEST_ROOT_DIR=redis jest --config=../../jest.config.js"
+  },
+  "dependencies": {
+    "redis": "~4.3.1"
+  }
+}

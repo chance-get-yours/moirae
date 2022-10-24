@@ -46,5 +46,9 @@
     "build": "yarn prebuild && tsc",
     "prebuild": "rimraf ./dist",
     "test": "env JEST_ROOT_DIR=typeorm jest --config=../../jest.config.js"
+  },
+  "typedoc": {
+    "readmeFile": "./README.md",
+    "tsconfig": "./tsconfig.json"
   }
 }

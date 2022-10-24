@@ -18,6 +18,14 @@
       "safeForSimultaneousRushProcesses": true,
       "autoinstallerName": "lint-staged",
       "shellCommand": "lint-staged"
+    },
+    {
+      "name": "document",
+      "commandKind": "global",
+      "summary": "Generate documentation for deployment",
+      "safeForSimultaneousRushProcesses": true,
+      "autoinstallerName": "typedoc",
+      "shellCommand": "typedoc"
     }
     // {
     //   /**

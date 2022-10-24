@@ -1,0 +1,12 @@
+{
+  "name": "typedoc",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "typedoc": "^0.23.18",
+    "typedoc-monorepo-link-types": "^0.0.4",
+    "typedoc-plugin-missing-exports": "^1.0.0",
+    "typedoc-plugin-resolve-crossmodule-references": "^0.3.2",
+    "typescript": "^4.8.4"
+  }
+}

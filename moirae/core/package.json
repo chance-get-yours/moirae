@@ -45,5 +45,8 @@
     "prebuild": "rimraf ./dist",
     "pack": "npm pack",
     "test": "env JEST_ROOT_DIR=core jest --config=../../jest.config.js"
+  },
+  "typedoc": {
+    "readmeFile": "./README.md"
   }
 }

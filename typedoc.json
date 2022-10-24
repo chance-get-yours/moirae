@@ -1,10 +1,14 @@
 {
-    "entryPoints": [".", "packages/*/package.json"],
-    "entryPointStrategy": "Packages",
-    "external-modulemap": ".*\/packages\/([^\/]+)\/.*",
-    "includeVersion": true,
-    "name": "Moirae",
-    "exclude": [
-        "node_modules/@types/node/**"
-    ]
+  "entryPoints": [
+    "./moirae/core",
+    "./moirae/node-plugin",
+    "./moirae/rabbitmq",
+    "./moirae/redis",
+    "./moirae/typeorm"
+  ],
+  "out": "docs",
+  "entryPointStrategy": "packages",
+  "includeVersion": true,
+  "name": "Moirae",
+  "readme": "./README.md"
 }

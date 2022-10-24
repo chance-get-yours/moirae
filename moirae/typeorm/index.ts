@@ -4,6 +4,7 @@ import { SetValue } from "./lib/entities/set-value.entity";
 
 // entities
 export const CACHE_ENTITIES = [KeyValue, SetRoot, SetValue];
+export { EventStore } from "./lib/entities/event-store.entity";
 // injectors
 export { injectTypeormCache, injectTypeormStore } from "./lib/injector";
 // interfaces

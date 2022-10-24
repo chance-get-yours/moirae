@@ -344,6 +344,10 @@
       "packageName": "@moirae/typeorm",
       "projectFolder": "moirae/typeorm",
       "shouldPublish": true
+    },
+    {
+      "packageName": "monolith",
+      "projectFolder": "demo/monolith"
     }
     // {
     //   /**

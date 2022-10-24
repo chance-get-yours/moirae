@@ -75,3 +75,4 @@ common/autoinstallers/*/.npmrc
 
 dist
 docs
+*.db

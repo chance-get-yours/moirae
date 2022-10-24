@@ -50,6 +50,9 @@ export type {
   IInjectorReturn,
   InjectorFunction,
 } from "./lib/interfaces/injector.interface";
+export type { IMemoryCacheConfig } from "./lib/interfaces/memory-cache-config.interface";
+export type { IMemoryPublisherConfig } from "./lib/interfaces/memory-publisher-config.interface";
+export type { IMemoryStoreConfig } from "./lib/interfaces/memory-store-config.interface";
 export type { IMoiraeFilter } from "./lib/interfaces/moirae-filter.interface";
 export type { IPubSub } from "./lib/interfaces/pub-sub.interface";
 export type {

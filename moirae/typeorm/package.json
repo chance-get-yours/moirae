@@ -17,17 +17,19 @@
   },
   "peerDependencies": {
     "@nestjs/common": "^9.1.4",
-    "@nestjs/core": "^9.1.4"
+    "@nestjs/typeorm": "^9.0.1",
+    "@nestjs/core": "^9.1.4",
+    "typeorm": "^0.3.10"
   },
   "dependencies": {
     "@moirae/core": "workspace:*",
-    "@nestjs/typeorm": "^9.0.1",
     "class-transformer": "^0.5.1",
-    "object-hash": "^3.0.0",
-    "typeorm": "^0.3.10"
+    "object-hash": "^3.0.0"
   },
   "devDependencies": {
+    "typeorm": "^0.3.10",
     "@faker-js/faker": "^6.3.1",
+    "@nestjs/typeorm": "^9.0.1",
     "@nestjs/common": "^9.1.4",
     "@nestjs/core": "^9.1.4",
     "@nestjs/testing": "^9.0.11",

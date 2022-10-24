@@ -132,16 +132,21 @@ export class MoiraeModule {
     ];
     const exports: InjectionToken[] = [PUBLISHER_OPTIONS, EVENT_PUBSUB_ENGINE];
 
-    const { exports: cacheExports, providers: cacheProviders } =
-      cache.injector();
-    const { exports: commandExports, providers: commandProviders } =
-      publisher.command.injector(COMMAND_PUBLISHER);
-    const { exports: eventExports, providers: eventProviders } =
-      publisher.command.injector(EVENT_PUBLISHER);
-    const { exports: queryExports, providers: queryProviders } =
-      publisher.command.injector(QUERY_PUBLISHER);
-    const { exports: storeExports, providers: storeProviders } =
-      store.injector();
+    const { exports: cacheExports, providers: cacheProviders } = (
+      cache.injector || memoryCacheInjector
+    )();
+    const { exports: commandExports, providers: commandProviders } = (
+      publisher.command.injector || memoryPublisherInjector
+    )(COMMAND_PUBLISHER);
+    const { exports: eventExports, providers: eventProviders } = (
+      publisher.event.injector || memoryPublisherInjector
+    )(EVENT_PUBLISHER);
+    const { exports: queryExports, providers: queryProviders } = (
+      publisher.query.injector || memoryPublisherInjector
+    )(QUERY_PUBLISHER);
+    const { exports: storeExports, providers: storeProviders } = (
+      store.injector || memoryStoreInjector
+    )();
 
     return {
       global: true,

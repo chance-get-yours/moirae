@@ -29,7 +29,7 @@
     "@faker-js/faker": "^6.3.1",
     "@nestjs/common": "^9.1.4",
     "@nestjs/core": "^9.1.4",
-    "@nestjs/testing": "^9.0.11",
+    "@nestjs/testing": "^9.1.6",
     "@swc/core": "^1.2.205",
     "@swc/jest": "^0.2.23",
     "@types/jest": "^28.1.1",

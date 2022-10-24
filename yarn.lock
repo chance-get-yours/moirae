@@ -942,7 +942,7 @@ __metadata:
     "@faker-js/faker": ^6.3.1
     "@nestjs/common": ^9.1.4
     "@nestjs/core": ^9.1.4
-    "@nestjs/testing": ^9.0.11
+    "@nestjs/testing": ^9.1.6
     "@swc/core": ^1.2.205
     "@swc/jest": ^0.2.23
     "@types/jest": ^28.1.1
@@ -992,7 +992,7 @@ __metadata:
     "@faker-js/faker": ^6.3.1
     "@nestjs/common": ^9.1.4
     "@nestjs/core": ^9.1.4
-    "@nestjs/testing": ^9.0.11
+    "@nestjs/testing": ^9.1.6
     "@swc/core": ^1.2.205
     "@swc/jest": ^0.2.23
     "@types/amqplib": ^0.8.2
@@ -1019,7 +1019,7 @@ __metadata:
     "@faker-js/faker": ^6.3.1
     "@nestjs/common": ^9.1.4
     "@nestjs/core": ^9.1.4
-    "@nestjs/testing": ^9.0.11
+    "@nestjs/testing": ^9.1.6
     "@swc/core": ^1.2.205
     "@swc/jest": ^0.2.23
     "@types/jest": ^28.1.1
@@ -1044,7 +1044,7 @@ __metadata:
     "@faker-js/faker": ^6.3.1
     "@nestjs/common": ^9.1.4
     "@nestjs/core": ^9.1.4
-    "@nestjs/testing": ^9.0.11
+    "@nestjs/testing": ^9.1.6
     "@nestjs/typeorm": ^9.0.1
     "@swc/core": ^1.2.205
     "@swc/jest": ^0.2.23
@@ -1227,9 +1227,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nestjs/testing@npm:^9.0.11":
-  version: 9.0.11
-  resolution: "@nestjs/testing@npm:9.0.11"
+"@nestjs/testing@npm:^9.1.6":
+  version: 9.1.6
+  resolution: "@nestjs/testing@npm:9.1.6"
   dependencies:
     tslib: 2.4.0
   peerDependencies:
@@ -1242,7 +1242,7 @@ __metadata:
       optional: true
     "@nestjs/platform-express":
       optional: true
-  checksum: 8343529a878869d2b5cbc51a63c4517cce6f38e88a39fd4a527f566878638669faf3c10ca1e89b8b1a137c2f21437718d2004d22b02e1df57318995c733ed0bb
+  checksum: 02cad045c8bd8bd3d76a382c9d6775050db29255ad0963c171af2688b149606d3ab9e9134fb04827668823d79ee2c99e606fccb86a80bf4c2fc52bd6a06d42a6
   languageName: node
   linkType: hard
 
@@ -3483,7 +3483,7 @@ __metadata:
     "@nestjs/platform-express": ^9.1.4
     "@nestjs/platform-ws": ^9.1.2
     "@nestjs/schematics": ^8.0.0
-    "@nestjs/testing": ^9.0.11
+    "@nestjs/testing": ^9.1.6
     "@nestjs/typeorm": ^9.0.1
     "@nestjs/websockets": ^9.0.11
     "@types/express": ^4.17.14

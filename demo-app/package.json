@@ -26,7 +26,7 @@
     "@moirae/redis": "workspace:^",
     "@moirae/typeorm": "workspace:^",
     "@nestjs/common": "^9.1.4",
-    "@nestjs/config": "^2.1.0",
+    "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.1.4",
     "@nestjs/platform-express": "^9.1.4",
     "@nestjs/platform-ws": "^9.1.2",

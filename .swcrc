@@ -6,7 +6,7 @@
         "decorators": true,
         "decoratorsBeforeExport": true
       },
-      "target": "es2017",
+      "target": "es2020",
       "keepClassNames": true,
       "transform": {
         "legacyDecorator": true,
@@ -16,8 +16,11 @@
     },
     "module": {
         "type": "commonjs",
-        "noInterop": true
+        "noInterop": true,
+        "strictMode": false,
+        "lazy": true
     },
     "sourceMaps": true,
-    "inlineSourcesContent": true
+    "inlineSourcesContent": true,
+    "minify": false
   }

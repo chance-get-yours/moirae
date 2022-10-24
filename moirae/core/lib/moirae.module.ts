@@ -20,9 +20,7 @@ import { IMoiraeConfig } from "./interfaces/config.interface";
 import { IMemoryCacheConfig } from "./interfaces/memory-cache-config.interface";
 import { IMemoryPublisherConfig } from "./interfaces/memory-publisher-config.interface";
 import { IMemoryStoreConfig } from "./interfaces/memory-store-config.interface";
-import {
-  IPublisherConfig,
-} from "./interfaces/publisher-config.interface";
+import { IPublisherConfig } from "./interfaces/publisher-config.interface";
 import { IStoreConfig } from "./interfaces/store-config.interface";
 import {
   CACHE_OPTIONS,
@@ -52,35 +50,43 @@ export class MoiraeModule {
     const memoryCacheInjector: InjectorFunction = () => {
       return {
         exports: [],
-        providers: [{
-          provide: CACHE_PROVIDER,
-          useClass: MemoryCache,
-        }]
-      }
-    }
-    const memoryPublisherInjector: InjectorFunction = (token: PublisherToken) => {
+        providers: [
+          {
+            provide: CACHE_PROVIDER,
+            useClass: MemoryCache,
+          },
+        ],
+      };
+    };
+    const memoryPublisherInjector: InjectorFunction = (
+      token: PublisherToken,
+    ) => {
       return {
         exports: [] as InjectionToken[],
-        providers: [{
-          provide: token,
-          useClass: MemoryPublisher,
-        },
-        {
-          provide: EVENT_PUBSUB_ENGINE,
-          inject: [ObservableFactory],
-          useFactory: (factory: ObservableFactory) =>
-            factory.generateDistributor(randomUUID()),
-        }] as Provider[],
-      }
-    }
+        providers: [
+          {
+            provide: token,
+            useClass: MemoryPublisher,
+          },
+          {
+            provide: EVENT_PUBSUB_ENGINE,
+            inject: [ObservableFactory],
+            useFactory: (factory: ObservableFactory) =>
+              factory.generateDistributor(randomUUID()),
+          },
+        ] as Provider[],
+      };
+    };
 
     const memoryStoreInjector: InjectorFunction = () => ({
       exports: [],
-      providers: [{
-        provide: EVENT_SOURCE,
-        useClass: MemoryStore,
-      }]
-    })
+      providers: [
+        {
+          provide: EVENT_SOURCE,
+          useClass: MemoryStore,
+        },
+      ],
+    });
 
     const {
       cache = {
@@ -126,13 +132,17 @@ export class MoiraeModule {
     ];
     const exports: InjectionToken[] = [PUBLISHER_OPTIONS, EVENT_PUBSUB_ENGINE];
 
-    const {exports: cacheExports, providers: cacheProviders} = cache.injector();
-    const {exports: commandExports, providers: commandProviders} = publisher.command.injector(COMMAND_PUBLISHER);
-    const {exports: eventExports, providers: eventProviders} = publisher.command.injector(EVENT_PUBLISHER);
-    const {exports: queryExports, providers: queryProviders} = publisher.command.injector(QUERY_PUBLISHER);
-    const {exports: storeExports, providers: storeProviders} = store.injector();
+    const { exports: cacheExports, providers: cacheProviders } =
+      cache.injector();
+    const { exports: commandExports, providers: commandProviders } =
+      publisher.command.injector(COMMAND_PUBLISHER);
+    const { exports: eventExports, providers: eventProviders } =
+      publisher.command.injector(EVENT_PUBLISHER);
+    const { exports: queryExports, providers: queryProviders } =
+      publisher.command.injector(QUERY_PUBLISHER);
+    const { exports: storeExports, providers: storeProviders } =
+      store.injector();
 
-    // TODO: separate public vs private deps
     return {
       global: true,
       module: MoiraeModule,
@@ -146,9 +156,25 @@ export class MoiraeModule {
         QueryBus,
         SagaManager,
         ...providers,
-        ...sagas, ...cacheProviders, ...commandProviders, ...eventProviders, ...queryProviders, ...storeProviders
+        ...sagas,
+        ...cacheProviders,
+        ...commandProviders,
+        ...eventProviders,
+        ...queryProviders,
+        ...storeProviders,
       ],
-      exports: [AggregateFactory, CommandBus, EventBus, QueryBus, ...exports, ...cacheExports, ...commandExports, ...eventExports, ...queryExports, ...storeExports],
+      exports: [
+        AggregateFactory,
+        CommandBus,
+        EventBus,
+        QueryBus,
+        ...exports,
+        ...cacheExports,
+        ...commandExports,
+        ...eventExports,
+        ...queryExports,
+        ...storeExports,
+      ],
     };
   }
 }

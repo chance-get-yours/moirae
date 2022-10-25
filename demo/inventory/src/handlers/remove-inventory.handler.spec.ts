@@ -3,7 +3,7 @@ import { AggregateFactory, mockAggregateFactory } from "@moirae/core";
 import { Test } from "@nestjs/testing";
 import { InventoryAggregate } from "../aggregates/inventory.aggregate";
 import { RemoveInventoryCommand } from "../commands/remove-inventory.command";
-import { InventoryCreatedEvent } from "../events/inventory-created.event";
+import { InventoryCreatedEvent } from "@demo/common";
 import { RemoveInventoryHandler } from "./remove-inventory.handler";
 
 describe("RemoveInventoryHandler", () => {

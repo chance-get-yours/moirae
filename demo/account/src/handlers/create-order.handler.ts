@@ -6,10 +6,11 @@ import {
 } from "@moirae/core";
 import { randomUUID } from "crypto";
 import { AccountAggregate } from "../aggregates/account.aggregate";
-import { FundsWithdrawnEvent } from "@demo/common";
+import { FundsWithdrawnEvent, IInventory } from "@demo/common";
 import { InvalidWithdrawalAmountException } from "../exceptions/invalid-withdrawal-amount.exception";
 import { CreateOrderCommand } from "../order/commands/create-order.command";
 import { OrderCreatedEvent } from "@demo/common";
+import { FindInventoryByIdQuery } from "@demo/inventory";
 
 @CommandHandler(CreateOrderCommand)
 export class CreateOrderHandler implements ICommandHandler<CreateOrderCommand> {
@@ -21,10 +22,11 @@ export class CreateOrderHandler implements ICommandHandler<CreateOrderCommand> {
   public async execute(command: CreateOrderCommand): Promise<void> {
     const id = randomUUID();
 
-    // const inventory = await this.queryBus.execute(new FindInventoryByIdQuery())
+    const inventory = await this.queryBus.execute<IInventory>(
+      new FindInventoryByIdQuery(command.input.inventoryId),
+    );
 
-    // const cost = inventory.price * command.input.quantity;
-    const cost = 1;
+    const cost = inventory.price * command.input.quantity;
     const account = await this.factory.mergeContext(
       command.input.accountId,
       AccountAggregate,

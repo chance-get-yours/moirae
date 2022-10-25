@@ -1,23 +1,22 @@
 import { AggregateFactory, EventHandler, IEventHandler } from "@moirae/core";
 import { InventoryAggregate } from "../aggregates/inventory.aggregate";
-import { InventoryCreatedEvent } from "../events/inventory-created.event";
+import { InventoryRemovedEvent } from "@demo/common";
 import { InventoryService } from "../inventory.service";
 
-@EventHandler(InventoryCreatedEvent)
-export class InventoryCreatedHandler
-  implements IEventHandler<InventoryCreatedEvent>
+@EventHandler(InventoryRemovedEvent)
+export class InventoryRemovedHandler
+  implements IEventHandler<InventoryRemovedEvent>
 {
   constructor(
     private readonly factory: AggregateFactory,
     private readonly service: InventoryService,
   ) {}
 
-  public async execute(event: InventoryCreatedEvent): Promise<void> {
+  public async execute(event: InventoryRemovedEvent): Promise<void> {
     const aggregate = await this.factory.mergeContext(
       event.$streamId,
       InventoryAggregate,
     );
     await this.service.save(aggregate.toProjection());
-    await aggregate.releaseValue("name", aggregate.name);
   }
 }

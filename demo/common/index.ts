@@ -8,6 +8,8 @@ export { WithdrawFundsInput } from "./src/dto/withdraw-funds.input";
 
 export { CreateOrderInput } from "./src/dto/create-order.input";
 
+export { CreateInventoryInput } from "./src/dto/create-inventory.input";
+
 // events
 export { AccountCreatedEvent } from "./src/events/account-created.event";
 export { FundsDepositedEvent } from "./src/events/funds-deposited.event";
@@ -18,6 +20,11 @@ export { RollbackFundsWithdrawnEvent } from "./src/events/rollback-funds-withdra
 export { OrderCreatedEvent } from "./src/events/order-created.event";
 export { RollbackOrderCreatedEvent } from "./src/events/rollback-order-created.event";
 
+export { InventoryCreatedFailedEvent } from "./src/events/inventory-created-failed.event";
+export { InventoryCreatedEvent } from "./src/events/inventory-created.event";
+export { InventoryRemovedEvent } from "./src/events/inventory-removed.event";
+
 // interfaces
 export type { IAccount } from "./src/interfaces/account.interface";
+export type { IInventory } from "./src/interfaces/inventory.interface";
 export type { IOrder } from "./src/interfaces/order.interface";

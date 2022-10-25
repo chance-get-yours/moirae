@@ -1,6 +1,6 @@
 import { Command, ICommand, RegisterType } from "@moirae/core";
 import { Type } from "class-transformer";
-import { CreateInventoryInput } from "../dto/create-inventory.input";
+import { CreateInventoryInput } from "@demo/common";
 
 @RegisterType()
 export class CreateInventoryCommand extends Command implements ICommand {

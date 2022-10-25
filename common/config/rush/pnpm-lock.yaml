@@ -11,6 +11,7 @@ specifiers:
   '@rush-temp/common': file:./projects/common.tgz
   '@rush-temp/core': file:./projects/core.tgz
   '@rush-temp/gateway': file:./projects/gateway.tgz
+  '@rush-temp/inventory': file:./projects/inventory.tgz
   '@rush-temp/monolith': file:./projects/monolith.tgz
   '@rush-temp/node-plugin': file:./projects/node-plugin.tgz
   '@rush-temp/rabbitmq': file:./projects/rabbitmq.tgz
@@ -56,6 +57,7 @@ dependencies:
   '@rush-temp/common': file:projects/common.tgz_c45df3da2de79a6dfbacc1c31b99fc9c
   '@rush-temp/core': file:projects/core.tgz_4c6e821ee48c8f52e6943ddab27a7f7b
   '@rush-temp/gateway': file:projects/gateway.tgz_2cd36ff3722958d00ba08c30d51cc136
+  '@rush-temp/inventory': file:projects/inventory.tgz_a0f55c61fb327dac6abc43e1c4d1248c
   '@rush-temp/monolith': file:projects/monolith.tgz_@swc+core@1.2.205+redis@4.3.1
   '@rush-temp/node-plugin': file:projects/node-plugin.tgz_ts-node@10.9.1
   '@rush-temp/rabbitmq': file:projects/rabbitmq.tgz_4c6e821ee48c8f52e6943ddab27a7f7b
@@ -1464,7 +1466,7 @@ packages:
       rxjs: ^7.2.0
       typeorm: ^0.3.0
     dependencies:
-      '@nestjs/common': 9.1.6_bfb10c549401c4321799e32f853295f0
+      '@nestjs/common': 9.1.6_ca6182f3d7ff8f869b7968e4b1cdc460
       '@nestjs/core': 9.1.6_2220f727c430cb9219b61dfbfe504465
       reflect-metadata: 0.1.13
       rxjs: 7.5.7
@@ -7460,7 +7462,7 @@ packages:
     dev: false
 
   file:projects/gateway.tgz_2cd36ff3722958d00ba08c30d51cc136:
-    resolution: {integrity: sha512-taMzsyVbG9c7ok1LX6xK++aI8o64Z1iY5uitz52J3o9BVNfMvX0lgs0XQNZeZweMFbaLbg/DdotGLFgwNEchrA==, tarball: file:projects/gateway.tgz}
+    resolution: {integrity: sha512-OlVVIVGPZR9sIZ20R64i8SRQZdvkQ5tvK0gEpEAWzbVuV4vdN5g9lZGrz2pfxg/6YRkmNtCEA7IFPJG7Sv1FwA==, tarball: file:projects/gateway.tgz}
     id: file:projects/gateway.tgz
     name: '@rush-temp/gateway'
     version: 0.0.0
@@ -7486,8 +7488,56 @@ packages:
       - ts-node
     dev: false
 
+  file:projects/inventory.tgz_a0f55c61fb327dac6abc43e1c4d1248c:
+    resolution: {integrity: sha512-WlLpY5L5lilVPh25rk0Bkxwev7Lteq8iorkwP1E8Poiecx3Wyk1Hwwljx3NtTd/ElGTaHfxnf4fClqB1V8njlg==, tarball: file:projects/inventory.tgz}
+    id: file:projects/inventory.tgz
+    name: '@rush-temp/inventory'
+    version: 0.0.0
+    dependencies:
+      '@faker-js/faker': 7.6.0
+      '@nestjs/common': 9.1.6_ca6182f3d7ff8f869b7968e4b1cdc460
+      '@nestjs/core': 9.1.6_2220f727c430cb9219b61dfbfe504465
+      '@nestjs/testing': 9.1.6_c32216314fab0897b371182dd32cc4ac
+      '@nestjs/typeorm': 9.0.1_af64adc9cbf638f4c0dce622826d8ecb
+      '@types/jest': 29.2.0
+      class-transformer: 0.5.1
+      class-validator: 0.13.2
+      jest: 29.2.2_c45df3da2de79a6dfbacc1c31b99fc9c
+      typeorm: 0.3.10_a4afafad481dcb6ec5a591b09cd57ccc
+      typescript: 4.8.4
+    transitivePeerDependencies:
+      - '@google-cloud/spanner'
+      - '@nestjs/microservices'
+      - '@nestjs/platform-express'
+      - '@nestjs/websockets'
+      - '@sap/hana-client'
+      - '@types/node'
+      - better-sqlite3
+      - cache-manager
+      - class-validator
+      - encoding
+      - hdb-pool
+      - ioredis
+      - mongodb
+      - mssql
+      - mysql2
+      - node-notifier
+      - oracledb
+      - pg
+      - pg-native
+      - pg-query-stream
+      - redis
+      - reflect-metadata
+      - rxjs
+      - sql.js
+      - sqlite3
+      - supports-color
+      - ts-node
+      - typeorm-aurora-data-api-driver
+    dev: false
+
   file:projects/monolith.tgz_@swc+core@1.2.205+redis@4.3.1:
-    resolution: {integrity: sha512-hXUrGZSgtozJxen+fDW7mBZ+qDx782jrSuZlb9WACc6jvRC4GtQ2hYkCxVvrhF+gZtpMbwpOwFUaBt7gDecPKQ==, tarball: file:projects/monolith.tgz}
+    resolution: {integrity: sha512-pFQ6YKKl0wG1qiN3s76AZXCH1uG09yjOurvO/jdt/xS/7JORFRhkR0ItiIl4Zza0ziwMjT3H9PRM4l0GMcO2nQ==, tarball: file:projects/monolith.tgz}
     id: file:projects/monolith.tgz
     name: '@rush-temp/monolith'
     version: 0.0.0

@@ -1,5 +1,5 @@
 import { RegisterType } from "@moirae/core";
-import { InventoryCreatedEvent } from "../events/inventory-created.event";
+import { InventoryCreatedEvent } from "@demo/common";
 
 @RegisterType()
 export class DuplicateInventoryNameException extends Error {

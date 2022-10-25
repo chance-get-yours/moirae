@@ -360,6 +360,10 @@
     {
       "packageName": "@demo/gateway",
       "projectFolder": "demo/gateway"
+    },
+    {
+      "packageName": "@demo/inventory",
+      "projectFolder": "demo/inventory"
     }
     // {
     //   /**

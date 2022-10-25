@@ -1,8 +1,8 @@
 import { AggregateRoot, Apply, Projection } from "@moirae/core";
-import { InventoryCreatedFailedEvent } from "../events/inventory-created-failed.event";
-import { InventoryCreatedEvent } from "../events/inventory-created.event";
-import { InventoryRemovedEvent } from "../events/inventory-removed.event";
-import { IInventory } from "../interfaces/inventory.interface";
+import { InventoryCreatedFailedEvent } from "@demo/common";
+import { InventoryCreatedEvent } from "@demo/common";
+import { InventoryRemovedEvent } from "@demo/common";
+import { IInventory } from "@demo/common";
 
 export class InventoryAggregate
   extends AggregateRoot<IInventory>

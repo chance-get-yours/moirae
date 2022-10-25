@@ -23,6 +23,7 @@
   "dependencies": {
     "@demo/account": "*",
     "@demo/common": "*",
+    "@demo/inventory": "*",
     "@demo/gateway": "*",
     "@moirae/core": "*",
     "@moirae/rabbitmq": "*",

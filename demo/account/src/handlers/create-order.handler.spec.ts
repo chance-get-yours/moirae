@@ -1,24 +1,28 @@
 import { faker } from "@faker-js/faker";
-import { AggregateFactory, mockAggregateFactory } from "@moirae/core";
+import { AggregateFactory, mockAggregateFactory, QueryBus } from "@moirae/core";
 import { Test } from "@nestjs/testing";
-import { InventoryAggregate } from "../../inventory/aggregates/inventory.aggregate";
-import { InventoryCreatedEvent } from "../../inventory/events/inventory-created.event";
 import { AccountAggregate } from "../aggregates/account.aggregate";
-import { AccountCreatedEvent } from "../events/account-created.event";
+import { AccountCreatedEvent, IInventory } from "@demo/common";
 import { CreateOrderCommand } from "../order/commands/create-order.command";
 import { CreateOrderHandler } from "./create-order.handler";
 
 describe("CreateOrderHandler", () => {
   let factory: AggregateFactory;
   let handler: CreateOrderHandler;
+  let queryBus: QueryBus;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
-      providers: [CreateOrderHandler, ...mockAggregateFactory()],
+      providers: [
+        CreateOrderHandler,
+        ...mockAggregateFactory(),
+        { provide: QueryBus, useValue: { execute: jest.fn() } },
+      ],
     }).compile();
 
     factory = module.get(AggregateFactory);
     handler = module.get(CreateOrderHandler);
+    queryBus = module.get(QueryBus);
 
     await factory["eventSource"]["onApplicationBootstrap"]();
   });
@@ -29,7 +33,8 @@ describe("CreateOrderHandler", () => {
 
   describe("execute", () => {
     let account: AccountAggregate;
-    let inventory: InventoryAggregate;
+    let inventoryId: string;
+    let inventory: IInventory;
 
     beforeEach(async () => {
       account = await factory.mergeContext(
@@ -44,25 +49,22 @@ describe("CreateOrderHandler", () => {
         }),
       );
       await account.commit();
-      inventory = await factory.mergeContext(
-        faker.datatype.uuid(),
-        InventoryAggregate,
-      );
-      inventory.apply(
-        new InventoryCreatedEvent(inventory.streamId, {
-          createdAt: new Date(),
-          name: faker.lorem.word(),
-          price: 7,
-          quantity: 1000,
-        }),
-      );
-      await inventory.commit();
+      inventory = {
+        createdAt: new Date(),
+        id: inventoryId,
+        name: faker.lorem.word(),
+        price: 7,
+        quantity: 1000,
+        updatedAt: new Date(),
+      };
+
+      jest.spyOn(queryBus, "execute").mockResolvedValue(inventory);
     });
 
     it("will create a new Order", async () => {
       const command = new CreateOrderCommand({
         accountId: account.id,
-        inventoryId: inventory.id,
+        inventoryId: inventoryId,
         quantity: 7,
       });
       command.$correlationId = faker.datatype.uuid();

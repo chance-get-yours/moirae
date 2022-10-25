@@ -10,13 +10,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@demo/common": "*",
+    "@demo/inventory": "*",
     "@moirae/core": "~0.4.2",
     "typeorm": "~0.3.10",
     "@nestjs/typeorm": "~9.0.1",
     "@nestjs/common": "~9.1.6",
     "class-transformer": "~0.5.1",
-    "class-validator": "~0.13.2",
-    "@demo/common": "~1.0.0"
+    "class-validator": "~0.13.2"
   },
   "devDependencies": {
     "typescript": "~4.8.4",

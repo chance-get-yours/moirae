@@ -1,6 +1,7 @@
 import { EventBus, ICommand, IMoiraeFilter, MoiraeFilter } from "@moirae/core";
-import { InventoryCreatedFailedEvent } from "../events/inventory-created-failed.event";
+import { InventoryCreatedFailedEvent } from "@demo/common";
 import { DuplicateInventoryNameException } from "../exceptions/duplicate-inventory-name.exception";
+import { CreateInventoryCommand } from "../commands/create-inventory.command";
 
 @MoiraeFilter(DuplicateInventoryNameException)
 export class InventoryCreatedFailedFilter
@@ -8,8 +9,14 @@ export class InventoryCreatedFailedFilter
 {
   constructor(private readonly eventBus: EventBus) {}
 
-  catch(command: ICommand, error: DuplicateInventoryNameException) {
-    const evt = InventoryCreatedFailedEvent.fromError(error);
+  catch(
+    command: CreateInventoryCommand,
+    error: DuplicateInventoryNameException,
+  ) {
+    const evt = new InventoryCreatedFailedEvent(error.event.$streamId, {
+      ...command.input,
+      message: error.message,
+    });
     evt.$metadata = command.$metadata;
 
     return this.eventBus.publish(evt);

@@ -6,7 +6,7 @@ import {
 } from "@moirae/core";
 import { InventoryAggregate } from "../aggregates/inventory.aggregate";
 import { CreateInventoryCommand } from "../commands/create-inventory.command";
-import { InventoryCreatedEvent } from "../events/inventory-created.event";
+import { InventoryCreatedEvent } from "@demo/common";
 import { DuplicateInventoryNameException } from "../exceptions/duplicate-inventory-name.exception";
 import { InventoryService } from "../inventory.service";
 

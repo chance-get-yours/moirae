@@ -32,7 +32,7 @@ import { AccountModule } from "@demo/account";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { ProcessOrderSaga } from "./common/sagas/process-order.saga";
-import { InventoryModule } from "./inventory/inventory.module";
+import { InventoryModule } from "@demo/inventory";
 import { MoiraeWsGateway } from "./moirae-ws.gateway";
 import { UserManagementModule } from "./user-management/user-management.module";
 import { IRabbitMQConfig } from "../../../moirae/rabbitmq/dist/lib/interfaces/rabbitmq.config";

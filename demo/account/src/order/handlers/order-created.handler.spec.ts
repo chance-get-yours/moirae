@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import { AggregateFactory, mockAggregateFactory } from "@moirae/core";
 import { Test } from "@nestjs/testing";
 import { AccountAggregate } from "../../aggregates/account.aggregate";
-import { OrderCreatedEvent } from "../events/order-created.event";
+import { OrderCreatedEvent } from "@demo/common";
 import { OrderService } from "../order.service";
 import { Order } from "../projections/order.entity";
 import { OrderCreatedHandler } from "./order-created.handler";

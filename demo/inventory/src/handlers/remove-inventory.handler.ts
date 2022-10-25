@@ -5,7 +5,7 @@ import {
 } from "@moirae/core";
 import { InventoryAggregate } from "../aggregates/inventory.aggregate";
 import { RemoveInventoryCommand } from "../commands/remove-inventory.command";
-import { InventoryRemovedEvent } from "../events/inventory-removed.event";
+import { InventoryRemovedEvent } from "@demo/common";
 import { InvalidRemoveInventoryException } from "../exceptions/invalid-remove-inventory.exception";
 
 @CommandHandler(RemoveInventoryCommand)

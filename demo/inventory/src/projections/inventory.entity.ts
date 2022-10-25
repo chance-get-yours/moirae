@@ -6,7 +6,7 @@ import {
   OneToMany,
   PrimaryColumn,
 } from "typeorm";
-import { IInventory } from "../interfaces/inventory.interface";
+import { IInventory } from "@demo/common";
 
 @RegisterType()
 @Entity()

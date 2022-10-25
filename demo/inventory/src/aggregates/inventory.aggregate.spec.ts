@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
-import { InventoryCreatedEvent } from "../events/inventory-created.event";
-import { InventoryRemovedEvent } from "../events/inventory-removed.event";
+import { InventoryCreatedEvent } from "@demo/common";
+import { InventoryRemovedEvent } from "@demo/common";
 import { InventoryAggregate } from "./inventory.aggregate";
 
 describe("InventoryAggregate", () => {

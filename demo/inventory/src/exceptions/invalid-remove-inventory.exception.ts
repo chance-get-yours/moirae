@@ -1,5 +1,5 @@
 import { RegisterType } from "@moirae/core";
-import { InventoryRemovedEvent } from "../events/inventory-removed.event";
+import { InventoryRemovedEvent } from "@demo/common";
 
 @RegisterType()
 export class InvalidRemoveInventoryException extends Error {

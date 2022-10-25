@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import { AggregateFactory, mockAggregateFactory } from "@moirae/core";
 import { Test } from "@nestjs/testing";
 import { InventoryAggregate } from "../aggregates/inventory.aggregate";
-import { InventoryRemovedEvent } from "../events/inventory-removed.event";
+import { InventoryRemovedEvent } from "@demo/common";
 import { InventoryService } from "../inventory.service";
 import { Inventory } from "../projections/inventory.entity";
 import { InventoryRemovedHandler } from "./inventory-removed.handler";

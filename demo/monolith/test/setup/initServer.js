@@ -6,7 +6,7 @@ const { MoiraePlugin } = require("@moirae/node-plugin");
 const { HelloQuery } = require("../../src/secondary-app/queries/hello.query");
 
 module.exports = async () => {
-  dotenv.config({ path: "../.env" });
+  dotenv.config({ path: "../../.env" });
   const app = express();
   app.get("/health", (_, res) => {
     res.send({ success: "OK" });

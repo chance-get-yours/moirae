@@ -27,7 +27,7 @@ jobs:
       - name: Rush Install
         run: node common/scripts/install-run-rush.js install @moirae/${{ matrix.package }}
       - name: Rush Build
-        run: node common/scripts/install-run-rush.js build @moirae/${{ matrix.package }}
+        run: node common/scripts/install-run-rush.js build -T @moirae/${{ matrix.package }}
       - name: Test Package ${{ matrix.package }}
         run: npm run test --prefix moirae/${{ matrix.package }}
   demo-unittest:

@@ -346,7 +346,7 @@
       "shouldPublish": true
     },
     {
-      "packageName": "monolith",
+      "packageName": "@demo/monolith",
       "projectFolder": "demo/monolith"
     }
     // {

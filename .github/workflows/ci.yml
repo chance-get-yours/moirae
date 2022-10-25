@@ -30,6 +30,26 @@ jobs:
         run: node common/scripts/install-run-rush.js build -t @moirae/{{ matrix.package }}
       - name: Test Package ${{ matrix.package }}
         run: npm run test --prefix moirae/{{ matrix.package }}
+  demo-unittest:
+    runs-on: ubuntu-latest
+    needs: test-packages
+    strategy:
+      matrix:
+        node_version: [16.x]
+        package: [monolith]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3.1.1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Rush Install
+        run: node common/scripts/install-run-rush.js install
+      - name: Rush Build
+        run: node common/scripts/install-run-rush.js build -t @demo/{{ matrix.package }}
+      - name: Test Package ${{ matrix.package }}
+        run: npm run test --prefix demo/{{ matrix.package }}
   # integration-units:
   #   runs-on: ubuntu-latest
   #   needs: test-packages

@@ -1,5 +1,5 @@
 import { AggregateRoot, Apply, applyMixins, IEvent } from "@moirae/core";
-import { IDynamicAggregate } from "../../common/interfaces/dynamic-aggregate.interface";
+import { IDynamicAggregate } from "@demo/common";
 import { UserAssignedAsCustomerEvent } from "../events/user-assigned-as-customer.event";
 import { UserCreatedEvent } from "../events/user-created.event";
 import { IUser } from "../interfaces/user.interface";

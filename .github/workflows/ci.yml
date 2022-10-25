@@ -25,7 +25,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Rush Install
-        run: node common/scripts/install-run-rush.js install @moirae/${{ matrix.package }}
+        run: node common/scripts/install-run-rush.js install
       - name: Rush Build
         run: node common/scripts/install-run-rush.js build -T @moirae/${{ matrix.package }}
       - name: Test Package ${{ matrix.package }}
@@ -45,7 +45,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Rush Install
-        run: node common/scripts/install-run-rush.js install @demo/${{ matrix.package }}
+        run: node common/scripts/install-run-rush.js install
       - name: Rush Build
         run: node common/scripts/install-run-rush.js build -T @demo/${{ matrix.package }}
       - name: Test Package ${{ matrix.package }}

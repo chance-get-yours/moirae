@@ -28,7 +28,7 @@ import {
 } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { AccountModule } from "./account/account.module";
+import { AccountModule } from "@demo/account";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { ProcessOrderSaga } from "./common/sagas/process-order.saga";
@@ -36,6 +36,7 @@ import { InventoryModule } from "./inventory/inventory.module";
 import { MoiraeWsGateway } from "./moirae-ws.gateway";
 import { UserManagementModule } from "./user-management/user-management.module";
 import { IRabbitMQConfig } from "../../../moirae/rabbitmq/dist/lib/interfaces/rabbitmq.config";
+import { GatewayModule } from "@demo/gateway";
 
 const moiraeConfigGenerator = (): IMoiraeConfig<
   ICacheConfig,
@@ -151,6 +152,7 @@ const moiraeConfigGenerator = (): IMoiraeConfig<
       envFilePath: "../../.env",
     }),
     InventoryModule,
+    GatewayModule,
     MoiraeModule.forRootAsync(moiraeConfigGenerator()),
     TypeOrmModule.forRoot({
       autoLoadEntities: true,

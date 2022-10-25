@@ -21,7 +21,9 @@
     "test:e2e": "env NODE_ENV=test jest --config ./test/jest-e2e.json --runInBand"
   },
   "dependencies": {
+    "@demo/account": "*",
     "@demo/common": "*",
+    "@demo/gateway": "*",
     "@moirae/core": "*",
     "@moirae/rabbitmq": "*",
     "@moirae/redis": "*",

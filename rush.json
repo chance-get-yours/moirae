@@ -352,6 +352,14 @@
     {
       "packageName": "@demo/common",
       "projectFolder": "demo/common"
+    },
+    {
+      "packageName": "@demo/account",
+      "projectFolder": "demo/account"
+    },
+    {
+      "packageName": "@demo/gateway",
+      "projectFolder": "demo/gateway"
     }
     // {
     //   /**

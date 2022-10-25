@@ -6,7 +6,6 @@ import {
   OneToMany,
   PrimaryColumn,
 } from "typeorm";
-import { Order } from "../../account/order/projections/order.entity";
 import { IInventory } from "../interfaces/inventory.interface";
 
 @RegisterType()
@@ -29,7 +28,4 @@ export class Inventory implements IInventory {
 
   @Column()
   updatedAt: Date;
-
-  @OneToMany(() => Order, (order) => order.inventory)
-  orders: Order[];
 }

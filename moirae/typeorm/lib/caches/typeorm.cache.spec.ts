@@ -8,7 +8,7 @@ import { SetValue } from "../entities/set-value.entity";
 import {
   createMockRepository,
   MockRepository,
-} from "../testing/createMockRepository";
+} from "../../testing/createMockRepository";
 import { TypeORMCache } from "./typeorm.cache";
 
 describe("TypeORMCache", () => {

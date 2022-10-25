@@ -8,8 +8,8 @@ import { Test } from "@nestjs/testing";
 import { Channel } from "amqplib";
 import { IRabbitMQConfig } from "../interfaces/rabbitmq.config";
 import { TestEvent } from "../publishers/rabbitmq.publiser.spec";
-import { createMockChannel } from "../testing/channel.mock";
-import { createMockConnection } from "../testing/connection.mock";
+import { createMockChannel } from "../../testing/channel.mock";
+import { createMockConnection } from "../../testing/connection.mock";
 import { RabbitPubSubEngine } from "./rabbit-pubsub.engine";
 import { RabbitMQConnection } from "./rabbitmq.connection";
 

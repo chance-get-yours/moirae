@@ -12,7 +12,7 @@ import { Test } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
 import { instanceToPlain } from "class-transformer";
 import { EventStore } from "../entities/event-store.entity";
-import { createMockRepository } from "../testing/createMockRepository";
+import { createMockRepository } from "../../testing/createMockRepository";
 import { TypeORMStore } from "./typeorm.store";
 
 @RegisterType()

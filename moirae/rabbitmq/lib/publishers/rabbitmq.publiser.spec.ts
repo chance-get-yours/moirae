@@ -14,8 +14,8 @@ import { EventEmitter } from "events";
 import { IRabbitMQPublisherConfig } from "../interfaces/rabbitmq-publisher.config";
 import { IRabbitMQConfig } from "../interfaces/rabbitmq.config";
 import { RabbitMQConnection } from "../providers/rabbitmq.connection";
-import { createMockChannel } from "../testing/channel.mock";
-import { createMockConnection } from "../testing/connection.mock";
+import { createMockChannel } from "../../testing/channel.mock";
+import { createMockConnection } from "../../testing/connection.mock";
 import { RabbitMQPublisher } from "./rabbitmq.publisher";
 
 export class TestEvent extends Event implements IEvent {

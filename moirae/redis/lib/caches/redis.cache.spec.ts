@@ -1,7 +1,7 @@
 import { CACHE_OPTIONS } from "@moirae/core";
 import { Test } from "@nestjs/testing";
 import { RedisConnection } from "../providers/redis.connection";
-import { mockConnection } from "../testing/connection.mock";
+import { mockConnection } from "../../testing/connection.mock";
 import { RedisCache } from "./redis.cache";
 
 describe("RedisCache", () => {

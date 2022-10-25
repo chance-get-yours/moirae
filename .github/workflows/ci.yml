@@ -25,9 +25,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Rush Install
-        run: node common/scripts/install-run-rush.js install -T @moirae/${{ matrix.package }}
+        run: node common/scripts/install-run-rush.js install @moirae/${{ matrix.package }}
       - name: Rush Build
-        run: node common/scripts/install-run-rush.js build -T @moirae/${{ matrix.package }}
+        run: node common/scripts/install-run-rush.js build @moirae/${{ matrix.package }}
       - name: Test Package ${{ matrix.package }}
         run: npm run test --prefix moirae/${{ matrix.package }}
   demo-unittest:
@@ -45,7 +45,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Rush Install
-        run: node common/scripts/install-run-rush.js install -T @demo/${{ matrix.package }}
+        run: node common/scripts/install-run-rush.js install @demo/${{ matrix.package }}
       - name: Rush Build
         run: node common/scripts/install-run-rush.js build -T @demo/${{ matrix.package }}
       - name: Test Package ${{ matrix.package }}

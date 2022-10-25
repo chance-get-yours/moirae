@@ -21,11 +21,10 @@
     "test:e2e": "env NODE_ENV=test jest --config ./test/jest-e2e.json --runInBand"
   },
   "dependencies": {
-    "@moirae/core": "workspace:*",
-    "@moirae/node-plugin": "workspace:*",
-    "@moirae/rabbitmq": "workspace:*",
-    "@moirae/redis": "workspace:*",
-    "@moirae/typeorm": "workspace:^",
+    "@moirae/core": "0.4.2",
+    "@moirae/rabbitmq": "0.4.2",
+    "@moirae/redis": "0.4.2",
+    "@moirae/typeorm": "0.4.2",
     "@nestjs/common": "^9.1.4",
     "@nestjs/config": "^2.1.0",
     "@nestjs/core": "^9.1.4",
@@ -36,13 +35,13 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
     "reflect-metadata": "^0.1.13",
-    "rimraf": "^3.0.2",
     "rxjs": "^7.5.7",
-    "sqlite": "^4.1.1",
     "sqlite3": "^5.1.1",
     "typeorm": "^0.3.10"
   },
   "devDependencies": {
+    "@moirae/node-plugin": "0.4.2",
+    "rimraf": "^3.0.2",
     "@faker-js/faker": "^7.4.0",
     "@nestjs/cli": "^9.0.0",
     "@nestjs/schematics": "^8.0.0",

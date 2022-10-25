@@ -22,7 +22,7 @@
     "typeorm": "^0.3.10"
   },
   "dependencies": {
-    "@moirae/core": "workspace:*",
+    "@moirae/core": "0.4.2",
     "class-transformer": "^0.5.1",
     "object-hash": "^3.0.0"
   },

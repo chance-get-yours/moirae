@@ -99,6 +99,7 @@ const moiraeConfigGenerator = (): IMoiraeConfig<
         injector: injectTypeormCache,
         type: "typeorm",
       };
+      typeormImports.push(...CACHE_ENTITIES);
       break;
   }
 
@@ -147,10 +148,10 @@ const moiraeConfigGenerator = (): IMoiraeConfig<
   imports: [
     AccountModule,
     ConfigModule.forRoot({
-      envFilePath: "../.env",
+      envFilePath: "../../.env",
     }),
     InventoryModule,
-    // MoiraeModule.forRootAsync(moiraeConfigGenerator()),
+    MoiraeModule.forRootAsync(moiraeConfigGenerator()),
     TypeOrmModule.forRoot({
       autoLoadEntities: true,
       database: process.env.NODE_ENV === "test" ? ":memory:" : "demo.db",

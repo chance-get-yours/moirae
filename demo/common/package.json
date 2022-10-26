@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@moirae/core": "~0.4.2",
-    "class-validator": "~0.13.2"
+    "class-validator": "^0.13.2"
   },
   "devDependencies": {
     "typescript": "~4.8.4",

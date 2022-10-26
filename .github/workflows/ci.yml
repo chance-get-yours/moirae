@@ -36,7 +36,7 @@ jobs:
     strategy:
       matrix:
         node_version: [16.x]
-        package: [account, common, gateway, monolith]
+        package: [account, common, gateway, inventory, monolith]
     steps:
       - name: Checkout
         uses: actions/checkout@v3

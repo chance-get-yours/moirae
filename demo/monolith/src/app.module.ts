@@ -33,9 +33,7 @@ import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { ProcessOrderSaga } from "./common/sagas/process-order.saga";
 import { InventoryModule } from "@demo/inventory";
-import { MoiraeWsGateway } from "./moirae-ws.gateway";
 import { UserManagementModule } from "./user-management/user-management.module";
-import { IRabbitMQConfig } from "../../../moirae/rabbitmq/dist/lib/interfaces/rabbitmq.config";
 import { GatewayModule } from "@demo/gateway";
 
 const moiraeConfigGenerator = (): IMoiraeConfig<
@@ -121,9 +119,9 @@ const moiraeConfigGenerator = (): IMoiraeConfig<
       };
       (config.publisher as unknown as IRabbitMQPublisherConfig) = {
         ...config.publisher,
-        command: rmqConfig as unknown as IRabbitMQConfig,
-        event: rmqConfig as IRabbitMQConfig,
-        query: rmqConfig as IRabbitMQConfig,
+        command: rmqConfig as IRabbitMQPublisherConfig["command"],
+        event: rmqConfig as IRabbitMQPublisherConfig["event"],
+        query: rmqConfig as IRabbitMQPublisherConfig["query"],
       };
       break;
   }
@@ -164,6 +162,6 @@ const moiraeConfigGenerator = (): IMoiraeConfig<
     UserManagementModule,
   ],
   controllers: [AppController],
-  providers: [AppService, MoiraeWsGateway],
+  providers: [AppService],
 })
 export class AppModule {}

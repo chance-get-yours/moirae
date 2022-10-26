@@ -1,10 +1,11 @@
-import { EventBus, IEvent } from "@moirae/core";
+import { EventBus, EVENT_PUBSUB_ENGINE, IEvent, IPubSub } from "@moirae/core";
 import {
   MessageBody,
   SubscribeMessage,
   WebSocketGateway,
   WsResponse,
 } from "@nestjs/websockets";
+import { Inject } from "@nestjs/common";
 import { filter, map, Observable, Subject } from "rxjs";
 
 export enum Subscriptions {
@@ -20,9 +21,11 @@ export enum Subscriptions {
 export class MoiraeWsGateway {
   private readonly subject: Subject<IEvent>;
 
-  constructor(private readonly eventBus: EventBus) {
+  constructor(
+    @Inject(EVENT_PUBSUB_ENGINE) private readonly eventPubSub: IPubSub,
+  ) {
     this.subject = new Subject();
-    this.eventBus.listen((event) => {
+    this.eventPubSub.subscribe((event) => {
       this.subject.next(event);
     });
   }

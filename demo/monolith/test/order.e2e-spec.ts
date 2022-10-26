@@ -3,15 +3,15 @@ import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { WsAdapter } from "@nestjs/platform-ws";
 import { Test, TestingModule } from "@nestjs/testing";
 import * as request from "supertest";
-import { CreateAccountInput } from "../src/account/dto/create-account.input";
-import { FundsWithdrawnEvent } from "../src/account/events/funds-withdrawn.event";
-import { RollbackFundsWithdrawnEvent } from "../src/account/events/rollback-funds-withdrawn.event";
+import { CreateAccountInput } from "@demo/common";
+import { FundsWithdrawnEvent } from "@demo/common";
+import { RollbackFundsWithdrawnEvent } from "@demo/common";
 import { CreateOrderInput } from "@demo/common/src/dto/create-order.input";
-import { RollbackOrderCreatedEvent } from "../../account/src/order/events/rollback-order-created.event";
+import { RollbackOrderCreatedEvent } from "@demo/common";
 import { AppModule } from "../src/app.module";
-import { CreateInventoryInput } from "../src/inventory/dto/create-inventory.input";
-import { InventoryRemovedEvent } from "../src/inventory/events/inventory-removed.event";
-import { Subscriptions } from "../src/moirae-ws.gateway";
+import { CreateInventoryInput } from "@demo/common";
+import { InventoryRemovedEvent } from "@demo/common";
+import { Subscriptions } from "@demo/gateway";
 import { WsHandler } from "./utilities/ws-handler";
 
 describe("Order", () => {

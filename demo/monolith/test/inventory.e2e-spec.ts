@@ -5,9 +5,9 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { randomUUID } from "crypto";
 import * as request from "supertest";
 import { AppModule } from "../src/app.module";
-import { CreateInventoryInput } from "../src/inventory/dto/create-inventory.input";
-import { InventoryCreatedFailedEvent } from "../src/inventory/events/inventory-created-failed.event";
-import { InventoryCreatedEvent } from "../src/inventory/events/inventory-created.event";
+import { CreateInventoryInput } from "@demo/common";
+import { InventoryCreatedFailedEvent } from "@demo/common";
+import { InventoryCreatedEvent } from "@demo/common";
 import { WsHandler } from "./utilities/ws-handler";
 
 describe("Inventory", () => {

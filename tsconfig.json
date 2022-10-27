@@ -1,16 +1,16 @@
 {
-    "compilerOptions": {
-      "module": "commonjs",
-      "declaration": true,
-      "removeComments": false,
-      "emitDecoratorMetadata": true,
-      "experimentalDecorators": true,
-      "allowSyntheticDefaultImports": true,
-      "target": "es2017",
-      "sourceMap": true,
-      "baseUrl": "./",
-      "incremental": true,
-      "skipLibCheck": true
-    },
-    "exclude": ["*/**/*.spec.ts"]
-  }
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
+    "sourceMap": true,
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true
+  },
+  "exclude": ["*/**/*.spec.ts", "node_modules"]
+}

@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@moirae/rabbitmq",
+      "comment": "Migrate to RushJS",
+      "type": "none"
+    }
+  ],
+  "packageName": "@moirae/rabbitmq"
+}

@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@moirae/redis",
+      "comment": "Migrate to RushJS",
+      "type": "none"
+    }
+  ],
+  "packageName": "@moirae/redis"
+}

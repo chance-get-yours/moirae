@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@moirae/typeorm",
+      "comment": "Migrate to RushJS",
+      "type": "none"
+    }
+  ],
+  "packageName": "@moirae/typeorm"
+}

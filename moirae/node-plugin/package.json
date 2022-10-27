@@ -19,7 +19,7 @@
     "reflect-metadata": "^0.1.13"
   },
   "dependencies": {
-    "@moirae/core": "0.4.2",
+    "@moirae/core": "*",
     "class-transformer": "~0.5.1",
     "object-hash": "^3.0.0"
   },

@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { INestApplication, ValidationPipe } from "@nestjs/common";
+import { INestApplication, Logger, ValidationPipe } from "@nestjs/common";
 import { WsAdapter } from "@nestjs/platform-ws";
 import { Test, TestingModule } from "@nestjs/testing";
 import * as request from "supertest";
@@ -17,6 +17,7 @@ import { WsHandler } from "./utilities/ws-handler";
 describe("Order", () => {
   let app: INestApplication;
   let client: WsHandler;
+  let requestorId: string;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -30,6 +31,13 @@ describe("Order", () => {
     await app.init();
 
     client = await WsHandler.fromApp(app);
+    requestorId = faker.datatype.uuid();
+    client.send(
+      JSON.stringify({
+        event: "@moirae/requestor",
+        data: { requestorId },
+      }),
+    );
   });
 
   afterAll(async () => {
@@ -67,11 +75,14 @@ describe("Order", () => {
 
       await request(app.getHttpServer())
         .post("/inventory")
+        .set("x-requestorId", requestorId)
         .send(createInventoryInput)
         .expect(201)
         .expect(({ body }) => {
           inventoryId = body.streamId;
         });
+
+      await client.awaitMatch((event) => event.$streamId === inventoryId);
     });
 
     it("will create an order", async () => {
@@ -144,11 +155,14 @@ describe("Order", () => {
 
       await request(app.getHttpServer())
         .post("/inventory")
+        .set("x-requestorId", requestorId)
         .send(createInventoryInput)
         .expect(201)
         .expect(({ body }) => {
           inventoryId = body.streamId;
         });
+
+      await client.awaitMatch((event) => event.$streamId === inventoryId);
     });
 
     it("will create an order", async () => {

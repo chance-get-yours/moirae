@@ -88,7 +88,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Rush Install
         run: node common/scripts/install-run-rush.js install
-      - name: Rush Build
+      - name: Rush Build Monolith
         run: node common/scripts/install-run-rush.js build -T @demo/monolith
       - name: Run monolith
         run: env CACHE_TYPE=${{ matrix.cache }} env PUB_TYPE=${{ matrix.publisher }} env STORE_TYPE=${{ matrix.store }} npm run test:e2e --prefix demo/monolith

@@ -1,4 +1,4 @@
-import faker from "@faker-js/faker";
+import { faker } from "@faker-js/faker";
 import { Channel } from "amqplib";
 
 export const createMockChannel = (options: Partial<Channel> = {}): Channel =>

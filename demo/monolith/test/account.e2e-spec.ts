@@ -25,7 +25,7 @@ describe("Account", () => {
 
     app = moduleFixture.createNestApplication();
     app.enableShutdownHooks();
-    app.useGlobalPipes(new ValidationPipe());
+    app.useGlobalPipes(new ValidationPipe({}));
     app.useWebSocketAdapter(new WsAdapter(app));
     await app.init();
 
@@ -118,8 +118,7 @@ describe("Account", () => {
       await request(app.getHttpServer())
         .put("/account/deposit")
         .send(input)
-        // .expect(400)
-        .expect(({ body }) => console.error(body));
+        .expect(400);
     });
   });
 

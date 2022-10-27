@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@moirae/core",
+      "comment": "Migrate to RushJS",
+      "type": "none"
+    }
+  ],
+  "packageName": "@moirae/core"
+}

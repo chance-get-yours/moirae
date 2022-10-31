@@ -43,7 +43,7 @@
     "typeorm": "~0.3.10"
   },
   "devDependencies": {
-    "@moirae/node-plugin": "0.4.2",
+    "@moirae/node-plugin": "*",
     "rimraf": "~3.0.2",
     "@faker-js/faker": "~7.6.0",
     "@nestjs/cli": "^9.0.0",

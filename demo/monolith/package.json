@@ -5,7 +5,7 @@
   "version": "0.0.0",
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "nest build",
+    "build": "npm run prebuild && nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@moirae/node-plugin": "0.4.2",
-    "rimraf": "^3.0.2",
+    "rimraf": "~3.0.2",
     "@faker-js/faker": "~7.6.0",
     "@nestjs/cli": "^9.0.0",
     "@nestjs/schematics": "^8.0.0",

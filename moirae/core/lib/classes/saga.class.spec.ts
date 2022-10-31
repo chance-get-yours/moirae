@@ -21,6 +21,10 @@ export class TestRollbackCommand extends Command implements IRollbackCommand {
   public readonly $data: { streamId: string; correlationId: string };
   public $version = 1;
 
+  public get STREAM_ID() {
+    return this.$data.streamId;
+  }
+
   constructor(streamId: string, correlationId: string) {
     super();
     this.$data = { streamId, correlationId };

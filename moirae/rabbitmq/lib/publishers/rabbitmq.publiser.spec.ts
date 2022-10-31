@@ -34,6 +34,7 @@ describe("RabbitMQPublisher", () => {
     query: {
       amqplib: {},
       namespaceRoot: "__testing__",
+      injector: jest.fn(),
       type: "rabbitmq",
     },
     domain: "default",

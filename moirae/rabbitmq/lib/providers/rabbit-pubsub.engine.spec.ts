@@ -18,7 +18,12 @@ describe("RabbitPubSubEngine", () => {
   let engine: RabbitPubSubEngine;
 
   const options: IPublisherMeta & { event: IRabbitMQConfig } = {
-    event: { amqplib: {}, namespaceRoot: "__testing__", type: "rabbitmq" },
+    event: {
+      amqplib: {},
+      namespaceRoot: "__testing__",
+      type: "rabbitmq",
+      injector: jest.fn(),
+    },
     nodeId: "__testing__",
   };
 

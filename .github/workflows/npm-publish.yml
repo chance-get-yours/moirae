@@ -18,7 +18,7 @@ jobs:
       - name: Rush Install
         run: node common/scripts/install-run-rush.js install
       - name: Rush Verify
-        run: rush change --verify
+        run: node common/scripts/install-run-rush.js change --verify
       - name: Rush Build
         run: node common/scripts/install-run-rush.js build
       - name: Publish
@@ -34,12 +34,10 @@ jobs:
         uses: actions/setup-node@v3.1.1
       - name: Rush Install
         run: node common/scripts/install-run-rush.js install
-      - name: Rush Verify
-        run: rush change --verify
       - name: Rush Build
         run: node common/scripts/install-run-rush.js build
       - name: Document
-        run: rush document
+        run: node common/scripts/install-run-rush.js document
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:

@@ -10,5 +10,6 @@
   "entryPointStrategy": "packages",
   "includeVersion": true,
   "name": "Moirae",
-  "readme": "./README.md"
+  "readme": "./README.md",
+  "exclude": ["**/*/*.spec.ts"]
 }

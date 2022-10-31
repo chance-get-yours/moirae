@@ -35,7 +35,6 @@ describe("QueryBus", () => {
       factory,
       new MemoryPublisher(factory, {
         nodeId: faker.datatype.uuid(),
-        type: "memory",
       }),
     );
 

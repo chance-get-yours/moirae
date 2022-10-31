@@ -22,7 +22,7 @@ jobs:
       - name: Rush Build
         run: node common/scripts/install-run-rush.js build
       - name: Publish
-        run: node common/scripts/install-run-rush.js publish --publish --npm-auth-token ${{ secrets.NPM_PUBLISH }}
+        run: node common/scripts/install-run-rush.js publish --publish --npm-auth-token ${{ secrets.NPM_PUBLISH }} --apply --include-all
   publish-docs:
     runs-on: ubuntu-latest
     needs:

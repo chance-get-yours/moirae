@@ -2,6 +2,7 @@ lockfileVersion: 5.3
 
 specifiers:
   '@faker-js/faker': ~7.6.0
+  '@moirae/node-plugin': 0.4.2
   '@nestjs/cli': ^9.0.0
   '@nestjs/common': ~9.1.6
   '@nestjs/config': ^2.1.0
@@ -45,6 +46,7 @@ specifiers:
   prettier: ^2.7.1
   redis: ~4.3.1
   reflect-metadata: ^0.1.13
+  rimraf: ~3.0.2
   rxjs: ^7.5.7
   source-map-support: ^0.5.20
   sqlite3: ^5.1.1
@@ -59,6 +61,7 @@ specifiers:
 
 dependencies:
   '@faker-js/faker': 7.6.0
+  '@moirae/node-plugin': 0.4.2_reflect-metadata@0.1.13
   '@nestjs/cli': 9.1.5_@swc+core@1.2.205
   '@nestjs/common': 9.1.6_bfb10c549401c4321799e32f853295f0
   '@nestjs/config': 2.2.0_c26f80aaab984fa1edc8ab61d24efb72
@@ -102,6 +105,7 @@ dependencies:
   prettier: 2.7.1
   redis: 4.3.1
   reflect-metadata: 0.1.13
+  rimraf: 3.0.2
   rxjs: 7.5.7
   source-map-support: 0.5.21
   sqlite3: 5.1.2
@@ -944,6 +948,18 @@ packages:
     transitivePeerDependencies:
       - encoding
       - supports-color
+    dev: false
+
+  /@moirae/node-plugin/0.4.2_reflect-metadata@0.1.13:
+    resolution: {integrity: sha512-fXD7gRDMtH0brqfoE3LvF6ny29hixUyec7ln5UfxOygGoI1s0NKcxPVRdlvJH+dxVrmvwb9uv1YaQuCXMLv/EQ==}
+    engines: {node: '>=16'}
+    peerDependencies:
+      '@moirae/core': '*'
+      reflect-metadata: ^0.1.13
+    dependencies:
+      class-transformer: 0.5.1
+      object-hash: 3.0.0
+      reflect-metadata: 0.1.13
     dev: false
 
   /@nestjs/cli/9.1.5_@swc+core@1.2.205:
@@ -6310,7 +6326,7 @@ packages:
     dev: false
 
   file:projects/core.tgz_42856aa97355ac28e3377442f3d1a154:
-    resolution: {integrity: sha512-qW7Ddd04FV12tXmw2Fh0anK3kRRcgznWYrh3CQnZ3npHGIcOb8izWho1n/I68Kd5KGDWTB+uAO87aCFXhI+p1A==, tarball: file:projects/core.tgz}
+    resolution: {integrity: sha512-jD0+2OnnD9OCnBwIClHmDPMEdMq3lwYslHx+2QfSqCSraS815GtqFUdhtbxbORnoTt+AYlTR3JdPk+oIYMlY3g==, tarball: file:projects/core.tgz}
     id: file:projects/core.tgz
     name: '@rush-temp/core'
     version: 0.0.0
@@ -6421,12 +6437,13 @@ packages:
     dev: false
 
   file:projects/monolith.tgz_@swc+core@1.2.205+redis@4.3.1:
-    resolution: {integrity: sha512-jakv7WVwdPSEqQCjRlz1mGoww5zTEITkXGG7EgiXBe32tzZw4A37LYmPDqom4u1rZIoqXZAnP2oTBobM9syF7Q==, tarball: file:projects/monolith.tgz}
+    resolution: {integrity: sha512-FKPb+xsPcQXCOmtSQ7qi711DlVmTy68a1S+z7WGWbzrobvbLzeTYYICP0MLFWcWDnyb4zeZriNF1uMxv2lOwsw==, tarball: file:projects/monolith.tgz}
     id: file:projects/monolith.tgz
     name: '@rush-temp/monolith'
     version: 0.0.0
     dependencies:
       '@faker-js/faker': 7.6.0
+      '@moirae/node-plugin': 0.4.2_reflect-metadata@0.1.13
       '@nestjs/cli': 9.1.5_@swc+core@1.2.205
       '@nestjs/common': 9.1.6_bfb10c549401c4321799e32f853295f0
       '@nestjs/config': 2.2.0_c26f80aaab984fa1edc8ab61d24efb72
@@ -6469,6 +6486,7 @@ packages:
       - '@babel/core'
       - '@google-cloud/spanner'
       - '@jest/types'
+      - '@moirae/core'
       - '@nestjs/microservices'
       - '@nestjs/platform-socket.io'
       - '@sap/hana-client'
@@ -6503,7 +6521,7 @@ packages:
     dev: false
 
   file:projects/node-plugin.tgz_ts-node@10.9.1:
-    resolution: {integrity: sha512-riDn6aLqyncC7jlWb55ULNMM+z7Yzu7JpGUM1DYpOwyZELyL/LBClpE2+RbvvfCW808iv1rZzqwb9kO9psY46Q==, tarball: file:projects/node-plugin.tgz}
+    resolution: {integrity: sha512-Wa3cWpO3L5r3p2KuLPmkyFuHvFS4xsrjlJG9lcRb4dtU/ItymMRTXhT7GPAWeBKz5qQEYnqjkG6x+Uffi6dDLw==, tarball: file:projects/node-plugin.tgz}
     id: file:projects/node-plugin.tgz
     name: '@rush-temp/node-plugin'
     version: 0.0.0
@@ -6528,7 +6546,7 @@ packages:
     dev: false
 
   file:projects/rabbitmq.tgz_42856aa97355ac28e3377442f3d1a154:
-    resolution: {integrity: sha512-qMo5PGDx+3IE7WmYYALf2NkMCjkKWP+UPi0Utl9SAMCkJFoQz8HZlLjp0Vufr6PrZXjmNNyZZ3G0yJPZmrYfjQ==, tarball: file:projects/rabbitmq.tgz}
+    resolution: {integrity: sha512-f0qh8Ptw14sEvItZTnn71rzaJOhwN44ovps4cTLJkEsHbkpjR7GyS1nY9RzLtBGSN9PiG99kNpzangx92qVOvw==, tarball: file:projects/rabbitmq.tgz}
     id: file:projects/rabbitmq.tgz
     name: '@rush-temp/rabbitmq'
     version: 0.0.0
@@ -6562,7 +6580,7 @@ packages:
     dev: false
 
   file:projects/redis.tgz_b743b8e02b2394cdfdb76af7cc5dda2b:
-    resolution: {integrity: sha512-NMhrM9zc0trZdMtDOcqddYgt1W31DEWM2wJLWn92MA9f8AfrYLiBuVBeirxvYotrWKE9rfsjtm2xldGeg1a+EQ==, tarball: file:projects/redis.tgz}
+    resolution: {integrity: sha512-L3i4E3YbyuCJT4PCU7/yARx5ghJr/vbQYTgewtaMNnBwtzziLvNcaB0eEnEoHIWJbeYSzcUyHoj5LA+i4abYbQ==, tarball: file:projects/redis.tgz}
     id: file:projects/redis.tgz
     name: '@rush-temp/redis'
     version: 0.0.0
@@ -6595,7 +6613,7 @@ packages:
     dev: false
 
   file:projects/typeorm.tgz_e327ceae950747835fa546e3dc7fc4e4:
-    resolution: {integrity: sha512-FusDWeXGFpc5sV34vXkBuS6cMvoWRcaMX7zwfwxHllsfpun7S0kL6yy21iK0qbmMYIoHT/b7MsP9NZU3Cg4wNg==, tarball: file:projects/typeorm.tgz}
+    resolution: {integrity: sha512-AlGD1sg9N6e3/9g1dM2VWUOOV1Cjg528X3xOc+9d+ibu5DdnU36k2gs6R2ZDicwPNm1nnXM2bP8h81Cbn1X94Q==, tarball: file:projects/typeorm.tgz}
     id: file:projects/typeorm.tgz
     name: '@rush-temp/typeorm'
     version: 0.0.0

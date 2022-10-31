@@ -45,7 +45,6 @@ specifiers:
   prettier: ^2.7.1
   redis: ~4.3.1
   reflect-metadata: ^0.1.13
-  rimraf: ^3.0.2
   rxjs: ^7.5.7
   source-map-support: ^0.5.20
   sqlite3: ^5.1.1
@@ -103,7 +102,6 @@ dependencies:
   prettier: 2.7.1
   redis: 4.3.1
   reflect-metadata: 0.1.13
-  rimraf: 3.0.2
   rxjs: 7.5.7
   source-map-support: 0.5.21
   sqlite3: 5.1.2
@@ -6238,7 +6236,7 @@ packages:
     dev: false
 
   file:projects/account.tgz_cb9c685bf2bde432c8d323a83caf694c:
-    resolution: {integrity: sha512-wiZtv+RdeCfdyrhXAvep4bPcmuM1drv5O14saS4DLDH2LbdKUtwjpeQW/GU74WTRlEqkC42D7Z+5DWZIU9sWbA==, tarball: file:projects/account.tgz}
+    resolution: {integrity: sha512-Cxk6zamx1yNkbmPvuiLyWTWX8dX7/fMJtPMrveJijzBD/nqVerEvHlKf+JZdgL3ifh9U9F370RPc3774xqFVmg==, tarball: file:projects/account.tgz}
     id: file:projects/account.tgz
     name: '@rush-temp/account'
     version: 0.0.0
@@ -6251,6 +6249,7 @@ packages:
       class-transformer: 0.5.1
       class-validator: 0.13.2
       jest: 29.2.2_c45df3da2de79a6dfbacc1c31b99fc9c
+      rimraf: 3.0.2
       ts-jest: 29.0.3_jest@29.2.2+typescript@4.8.4
       typeorm: 0.3.10_a4afafad481dcb6ec5a591b09cd57ccc
       typescript: 4.8.4
@@ -6288,7 +6287,7 @@ packages:
     dev: false
 
   file:projects/common.tgz_c45df3da2de79a6dfbacc1c31b99fc9c:
-    resolution: {integrity: sha512-mtB04LfZoMAc5/wmP9v8CHLvYCvVR4d9+K8TVuiDMPwa6eL43mWRmc3sGCEqcG9uaehddezfukQ9He5N5pwceQ==, tarball: file:projects/common.tgz}
+    resolution: {integrity: sha512-osAa5fPtJXyfFK1E+nmj66BKgdCcB5bRMGpDr8Soko2GioELypXhxxhFqLRldMJFjyOSBug9fRhCfl4vBcp2eg==, tarball: file:projects/common.tgz}
     id: file:projects/common.tgz
     name: '@rush-temp/common'
     version: 0.0.0
@@ -6296,6 +6295,7 @@ packages:
       '@types/jest': 29.2.0
       class-validator: 0.13.2
       jest: 29.2.2_c45df3da2de79a6dfbacc1c31b99fc9c
+      rimraf: 3.0.2
       ts-jest: 29.0.3_jest@29.2.2+typescript@4.8.4
       typescript: 4.8.4
     transitivePeerDependencies:
@@ -6344,7 +6344,7 @@ packages:
     dev: false
 
   file:projects/gateway.tgz_6a60bc5af0a1fd3ccce90dfaee8c5797:
-    resolution: {integrity: sha512-4FGEgB+jv1xV31Q6rED/rNf8YNhCzWeRrCT3eW8eJ8pS3LnS4V+vBgF0VAVuDPIKwUcO0cJ7fC+ZMNSbALEDNQ==, tarball: file:projects/gateway.tgz}
+    resolution: {integrity: sha512-dqH+kjh7467g5r5DHv7Y0q85OOJaFUgjpQpubKnu2HB0gpmZEOiT3VsvkIxvOMkrV2SZh7/dyJ07d0ADX69OMg==, tarball: file:projects/gateway.tgz}
     id: file:projects/gateway.tgz
     name: '@rush-temp/gateway'
     version: 0.0.0
@@ -6355,6 +6355,7 @@ packages:
       '@types/jest': 29.2.0
       class-validator: 0.13.2
       jest: 29.2.2_c45df3da2de79a6dfbacc1c31b99fc9c
+      rimraf: 3.0.2
       rxjs: 7.5.7
       typescript: 4.8.4
     transitivePeerDependencies:
@@ -6372,7 +6373,7 @@ packages:
     dev: false
 
   file:projects/inventory.tgz_368ec5e091384a10546541916c3e36ad:
-    resolution: {integrity: sha512-WlLpY5L5lilVPh25rk0Bkxwev7Lteq8iorkwP1E8Poiecx3Wyk1Hwwljx3NtTd/ElGTaHfxnf4fClqB1V8njlg==, tarball: file:projects/inventory.tgz}
+    resolution: {integrity: sha512-uL6jNAksGUHXxvDYhXBQdMx8BLtBPwTC1nHdNpDUJ0G1vPWXp95yggy6ptU0D/UwcQwgOKiVv8P+b5SDJQ/mYg==, tarball: file:projects/inventory.tgz}
     id: file:projects/inventory.tgz
     name: '@rush-temp/inventory'
     version: 0.0.0
@@ -6385,6 +6386,7 @@ packages:
       '@types/jest': 29.2.0
       class-transformer: 0.5.1
       jest: 29.2.2_c45df3da2de79a6dfbacc1c31b99fc9c
+      rimraf: 3.0.2
       typeorm: 0.3.10_a4afafad481dcb6ec5a591b09cd57ccc
       typescript: 4.8.4
     transitivePeerDependencies:
@@ -6501,7 +6503,7 @@ packages:
     dev: false
 
   file:projects/node-plugin.tgz_ts-node@10.9.1:
-    resolution: {integrity: sha512-so4kxfQcStuECUtnnkNJGJogAXJmuDoTrxyR9DxdTpKS1LyWE/DS5R2jY2X94N+4vqmqinolTuPqEXa/OQKLsg==, tarball: file:projects/node-plugin.tgz}
+    resolution: {integrity: sha512-riDn6aLqyncC7jlWb55ULNMM+z7Yzu7JpGUM1DYpOwyZELyL/LBClpE2+RbvvfCW808iv1rZzqwb9kO9psY46Q==, tarball: file:projects/node-plugin.tgz}
     id: file:projects/node-plugin.tgz
     name: '@rush-temp/node-plugin'
     version: 0.0.0
@@ -6526,7 +6528,7 @@ packages:
     dev: false
 
   file:projects/rabbitmq.tgz_42856aa97355ac28e3377442f3d1a154:
-    resolution: {integrity: sha512-/jYZOvBbuLh95bHFSRo6GCQgzfUKrZmwbvt4CCvzvF7AtF8PfXhgDdKUOLzmg1UFirsBuClZURE/ibKW9oqvLQ==, tarball: file:projects/rabbitmq.tgz}
+    resolution: {integrity: sha512-qMo5PGDx+3IE7WmYYALf2NkMCjkKWP+UPi0Utl9SAMCkJFoQz8HZlLjp0Vufr6PrZXjmNNyZZ3G0yJPZmrYfjQ==, tarball: file:projects/rabbitmq.tgz}
     id: file:projects/rabbitmq.tgz
     name: '@rush-temp/rabbitmq'
     version: 0.0.0
@@ -6560,7 +6562,7 @@ packages:
     dev: false
 
   file:projects/redis.tgz_b743b8e02b2394cdfdb76af7cc5dda2b:
-    resolution: {integrity: sha512-YtVOInLDHEm1pF6jozGpwnsxX7/BbEZQB5u0om/gDYaMG5K8Ythwv3USMxHTnFOgPzrlPtODUnDg4bVN9FiAsg==, tarball: file:projects/redis.tgz}
+    resolution: {integrity: sha512-NMhrM9zc0trZdMtDOcqddYgt1W31DEWM2wJLWn92MA9f8AfrYLiBuVBeirxvYotrWKE9rfsjtm2xldGeg1a+EQ==, tarball: file:projects/redis.tgz}
     id: file:projects/redis.tgz
     name: '@rush-temp/redis'
     version: 0.0.0
@@ -6593,7 +6595,7 @@ packages:
     dev: false
 
   file:projects/typeorm.tgz_e327ceae950747835fa546e3dc7fc4e4:
-    resolution: {integrity: sha512-bK40LGFPGhzbav4HVhlReo4iIRfu2oWImzZ6Qts3u3Va5XwriFTzJYhUs/OgGeqxQIS4IIBwiiGWiIB8eT8JfQ==, tarball: file:projects/typeorm.tgz}
+    resolution: {integrity: sha512-FusDWeXGFpc5sV34vXkBuS6cMvoWRcaMX7zwfwxHllsfpun7S0kL6yy21iK0qbmMYIoHT/b7MsP9NZU3Cg4wNg==, tarball: file:projects/typeorm.tgz}
     id: file:projects/typeorm.tgz
     name: '@rush-temp/typeorm'
     version: 0.0.0

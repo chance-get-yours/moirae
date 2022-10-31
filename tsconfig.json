@@ -12,5 +12,6 @@
     "incremental": true,
     "skipLibCheck": true
   },
-  "exclude": ["*/**/*.spec.ts", "node_modules"]
+  "include": ["**/*/*.spec.ts"],
+  "exclude": ["node_modules"]
 }

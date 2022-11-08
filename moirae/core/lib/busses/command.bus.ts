@@ -3,6 +3,7 @@ import { InstanceWrapper } from "@nestjs/core/injector/instance-wrapper";
 import { randomUUID } from "crypto";
 import { BaseBus } from "../classes/base.bus";
 import { CommandResponse } from "../classes/command-response.class";
+import { DomainStore } from "../classes/domain-store.class";
 import { Explorer } from "../classes/explorer.class";
 import { SagaManager } from "../classes/saga-manager.class";
 import { ObservableFactory } from "../factories/observable.factory";
@@ -40,8 +41,7 @@ export class CommandBus extends BaseBus<ICommand> {
   ): Promise<TRes> {
     if (!command.$correlationId) command.$correlationId = randomUUID();
     if (!command.STREAM_ID) command.STREAM_ID = randomUUID();
-    if (!command.$executionDomain) command.$executionDomain = "default";
-    if (command.$executionDomain === this._publisher.domain) {
+    if (DomainStore.getInstance().has(command.$executionDomain)) {
       await this.executeLocal(command);
     } else {
       await this._publisher.publish(command);

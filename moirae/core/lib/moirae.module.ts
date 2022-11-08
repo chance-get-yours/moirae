@@ -35,9 +35,17 @@ import {
 } from "./moirae.constants";
 import { MemoryPublisher } from "./publishers/memory.publisher";
 import { MemoryStore } from "./stores/memory.store";
+import { DomainStore } from "./classes/domain-store.class";
 
 @Module({})
 export class MoiraeModule {
+  public static forFeature(domains: string[]): DynamicModule {
+    DomainStore.getInstance().add(...domains);
+    return {
+      module: MoiraeModule,
+    };
+  }
+
   public static async forRootAsync<
     TCache extends ICacheConfig = IMemoryCacheConfig,
     TStore extends IStoreConfig = IMemoryStoreConfig,
@@ -117,7 +125,6 @@ export class MoiraeModule {
       imports,
     } = config;
 
-    if (!publisher.domain) publisher.domain = "default";
     externalTypes.forEach((type) => ConstructorStorage.getInstance().set(type));
 
     const providers: Provider[] = [

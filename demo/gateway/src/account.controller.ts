@@ -45,8 +45,6 @@ export class AccountController {
   async withdrawFunds(
     @Body() input: WithdrawFundsInput,
   ): Promise<CommandResponse> {
-    return this.commandBus.execute<CommandResponse>(
-      new WithdrawFundsCommand(input),
-    );
+    return this.commandBus.execute(new WithdrawFundsCommand(input));
   }
 }

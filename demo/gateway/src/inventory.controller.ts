@@ -26,7 +26,7 @@ export class InventoryController {
     @Body() input: CreateInventoryInput,
     @Headers("x-requestorId") requestorId: string,
   ): Promise<CommandResponse> {
-    return this.commandBus.execute<CommandResponse>(
+    return this.commandBus.execute(
       new CreateInventoryCommand(input, requestorId),
     );
   }

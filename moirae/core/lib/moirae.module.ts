@@ -39,6 +39,10 @@ import { DomainStore } from "./classes/domain-store.class";
 
 @Module({})
 export class MoiraeModule {
+  /**
+   * Register a module with a domain. This enables Moirae to direct the execution of commands
+   * and queries to the correct system in either a monolithic or microservice-based system.
+   */
   public static forFeature(domains: string[]): DynamicModule {
     DomainStore.getInstance().add(...domains);
     return {

@@ -8,9 +8,9 @@ export interface Respondable extends IEventLike {
   $disableResponse?: boolean;
   /**
    * Property set on any respondable to define the executing system
-   * for working with non-monolithic applications
+   * for a given object
    */
-  $executionDomain?: "default" | string;
+  $executionDomain?: string;
   /**
    * Unique key to associate a response to a request
    */

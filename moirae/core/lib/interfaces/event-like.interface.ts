@@ -15,6 +15,10 @@ export interface IEventLike {
    * Event name. Defaults to the name of the constructor
    */
   readonly $name: string;
+  /**
+   * @internal
+   * Differentiating between Commands, Events, and Queries
+   */
   readonly $type: EventType;
   /**
    * Event revision version

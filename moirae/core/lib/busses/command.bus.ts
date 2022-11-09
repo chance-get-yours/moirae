@@ -36,17 +36,28 @@ export class CommandBus extends BaseBus<ICommand> {
     this._errorHandlers = new Map();
   }
 
-  public async execute<TRes = CommandResponse>(
-    command: ICommand,
-  ): Promise<TRes> {
+  /**
+   * Trigger processing of a given command in one of two ways:
+   * - If the current application can process the command, meaning the {@link @moirae/core!ICommand.$executionDomain | ICommand.$executionDomain property} has been
+   * registered, the command will be processed asynchronously to the main thread as a Promise without interacting with external systems.
+   * - If the current application cannot process the command, the command will be enqueued for processing
+   * via a publisher for processing externally.
+   *
+   * In either scenario, the response from this function will contain relevant information for subscribing
+   * to events emitted by the command processing.
+   *
+   * @param command - Command to process
+   * @returns An object containing information about the acknowledged execution
+   */
+  public async execute(command: ICommand): Promise<CommandResponse> {
     if (!command.$correlationId) command.$correlationId = randomUUID();
     if (!command.STREAM_ID) command.STREAM_ID = randomUUID();
     if (DomainStore.getInstance().has(command.$executionDomain)) {
-      await this.executeLocal(command);
+      this.executeLocal(command);
     } else {
       await this._publisher.publish(command);
     }
-    return CommandResponse.fromCommand(command) as unknown as TRes;
+    return CommandResponse.fromCommand(command);
   }
 
   protected async executeLocal(command: ICommand): Promise<void> {

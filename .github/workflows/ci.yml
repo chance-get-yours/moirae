@@ -20,8 +20,6 @@ jobs:
         uses: actions/setup-node@v3.1.1
       - name: Assert dependency versions
         run: node common/scripts/install-run-rush.js check
-      - name: Assert Changelog
-        run: node common/scripts/install-run-rush.js change --verify
   test-packages:
     runs-on: ubuntu-latest
     strategy:

@@ -1,4 +1,5 @@
 import {
+  DomainStore,
   ICommand,
   ICommandHandler,
   IPublisher,
@@ -25,6 +26,7 @@ export class MoiraePlugin {
   private readonly _observableFactory: ObservableFactory;
 
   constructor(config: MoiraePluginConfig) {
+    DomainStore.getInstance().add(...config.domains);
     this._commandPublisher = config.getCommandPublisher();
     this._container = new Container();
     this._observableFactory = new ObservableFactory();

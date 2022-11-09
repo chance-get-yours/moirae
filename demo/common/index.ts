@@ -1,5 +1,8 @@
+// constants
+export { ACCOUNT_DOMAIN, INVENTORY_DOMAIN } from "./src/common.constants";
+
+// exceptions
 export { UniqueConstraintError } from "./src/exceptions/unique-contrstraint.error";
-export type { IDynamicAggregate } from "./src/interfaces/dynamic-aggregate.interface";
 
 // dto
 export { CreateAccountInput } from "./src/dto/create-account.input";
@@ -26,5 +29,6 @@ export { InventoryRemovedEvent } from "./src/events/inventory-removed.event";
 
 // interfaces
 export type { IAccount } from "./src/interfaces/account.interface";
+export type { IDynamicAggregate } from "./src/interfaces/dynamic-aggregate.interface";
 export type { IInventory } from "./src/interfaces/inventory.interface";
 export type { IOrder } from "./src/interfaces/order.interface";

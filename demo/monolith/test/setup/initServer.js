@@ -25,9 +25,7 @@ module.exports = async () => {
 
   const publisherConfig = {
     command: rabbitMQConfig,
-    domain: "second_app",
     event: rabbitMQConfig,
-    nodeId: "second_app",
     query: rabbitMQConfig,
   };
 
@@ -38,6 +36,7 @@ module.exports = async () => {
   };
 
   const moirae = new MoiraePlugin({
+    domains: ["second_app"],
     getCommandPublisher: () =>
       new RabbitMQPublisher(
         new ObservableFactory(),

@@ -96,7 +96,10 @@ export abstract class AggregateRoot<Projection = Record<string, unknown>> {
         if (!event.$correlationId)
           event.$correlationId = initiatorCommand?.$correlationId;
         if (initiatorCommand?.$metadata)
-          event.$metadata = initiatorCommand.$metadata;
+          event.$metadata = {
+            ...(event.$metadata || {}),
+            ...initiatorCommand.$metadata,
+          };
         return event;
       }),
     );

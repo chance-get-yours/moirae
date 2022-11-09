@@ -181,16 +181,21 @@ describe("Account", () => {
       };
       await request(app.getHttpServer())
         .post("/account")
+        .set("x-requestorId", requestorId)
         .send(input)
         .expect(201)
         .expect(({ body }) => {
           id = body.streamId;
+          wsClient.send(
+            JSON.stringify({
+              event: Subscriptions.ID,
+              data: { id },
+            }),
+          );
         });
-      wsClient.send(
-        JSON.stringify({
-          event: Subscriptions.ID,
-          data: { id },
-        }),
+      await wsClient.awaitMatch(
+        (event) =>
+          event.$name === "AccountCreatedEvent" && event.$streamId === id,
       );
     });
 

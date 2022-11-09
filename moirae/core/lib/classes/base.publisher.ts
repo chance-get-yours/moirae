@@ -53,10 +53,6 @@ export abstract class BasePublisher<Evt extends Respondable>
     this._uuid = randomUUID();
   }
 
-  public get domain(): string {
-    return this.publisherOptions.domain || "default";
-  }
-
   protected get _key(): string {
     return `${this._uuid}:${EVENT_KEY}`;
   }

@@ -10,6 +10,7 @@ export { BasePublisher } from "./lib/classes/base.publisher";
 export { CommandResponse } from "./lib/classes/command-response.class";
 export { Command } from "./lib/classes/command.class";
 export { Distributor } from "./lib/classes/distributor.class";
+export { DomainStore } from "./lib/classes/domain-store.class";
 export { Event } from "./lib/classes/event.class";
 export { Explorer } from "./lib/classes/explorer.class";
 export { Query } from "./lib/classes/query.class";

@@ -2,6 +2,7 @@ import { faker } from "@faker-js/faker";
 import {
   AsyncMap,
   Distributor,
+  DomainStore,
   Event,
   IEvent,
   ObservableFactory,
@@ -17,12 +18,7 @@ import { RabbitMQConnection } from "../providers/rabbitmq.connection";
 import { createMockChannel } from "../../testing/channel.mock";
 import { createMockConnection } from "../../testing/connection.mock";
 import { RabbitMQPublisher } from "./rabbitmq.publisher";
-
-export class TestEvent extends Event implements IEvent {
-  $data = {};
-  $streamId = "q12345f";
-  $version = 1;
-}
+import { TestEvent } from "../../testing/test-event.class";
 
 describe("RabbitMQPublisher", () => {
   let publisher: RabbitMQPublisher;
@@ -37,7 +33,6 @@ describe("RabbitMQPublisher", () => {
       injector: jest.fn(),
       type: "rabbitmq",
     },
-    domain: "default",
     nodeId: "__testing__",
   };
 
@@ -60,6 +55,10 @@ describe("RabbitMQPublisher", () => {
     publisher = await module.resolve(RabbitMQPublisher);
     publisher.role = QUERY_PUBLISHER;
     connection = module.get(RabbitMQConnection);
+  });
+
+  afterEach(() => {
+    DomainStore.getInstance().clear();
   });
 
   it("will be defined", () => {
@@ -131,6 +130,8 @@ describe("RabbitMQPublisher", () => {
 
     it("will create the work channel", async () => {
       const workChannel = createMockChannel();
+      const domain = faker.random.word();
+      DomainStore.getInstance().add(domain);
 
       jest
         .spyOn(connection.connection, "createChannel")
@@ -145,10 +146,10 @@ describe("RabbitMQPublisher", () => {
 
       expect(workChannel.prefetch).toHaveBeenCalledWith(1);
       expect(workChannel.assertQueue).toHaveBeenCalledWith(
-        publisher["_WORK_QUEUE"],
+        publisher["_generateWorkQueue"](domain),
       );
       expect(workChannel.consume).toHaveBeenCalledWith(
-        publisher["_WORK_QUEUE"],
+        publisher["_generateWorkQueue"](domain),
         expect.any(Function),
       );
     });
@@ -200,6 +201,8 @@ describe("RabbitMQPublisher", () => {
     let response: Channel;
     let work: Channel;
     beforeEach(() => {
+      const domain = faker.random.word();
+      DomainStore.getInstance().add(domain);
       response = createMockChannel();
       work = createMockChannel();
 
@@ -207,13 +210,18 @@ describe("RabbitMQPublisher", () => {
       publisher["_responseChannel"] = response;
       publisher["_responseConsumer"] = faker.random.alphaNumeric(4);
       publisher["_workChannel"] = work;
-      publisher["_workConsumer"] = faker.random.alphaNumeric(3);
+      publisher["_workQueueMap"].set(domain, {
+        consumerTag: faker.random.word(),
+        queueName: publisher["_generateWorkQueue"](domain),
+      });
     });
 
     it("will close work channel", async () => {
       await publisher["handleShutdown"]();
 
-      expect(work.cancel).toHaveBeenCalledWith(publisher["_workConsumer"]);
+      publisher["_workQueueMap"].forEach(({ consumerTag }) => {
+        expect(work.cancel).toHaveBeenCalledWith(consumerTag);
+      });
       expect(work.close).toHaveBeenCalled();
     });
 

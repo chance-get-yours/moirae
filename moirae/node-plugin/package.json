@@ -1,7 +1,7 @@
 {
   "name": "@moirae/node-plugin",
   "main": "dist/index.js",
-  "version": "0.5.3",
+  "version": "0.6.0",
   "license": "MIT",
   "repository": {
     "type": "git",

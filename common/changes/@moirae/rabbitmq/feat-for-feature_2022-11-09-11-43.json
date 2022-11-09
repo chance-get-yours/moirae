@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@moirae/rabbitmq",
+      "comment": "Update configs to support multiple domain architecture",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@moirae/rabbitmq"
+}

@@ -2,19 +2,19 @@ import { InjectorFunction } from "./injector.interface";
 
 export type PublisherType = "memory" | "rabbitmq";
 
+/**
+ * Publisher configuration object
+ */
 export interface IPublisherConfig {
-  injector: InjectorFunction
+  /**
+   * Function to provide the core module with the necessary
+   * providers and export tokens
+   */
+  injector: InjectorFunction;
   type: PublisherType;
 }
 
 export interface IPublisherMeta {
-  /**
-   * In the case of a microservice system, define the domain token for this
-   * specific microservice.
-   *
-   * @default default
-   */
-  domain?: "default" | string;
   /**
    * Globally unique ID for the system. Suggested: kubernetes pod name
    */

@@ -3,6 +3,7 @@ import { InstanceWrapper } from "@nestjs/core/injector/instance-wrapper";
 import { randomUUID } from "crypto";
 import { BaseBus } from "../classes/base.bus";
 import { CommandResponse } from "../classes/command-response.class";
+import { DomainStore } from "../classes/domain-store.class";
 import { Explorer } from "../classes/explorer.class";
 import { SagaManager } from "../classes/saga-manager.class";
 import { ObservableFactory } from "../factories/observable.factory";
@@ -35,18 +36,28 @@ export class CommandBus extends BaseBus<ICommand> {
     this._errorHandlers = new Map();
   }
 
-  public async execute<TRes = CommandResponse>(
-    command: ICommand,
-  ): Promise<TRes> {
+  /**
+   * Trigger processing of a given command in one of two ways:
+   * - If the current application can process the command, meaning the {@link @moirae/core!ICommand.$executionDomain | ICommand.$executionDomain property} has been
+   * registered, the command will be processed asynchronously to the main thread as a Promise without interacting with external systems.
+   * - If the current application cannot process the command, the command will be enqueued for processing
+   * via a publisher for processing externally.
+   *
+   * In either scenario, the response from this function will contain relevant information for subscribing
+   * to events emitted by the command processing.
+   *
+   * @param command - Command to process
+   * @returns An object containing information about the acknowledged execution
+   */
+  public async execute(command: ICommand): Promise<CommandResponse> {
     if (!command.$correlationId) command.$correlationId = randomUUID();
     if (!command.STREAM_ID) command.STREAM_ID = randomUUID();
-    if (!command.$executionDomain) command.$executionDomain = "default";
-    if (command.$executionDomain === this._publisher.domain) {
-      await this.executeLocal(command);
+    if (DomainStore.getInstance().has(command.$executionDomain)) {
+      this.executeLocal(command);
     } else {
       await this._publisher.publish(command);
     }
-    return CommandResponse.fromCommand(command) as unknown as TRes;
+    return CommandResponse.fromCommand(command);
   }
 
   protected async executeLocal(command: ICommand): Promise<void> {

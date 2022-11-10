@@ -1,6 +1,7 @@
 import {
   AsyncMap,
   BasePublisher,
+  DomainStore,
   ESState,
   EVENT_PUBLISHER,
   IEventLike,
@@ -14,6 +15,7 @@ import { Channel, Message } from "amqplib";
 import { IRabbitMQPublisherConfig } from "../interfaces/rabbitmq-publisher.config";
 import { IRabbitMQConfig } from "../interfaces/rabbitmq.config";
 import { RabbitMQConnection } from "../providers/rabbitmq.connection";
+import { sha1 } from "object-hash";
 
 @Injectable({ scope: Scope.TRANSIENT })
 export class RabbitMQPublisher
@@ -26,9 +28,17 @@ export class RabbitMQPublisher
   private _RESPONSE_EXCHANGE: string;
   private _RESPONSE_QUEUE: string;
   private _workChannel: Channel;
-  private _workConsumer: string;
   private _WORK_EXCHANGE: string;
-  private _WORK_QUEUE: string;
+  /**
+   * Map of Queues by domain
+   */
+  private _workQueueMap: Map<
+    string,
+    {
+      consumerTag?: string;
+      queueName: string;
+    }
+  >;
 
   protected publisherOptions: IRabbitMQPublisherConfig;
 
@@ -39,6 +49,12 @@ export class RabbitMQPublisher
   ) {
     super(observableFactory, publisherOptions);
     this._activeInbound = observableFactory.generateAsyncMap();
+    this._workQueueMap = new Map();
+  }
+
+  private _generateWorkQueue(domain: string): string {
+    const config = this.getRoleConfig<IRabbitMQConfig>();
+    return `${config.namespaceRoot}-work-${this.role}-${domain}`;
   }
 
   protected async handleAcknowledge(event: IEventLike): Promise<void> {
@@ -49,11 +65,12 @@ export class RabbitMQPublisher
   }
 
   protected async handleBootstrap(): Promise<void> {
+    const domainStore = DomainStore.getInstance();
     const config = this.getRoleConfig<IRabbitMQConfig>();
+
     this._RESPONSE_EXCHANGE = `${config.namespaceRoot}-responseExchange-${this.role}`;
     this._RESPONSE_QUEUE = `${config.namespaceRoot}-responses-${this.role}-${this.publisherOptions.nodeId}`;
     this._WORK_EXCHANGE = `${config.namespaceRoot}-workExchange-${this.role}`;
-    this._WORK_QUEUE = `${config.namespaceRoot}-work-${this.role}-${this.publisherOptions.domain}`;
 
     if (this.role === QUERY_PUBLISHER) {
       this._responseChannel =
@@ -88,28 +105,46 @@ export class RabbitMQPublisher
       this._WORK_EXCHANGE,
       this.role === EVENT_PUBLISHER ? "fanout" : "topic",
     );
-    await this._workChannel.assertQueue(this._WORK_QUEUE);
-    await this._workChannel.bindQueue(
-      this._WORK_QUEUE,
-      this._WORK_EXCHANGE,
-      this.publisherOptions.domain,
-    );
 
-    ({ consumerTag: this._workConsumer } = await this._workChannel.consume(
-      this._WORK_QUEUE,
-      (msg) => {
-        // TODO: break into own function
-        if (msg === null) return;
-        if (
-          this._distributor.listenerCount === 0 ||
-          this._status.current !== ESState.IDLE
-        )
-          this._workChannel.reject(msg, true);
-        const parsedEvent = this.parseEvent(msg.content.toString());
-        this._activeInbound.set(parsedEvent.$uuid, msg);
-        this._distributor.publish(parsedEvent);
-      },
-    ));
+    const queues: string[] = [];
+    let domains = domainStore.getAll();
+    if (this.role === EVENT_PUBLISHER) {
+      queues.push(this._generateWorkQueue(`events__${sha1({ domains })}`));
+      this._workQueueMap.set("all", {
+        queueName: queues[0],
+      });
+      domains = ["all"];
+    } else {
+      domains.forEach((d) => {
+        this._workQueueMap.set(d, { queueName: this._generateWorkQueue(d) });
+        queues.push(this._workQueueMap.get(d).queueName);
+      });
+    }
+
+    for await (const d of domains) {
+      await this._workChannel.assertQueue(this._workQueueMap.get(d).queueName);
+      await this._workChannel.bindQueue(
+        this._workQueueMap.get(d).queueName,
+        this._WORK_EXCHANGE,
+        d,
+      );
+
+      const { consumerTag } = await this._workChannel.consume(
+        this._workQueueMap.get(d).queueName,
+        (msg) => {
+          if (msg === null) return;
+          if (
+            this._distributor.listenerCount === 0 ||
+            this._status.current !== ESState.IDLE
+          )
+            this._workChannel.reject(msg, true);
+          const parsedEvent = this.parseEvent(msg.content.toString());
+          this._activeInbound.set(parsedEvent.$uuid, msg);
+          this._distributor.publish(parsedEvent);
+        },
+      );
+      this._workQueueMap.get(d).consumerTag = consumerTag;
+    }
   }
 
   protected async handlePublish(
@@ -135,7 +170,9 @@ export class RabbitMQPublisher
   }
 
   protected async handleShutdown(): Promise<void> {
-    await this._workChannel.cancel(this._workConsumer);
+    for await (const { consumerTag } of this._workQueueMap.values()) {
+      await this._workChannel.cancel(consumerTag);
+    }
     await this._workChannel.close();
 
     if (this._responseChannel) {

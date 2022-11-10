@@ -9,6 +9,7 @@ export interface ICommand
    * from commands to events to commands etc...
    */
   $correlationId?: string;
+  $executionDomain: string;
 
   /**
    * Getter for streamId if it exits in the command

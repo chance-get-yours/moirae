@@ -1,8 +1,9 @@
 import { Command, IRollbackCommand, RegisterType } from "@moirae/core";
+import { AccountCommand } from "./account-command.base";
 
 @RegisterType()
 export class RollbackAccountCommand
-  extends Command
+  extends AccountCommand
   implements IRollbackCommand
 {
   public readonly $data: { streamId: string; correlationId: string };

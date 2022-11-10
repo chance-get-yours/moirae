@@ -1,4 +1,6 @@
 import { Command, ICommand, RegisterType } from "@moirae/core";
+import { INVENTORY_DOMAIN } from "@demo/common";
+import { InventoryCommand } from "./inventory-command.base";
 
 interface RemoveInventoryInput {
   inventoryId: string;
@@ -7,7 +9,10 @@ interface RemoveInventoryInput {
 }
 
 @RegisterType()
-export class RemoveInventoryCommand extends Command implements ICommand {
+export class RemoveInventoryCommand
+  extends InventoryCommand
+  implements ICommand
+{
   public readonly $version = 1;
 
   public readonly input: RemoveInventoryInput;

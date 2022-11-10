@@ -1,3 +1,5 @@
 import { Respondable } from "./respondable.interface";
 
-export type IQuery = Respondable;
+export interface IQuery extends Respondable {
+  $executionDomain: string;
+}

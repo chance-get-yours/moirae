@@ -81,17 +81,17 @@ describe("Account", () => {
         .expect(201)
         .expect(({ body }) => {
           id = body.streamId;
+          wsClient.send(
+            JSON.stringify({
+              event: Subscriptions.ID,
+              data: { id },
+            }),
+          );
         });
-      wsClient.send(
-        JSON.stringify({
-          event: Subscriptions.ID,
-          data: { id },
-        }),
+      await wsClient.awaitMatch(
+        (event) =>
+          event.$name === "AccountCreatedEvent" && event.$streamId === id,
       );
-      // await wsClient.awaitMatch(
-      //   (event) =>
-      //     event.$name === "AccountCreatedEvent" && event.$streamId === id,
-      // );
     });
 
     it("will deposit new funds in the account", async () => {
@@ -154,7 +154,6 @@ describe("Account", () => {
     });
 
     it("will find a created account", async () => {
-      await new Promise<void>((res) => setTimeout(() => res(), 1000));
       await request(app.getHttpServer())
         .get(`/account/${id}`)
         .expect(200)
@@ -181,16 +180,21 @@ describe("Account", () => {
       };
       await request(app.getHttpServer())
         .post("/account")
+        .set("x-requestorId", requestorId)
         .send(input)
         .expect(201)
         .expect(({ body }) => {
           id = body.streamId;
+          wsClient.send(
+            JSON.stringify({
+              event: Subscriptions.ID,
+              data: { id },
+            }),
+          );
         });
-      wsClient.send(
-        JSON.stringify({
-          event: Subscriptions.ID,
-          data: { id },
-        }),
+      await wsClient.awaitMatch(
+        (event) =>
+          event.$name === "AccountCreatedEvent" && event.$streamId === id,
       );
     });
 

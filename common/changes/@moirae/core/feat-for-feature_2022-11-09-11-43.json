@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@moirae/core",
+      "comment": "Enable registration of multiple domains for a given application to facilitate monoliths",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@moirae/core"
+}

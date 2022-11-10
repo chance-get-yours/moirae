@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@moirae/node-plugin",
+      "comment": "Update configs to support changes in Core module",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@moirae/node-plugin"
+}

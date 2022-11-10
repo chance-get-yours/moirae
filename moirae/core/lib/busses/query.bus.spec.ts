@@ -1,4 +1,6 @@
+import { faker } from "@faker-js/faker";
 import { Test } from "@nestjs/testing";
+import { DomainStore } from "../classes/domain-store.class";
 import { Explorer } from "../classes/explorer.class";
 import { Query } from "../classes/query.class";
 import { QueryHandler } from "../decorators/query-handler.decorator";
@@ -85,6 +87,8 @@ describe("QueryBus", () => {
       const localSpy = jest.spyOn(bus, "executeLocal" as never);
       const publishSpy = jest.spyOn(publisher, "publish");
       const query = new TestQuery();
+      query.$executionDomain = faker.random.word();
+      DomainStore.getInstance().add(query.$executionDomain);
 
       expect(await bus.execute(query)).toStrictEqual(new QueryResponse());
       expect(localSpy).toHaveBeenCalledWith(query, {});

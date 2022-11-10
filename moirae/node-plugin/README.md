@@ -1,7 +1,9 @@
 # @moirae/node-plugin
+
 NodeJS port of Moirae Core module to enable usage in non-NestJS environments. Note this is not the ideal configuration and should only be used in edge cases.
 
 ## Supported Features
+
 - [ ] AggregateFactory
 - [ ] Command Execution
 - [x] Command Listening
@@ -12,6 +14,7 @@ NodeJS port of Moirae Core module to enable usage in non-NestJS environments. No
 - [x] Query Listening
 
 ## Setup
+
 Moirae requires more advanced configuration when operating in this mode. As an example with RabbitMQ:
 
 ```js
@@ -24,11 +27,12 @@ const rabbitMQConfig = {/* config contents */};
 const connection = new RabbitMQConnection(rabbitMQConfig);
 
 const moirae = new MoiraePlugin({
+    domains: ["myApp"],
     // Provide a way to instantiate new Publisher instances
     getCommandPublisher: () =>
         new RabbitMQPublisher(new ObservableFactory(), rabbitMQConfig, rmqConnection),
     getEventPublisher: () =>
-        new RabbitMQPublisher(new ObservableFactory(), rabbitMQConfig, rmqConnection),  
+        new RabbitMQPublisher(new ObservableFactory(), rabbitMQConfig, rmqConnection),
     getQueryPublisher: () =>
         new RabbitMQPublisher(new ObservableFactory(), rabbitMQConfig, rmqConnection)
 });
@@ -53,4 +57,5 @@ When operating in a non-NestJS environment, the plugin must compensate for the l
 Additionally the lifecycle methods of NestJS may need to be managed independently. In the above example, the connection lifecycle methods of `onModuleInit` and `onApplicationShutdown` are not called for the RabbitMQConnection automatically. These methods are handled for all elements gotten from the MoiraePlugin, including the Publishers generated on startup.
 
 ### Commands, Events, Queries
-Commands, Events, and Queries must be duplicated across all systems as the DTOs are key for the usage of Moirae. 
+
+Commands, Events, and Queries must be duplicated across all systems as the DTOs are key for the usage of Moirae.

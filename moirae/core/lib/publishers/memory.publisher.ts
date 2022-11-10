@@ -5,10 +5,11 @@ import { ObservableFactory } from "../factories/observable.factory";
 import { IEventLike } from "../interfaces/event-like.interface";
 import { IPublisherMeta } from "../interfaces/publisher-config.interface";
 import { IPublisher } from "../interfaces/publisher.interface";
+import { Respondable } from "../interfaces/respondable.interface";
 import { ESState, PUBLISHER_OPTIONS } from "../moirae.constants";
 
 @Injectable({ scope: Scope.TRANSIENT })
-export class MemoryPublisher<Evt extends IEventLike>
+export class MemoryPublisher<Evt extends Respondable>
   extends BasePublisher<Evt>
   implements IPublisher
 {
@@ -34,7 +35,7 @@ export class MemoryPublisher<Evt extends IEventLike>
     this._distributor.publish(parsedEvent);
   }
 
-  protected async handleAcknowledge(event: Evt): Promise<void> {
+  protected async handleAcknowledge(): Promise<void> {
     this.advanceBus();
   }
 

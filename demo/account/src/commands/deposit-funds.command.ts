@@ -1,9 +1,10 @@
 import { Command, ICommand, RegisterType } from "@moirae/core";
 import { Type } from "class-transformer";
 import { DepositFundsInput } from "@demo/common";
+import { AccountCommand } from "./account-command.base";
 
 @RegisterType()
-export class DepositFundsCommand extends Command implements ICommand {
+export class DepositFundsCommand extends AccountCommand implements ICommand {
   public readonly $version = 1;
 
   @Type(() => DepositFundsInput)

@@ -4,6 +4,7 @@ import { Test } from "@nestjs/testing";
 import { TestCommand } from "../../testing-classes/test.command";
 import { MemoryCache } from "../caches/memory.cache";
 import { CommandResponse } from "../classes/command-response.class";
+import { DomainStore } from "../classes/domain-store.class";
 import { Explorer } from "../classes/explorer.class";
 import { SagaManager } from "../classes/saga-manager.class";
 import { CommandHandler } from "../decorators/command-handler.decorator";
@@ -91,11 +92,16 @@ describe("CommandBus", () => {
 
   describe("executeLocal", () => {
     it("will execute the handler", async () => {
-      const handlerSpy = jest.spyOn(handler, "execute");
-      expect(await bus["executeLocal"](new TestCommand())).toBeUndefined();
+      const command = new TestCommand();
+      command.$executionDomain = faker.random.word();
 
-      expect(handlerSpy).toHaveBeenCalledWith(expect.any(TestCommand), {
-        streamId: new TestCommand().STREAM_ID,
+      DomainStore.getInstance().add(command.$executionDomain);
+
+      const handlerSpy = jest.spyOn(handler, "execute");
+      expect(await bus["executeLocal"](command)).toBeUndefined();
+
+      expect(handlerSpy).toHaveBeenCalledWith(command, {
+        streamId: command.STREAM_ID,
       });
     });
 
@@ -111,9 +117,10 @@ describe("CommandBus", () => {
   });
 
   describe("execute", () => {
-    it("will call executeLocal on a local command and return a response", async () => {
+    it("will call executeLocal on a local command and return a generic response", async () => {
       const command = new TestCommand();
-      command.$executionDomain = publisher.domain;
+      command.$executionDomain = faker.random.word();
+      DomainStore.getInstance().add(command.$executionDomain);
 
       const localSpy = jest.spyOn(bus, "executeLocal" as never);
       const publishSpy = jest.spyOn(publisher, "publish");

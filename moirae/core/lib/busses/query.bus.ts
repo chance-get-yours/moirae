@@ -1,6 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { randomUUID } from "crypto";
 import { BaseBus } from "../classes/base.bus";
+import { DomainStore } from "../classes/domain-store.class";
 import { Explorer } from "../classes/explorer.class";
 import { ObservableFactory } from "../factories/observable.factory";
 import { ExecuteOptions } from "../interfaces/execute-options.interface";
@@ -24,7 +25,13 @@ export class QueryBus extends BaseBus<IQuery> {
   }
 
   /**
-   * Execute the provided query on a remote system
+   * Trigger processing of a given query in one of two ways:
+   * - If the current application can process the query, meaning the {@link @moirae/core!IQuery.$executionDomain | IQuery.$executionDomain property} has been
+   * registered, the query will be processed synchronously to the main thread and returned.
+   * - If the current application cannot process the query, the query will be enqueued for processing
+   * via a publisher for processing externally and a the results awaited for return.
+   *
+   * @param query - Query to be processed
    */
   public async execute<TRes>(
     query: IQuery,
@@ -36,8 +43,7 @@ export class QueryBus extends BaseBus<IQuery> {
 
     let res: TRes;
 
-    if (!query.$executionDomain) query.$executionDomain = "default";
-    if (query.$executionDomain === this._publisher.domain) {
+    if (DomainStore.getInstance().has(query.$executionDomain)) {
       res = (await this.executeLocal(
         query,
         options as Record<string, unknown>,

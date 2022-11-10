@@ -15,6 +15,7 @@ import { Channel, Message } from "amqplib";
 import { IRabbitMQPublisherConfig } from "../interfaces/rabbitmq-publisher.config";
 import { IRabbitMQConfig } from "../interfaces/rabbitmq.config";
 import { RabbitMQConnection } from "../providers/rabbitmq.connection";
+import { sha1 } from "object-hash";
 
 @Injectable({ scope: Scope.TRANSIENT })
 export class RabbitMQPublisher
@@ -105,11 +106,22 @@ export class RabbitMQPublisher
       this.role === EVENT_PUBLISHER ? "fanout" : "topic",
     );
 
-    for await (const d of domainStore.getAll()) {
-      this._workQueueMap.set(d, {
-        queueName: this._generateWorkQueue(d),
+    const queues: string[] = [];
+    let domains = domainStore.getAll();
+    if (this.role === EVENT_PUBLISHER) {
+      queues.push(this._generateWorkQueue(`events__${sha1({ domains })}`));
+      this._workQueueMap.set("all", {
+        queueName: queues[0],
       });
+      domains = ["all"];
+    } else {
+      domains.forEach((d) => {
+        this._workQueueMap.set(d, { queueName: this._generateWorkQueue(d) });
+        queues.push(this._workQueueMap.get(d).queueName);
+      });
+    }
 
+    for await (const d of domains) {
       await this._workChannel.assertQueue(this._workQueueMap.get(d).queueName);
       await this._workChannel.bindQueue(
         this._workQueueMap.get(d).queueName,

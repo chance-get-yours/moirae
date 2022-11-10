@@ -53,6 +53,7 @@ describe("Inventory", () => {
     it("will create a new inventory item", async () => {
       await request(app.getHttpServer())
         .post("/inventory")
+        .set("x-requestorId", requestorId)
         .send(input)
         .expect(201)
         .expect(({ body }) => {
@@ -65,9 +66,7 @@ describe("Inventory", () => {
           data: { id },
         }),
       );
-    });
 
-    it("will emit an event", async () => {
       const event = await client.awaitMatch(
         (event) =>
           event.$streamId === id && event.$name === InventoryCreatedEvent.name,
@@ -86,9 +85,6 @@ describe("Inventory", () => {
         });
 
       expect(failedId).toBeDefined();
-    });
-
-    it("will emit a failed event", async () => {
       const event = await client.awaitMatch(
         (event) =>
           event.$streamId === failedId &&

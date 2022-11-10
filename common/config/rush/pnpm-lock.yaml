@@ -2,7 +2,6 @@ lockfileVersion: 5.3
 
 specifiers:
   '@faker-js/faker': ~7.6.0
-  '@moirae/node-plugin': 0.4.2
   '@nestjs/cli': ^9.0.0
   '@nestjs/common': ~9.1.6
   '@nestjs/config': ^2.1.0
@@ -42,7 +41,7 @@ specifiers:
   eslint-config-prettier: ^8.3.0
   eslint-plugin-prettier: ^4.2.1
   jest: ~29.2.2
-  object-hash: ^3.0.0
+  object-hash: ~3.0.0
   prettier: ^2.7.1
   redis: ~4.3.1
   reflect-metadata: ^0.1.13
@@ -61,7 +60,6 @@ specifiers:
 
 dependencies:
   '@faker-js/faker': 7.6.0
-  '@moirae/node-plugin': 0.4.2_reflect-metadata@0.1.13
   '@nestjs/cli': 9.1.5_@swc+core@1.2.205
   '@nestjs/common': 9.1.6_bfb10c549401c4321799e32f853295f0
   '@nestjs/config': 2.2.0_c26f80aaab984fa1edc8ab61d24efb72
@@ -6326,7 +6324,7 @@ packages:
     dev: false
 
   file:projects/core.tgz_42856aa97355ac28e3377442f3d1a154:
-    resolution: {integrity: sha512-jD0+2OnnD9OCnBwIClHmDPMEdMq3lwYslHx+2QfSqCSraS815GtqFUdhtbxbORnoTt+AYlTR3JdPk+oIYMlY3g==, tarball: file:projects/core.tgz}
+    resolution: {integrity: sha512-lwAd3hV5s7n57CJD8gyyAKSji4Es/prpQ1A0HxKB2wFKFJK1wGrF5OHqDqfwQWKNmWIggiBag372Q1fRwQuWXQ==, tarball: file:projects/core.tgz}
     id: file:projects/core.tgz
     name: '@rush-temp/core'
     version: 0.0.0
@@ -6437,7 +6435,7 @@ packages:
     dev: false
 
   file:projects/monolith.tgz_@swc+core@1.2.205+redis@4.3.1:
-    resolution: {integrity: sha512-FKPb+xsPcQXCOmtSQ7qi711DlVmTy68a1S+z7WGWbzrobvbLzeTYYICP0MLFWcWDnyb4zeZriNF1uMxv2lOwsw==, tarball: file:projects/monolith.tgz}
+    resolution: {integrity: sha512-WYxe0qB4PALLDgGDxZPcMaTkuS9AfK2405lcHS+OweDglVXsnrpWedEqPrIkwCzmlJ/7yxCXJH1mj0E7C1GCjg==, tarball: file:projects/monolith.tgz}
     id: file:projects/monolith.tgz
     name: '@rush-temp/monolith'
     version: 0.0.0
@@ -6486,7 +6484,6 @@ packages:
       - '@babel/core'
       - '@google-cloud/spanner'
       - '@jest/types'
-      - '@moirae/core'
       - '@nestjs/microservices'
       - '@nestjs/platform-socket.io'
       - '@sap/hana-client'
@@ -6521,7 +6518,7 @@ packages:
     dev: false
 
   file:projects/node-plugin.tgz_ts-node@10.9.1:
-    resolution: {integrity: sha512-Wa3cWpO3L5r3p2KuLPmkyFuHvFS4xsrjlJG9lcRb4dtU/ItymMRTXhT7GPAWeBKz5qQEYnqjkG6x+Uffi6dDLw==, tarball: file:projects/node-plugin.tgz}
+    resolution: {integrity: sha512-uH8/jy/FBSI4tJBg7DOWczUPjCdkwUcCjwkkpQnfIXImkyGnaeZM3ZvYWyD5kC5Qjvipfs4oDaEyFugoCVCAsA==, tarball: file:projects/node-plugin.tgz}
     id: file:projects/node-plugin.tgz
     name: '@rush-temp/node-plugin'
     version: 0.0.0
@@ -6546,7 +6543,7 @@ packages:
     dev: false
 
   file:projects/rabbitmq.tgz_42856aa97355ac28e3377442f3d1a154:
-    resolution: {integrity: sha512-f0qh8Ptw14sEvItZTnn71rzaJOhwN44ovps4cTLJkEsHbkpjR7GyS1nY9RzLtBGSN9PiG99kNpzangx92qVOvw==, tarball: file:projects/rabbitmq.tgz}
+    resolution: {integrity: sha512-4pE+e9+46JrBHLbm9nRBM8oBEQfaP6oS3QkCUGWXgrsJqvt8nocvmCzYqkvy1eu21QZ6yi6eIkDCwOk4Asw3ow==, tarball: file:projects/rabbitmq.tgz}
     id: file:projects/rabbitmq.tgz
     name: '@rush-temp/rabbitmq'
     version: 0.0.0
@@ -6560,9 +6557,11 @@ packages:
       '@types/amqplib': 0.8.2
       '@types/jest': 29.2.0
       '@types/node': 18.8.4
+      '@types/object-hash': 2.2.1
       amqplib: 0.10.3
       class-transformer: 0.5.1
       jest: 29.2.2_c45df3da2de79a6dfbacc1c31b99fc9c
+      object-hash: 3.0.0
       reflect-metadata: 0.1.13
       rimraf: 3.0.2
       rxjs: 7.5.7
@@ -6613,7 +6612,7 @@ packages:
     dev: false
 
   file:projects/typeorm.tgz_e327ceae950747835fa546e3dc7fc4e4:
-    resolution: {integrity: sha512-AlGD1sg9N6e3/9g1dM2VWUOOV1Cjg528X3xOc+9d+ibu5DdnU36k2gs6R2ZDicwPNm1nnXM2bP8h81Cbn1X94Q==, tarball: file:projects/typeorm.tgz}
+    resolution: {integrity: sha512-1sWsoVVbdMkiop8as9fhrv56BjDBMhsuLUjHunVI7qGCdcd8YazFFl0EfJ8FUIiO9yAtsehk/xncqHqmkPFdOQ==, tarball: file:projects/typeorm.tgz}
     id: file:projects/typeorm.tgz
     name: '@rush-temp/typeorm'
     version: 0.0.0

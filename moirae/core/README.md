@@ -30,7 +30,10 @@ yarn add @moirae/core
 
 ## Configuration
 
-WIP
+Moirae is configured in two places:
+
+- In the root AppModule, invoke the `MoiraeModule.forRootAsync` function in the `imports` array and pass the configuration object.
+- In each domain module, invoke the `MoiraeModule.forFeature` function in the `imports` array to register the module as a domain provider. See the Handlers section for how domains and handlers interact.
 
 ## Usage
 

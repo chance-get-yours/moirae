@@ -14,9 +14,9 @@
 <ul class="tsd-breadcrumb">
 <li><a href="../modules.html">Moirae</a></li>
 <li><a href="_moirae_core.html">@moirae/core</a></li></ul>
-<h1>Module @moirae/core - v0.5.3</h1></div><aside class="tsd-sources">
+<h1>Module @moirae/core - v0.6.0</h1></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/chance-get-yours/moirae/blob/bc8180e/moirae/core/index.ts#L2">moirae/core/index.ts:2</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/chance-get-yours/moirae/blob/6f46a79/moirae/core/index.ts#L2">moirae/core/index.ts:2</a></li></ul></aside>
 <section class="tsd-panel-group">
 <section class="tsd-panel tsd-typography">
 <a href="#moiraecore" id="moiraecore" style="color: inherit; text-decoration: none;">
@@ -123,6 +123,7 @@
 <a href="../classes/_moirae_core.CommandBus.html" class="tsd-index-link tsd-kind-class tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-128-path"></use><use href="#icon-128-text"></use></svg><span>Command<wbr/>Bus</span></a>
 <a href="../classes/_moirae_core.CommandResponse.html" class="tsd-index-link tsd-kind-class tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-128-path"></use><use href="#icon-128-text"></use></svg><span>Command<wbr/>Response</span></a>
 <a href="../classes/_moirae_core.Distributor.html" class="tsd-index-link tsd-kind-class tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-128-path"></use><use href="#icon-128-text"></use></svg><span>Distributor</span></a>
+<a href="../classes/_moirae_core.DomainStore.html" class="tsd-index-link tsd-kind-class tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-128-path"></use><use href="#icon-128-text"></use></svg><span>Domain<wbr/>Store</span></a>
 <a href="../classes/_moirae_core.Event.html" class="tsd-index-link tsd-kind-class tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-128-path"></use><use href="#icon-128-text"></use></svg><span>Event</span></a>
 <a href="../classes/_moirae_core.EventBus.html" class="tsd-index-link tsd-kind-class tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-128-path"></use><use href="#icon-128-text"></use></svg><span>Event<wbr/>Bus</span></a>
 <a href="../classes/_moirae_core.EventProcessor.html" class="tsd-index-link tsd-kind-class tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-128-path"></use><use href="#icon-128-text"></use></svg><span>Event<wbr/>Processor</span></a>
@@ -159,6 +160,7 @@
 <a href="../interfaces/_moirae_core.IPublisher.html" class="tsd-index-link tsd-kind-interface tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg><span>IPublisher</span></a>
 <a href="../interfaces/_moirae_core.IPublisherConfig.html" class="tsd-index-link tsd-kind-interface tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg><span>IPublisher<wbr/>Config</span></a>
 <a href="../interfaces/_moirae_core.IPublisherMeta.html" class="tsd-index-link tsd-kind-interface tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg><span>IPublisher<wbr/>Meta</span></a>
+<a href="../interfaces/_moirae_core.IQuery.html" class="tsd-index-link tsd-kind-interface tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg><span>IQuery</span></a>
 <a href="../interfaces/_moirae_core.IRequestMetadata.html" class="tsd-index-link tsd-kind-interface tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg><span>IRequest<wbr/>Metadata</span></a>
 <a href="../interfaces/_moirae_core.IRollbackCommand.html" class="tsd-index-link tsd-kind-interface tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg><span>IRollback<wbr/>Command</span></a>
 <a href="../interfaces/_moirae_core.IStoreConfig.html" class="tsd-index-link tsd-kind-interface tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg><span>IStore<wbr/>Config</span></a>
@@ -166,7 +168,6 @@
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading">Type Aliases</h3>
 <div class="tsd-index-list"><a href="../types/_moirae_core.IEventHandler.html" class="tsd-index-link tsd-kind-type-alias tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="var(--color-ts)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6" id="icon-4194304-path"></rect><path d="M11.31 16V8.224H8.91V7.24H14.79V8.224H12.39V16H11.31Z" fill="var(--color-text)" id="icon-4194304-text"></path></svg><span>IEvent<wbr/>Handler</span></a>
-<a href="../types/_moirae_core.IQuery.html" class="tsd-index-link tsd-kind-type-alias tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg><span>IQuery</span></a>
 <a href="../types/_moirae_core.IQueryHandler.html" class="tsd-index-link tsd-kind-type-alias tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg><span>IQuery<wbr/>Handler</span></a>
 <a href="../types/_moirae_core.InjectorFunction.html" class="tsd-index-link tsd-kind-type-alias tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg><span>Injector<wbr/>Function</span></a>
 <a href="../types/_moirae_core.PublisherToken.html" class="tsd-index-link tsd-kind-type-alias tsd-parent-kind-module"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg><span>Publisher<wbr/>Token</span></a>
@@ -219,11 +220,11 @@
 <ul>
 <li class="current"><a href="../modules.html">Moirae</a>
 <ul>
-<li class="current selected tsd-kind-module"><a href="_moirae_core.html">@moirae/core -<wbr/> v0.5.3</a></li>
-<li class="tsd-kind-module"><a href="_moirae_node_plugin.html">@moirae/node-<wbr/>plugin -<wbr/> v0.5.3</a></li>
-<li class="tsd-kind-module"><a href="_moirae_rabbitmq.html">@moirae/rabbitmq -<wbr/> v0.5.3</a></li>
-<li class="tsd-kind-module"><a href="_moirae_redis.html">@moirae/redis -<wbr/> v0.5.3</a></li>
-<li class="tsd-kind-module"><a href="_moirae_typeorm.html">@moirae/typeorm -<wbr/> v0.5.3</a></li></ul></li></ul></div></details></nav>
+<li class="current selected tsd-kind-module"><a href="_moirae_core.html">@moirae/core -<wbr/> v0.6.0</a></li>
+<li class="tsd-kind-module"><a href="_moirae_node_plugin.html">@moirae/node-<wbr/>plugin -<wbr/> v0.6.0</a></li>
+<li class="tsd-kind-module"><a href="_moirae_rabbitmq.html">@moirae/rabbitmq -<wbr/> v0.6.0</a></li>
+<li class="tsd-kind-module"><a href="_moirae_redis.html">@moirae/redis -<wbr/> v0.6.0</a></li>
+<li class="tsd-kind-module"><a href="_moirae_typeorm.html">@moirae/typeorm -<wbr/> v0.6.0</a></li></ul></li></ul></div></details></nav>
 <nav class="tsd-navigation secondary menu-sticky">
 <ul>
 <li class="tsd-kind-enum tsd-parent-kind-module"><a href="../enums/_moirae_core.ESState.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-8-path"></use><use href="#icon-8-text"></use></svg>ESState</a></li>
@@ -237,6 +238,7 @@
 <li class="tsd-kind-class tsd-parent-kind-module"><a href="../classes/_moirae_core.CommandBus.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-128-path"></use><use href="#icon-128-text"></use></svg>Command<wbr/>Bus</a></li>
 <li class="tsd-kind-class tsd-parent-kind-module"><a href="../classes/_moirae_core.CommandResponse.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-128-path"></use><use href="#icon-128-text"></use></svg>Command<wbr/>Response</a></li>
 <li class="tsd-kind-class tsd-parent-kind-module"><a href="../classes/_moirae_core.Distributor.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-128-path"></use><use href="#icon-128-text"></use></svg>Distributor</a></li>
+<li class="tsd-kind-class tsd-parent-kind-module"><a href="../classes/_moirae_core.DomainStore.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-128-path"></use><use href="#icon-128-text"></use></svg>Domain<wbr/>Store</a></li>
 <li class="tsd-kind-class tsd-parent-kind-module"><a href="../classes/_moirae_core.Event.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-128-path"></use><use href="#icon-128-text"></use></svg>Event</a></li>
 <li class="tsd-kind-class tsd-parent-kind-module"><a href="../classes/_moirae_core.EventBus.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-128-path"></use><use href="#icon-128-text"></use></svg>Event<wbr/>Bus</a></li>
 <li class="tsd-kind-class tsd-parent-kind-module"><a href="../classes/_moirae_core.EventProcessor.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-128-path"></use><use href="#icon-128-text"></use></svg>Event<wbr/>Processor</a></li>
@@ -270,11 +272,11 @@
 <li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/_moirae_core.IPublisher.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg>IPublisher</a></li>
 <li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/_moirae_core.IPublisherConfig.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg>IPublisher<wbr/>Config</a></li>
 <li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/_moirae_core.IPublisherMeta.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg>IPublisher<wbr/>Meta</a></li>
+<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/_moirae_core.IQuery.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg>IQuery</a></li>
 <li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/_moirae_core.IRequestMetadata.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg>IRequest<wbr/>Metadata</a></li>
 <li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/_moirae_core.IRollbackCommand.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg>IRollback<wbr/>Command</a></li>
 <li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/_moirae_core.IStoreConfig.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-256-path"></use><use href="#icon-256-text"></use></svg>IStore<wbr/>Config</a></li>
 <li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="../types/_moirae_core.IEventHandler.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg>IEvent<wbr/>Handler</a></li>
-<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="../types/_moirae_core.IQuery.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg>IQuery</a></li>
 <li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="../types/_moirae_core.IQueryHandler.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg>IQuery<wbr/>Handler</a></li>
 <li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="../types/_moirae_core.InjectorFunction.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg>Injector<wbr/>Function</a></li>
 <li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="../types/_moirae_core.PublisherToken.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg>Publisher<wbr/>Token</a></li>

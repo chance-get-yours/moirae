@@ -6,13 +6,23 @@ The [demo application](https://github.com/chance-get-yours/moirae/tree/main/demo
 
 **Table of Contents**
 
-- [Configuration](#configuration)
+- [Recommended Reading](#recommended-reading)
+- [Installation](#installation)
 - [Usage](#usage)
-  - [Recommended Reading](#recommended-reading)
+  - [Configuration](#configuration)
   - [Control Flow](#control-flow)
   - [Aggregate Root](#aggregate-root)
     - [Events](#events)
   - [Uniqueness](#uniqueness)
+- [Recommended Patterns](#recommended-patterns)
+
+## Recommended Reading
+
+- [Martin Fowler on CQRS](https://martinfowler.com/bliki/CQRS.html)
+- [Martin Fowler on DDD](https://martinfowler.com/tags/domain%20driven%20design.html)
+- [Saga Pattern](https://microservices.io/patterns/data/saga.html)
+- [Udi Dahan on Race Conditions](https://udidahan.com/2010/08/31/race-conditions-dont-exist/)
+- [Yves Reynhout on Models](youtube.com/watch?v=7StN-vNjRSw)
 
 ## Installation
 
@@ -28,24 +38,16 @@ or yarn
 yarn add @moirae/core
 ```
 
-## Configuration
+## Usage
+
+Moirae core ships with only an in-memory message publisher and an in-memory event store, meaning all application data is lost on restart. Useful for a PoC but not as much otherwise. This is where the plugins come in. Add the appropriate plugin configuration to the root module and enable access to various third party message brokers and event stores.
+
+### Configuration
 
 Moirae is configured in two places:
 
 - In the root AppModule, invoke the `MoiraeModule.forRootAsync` function in the `imports` array and pass the configuration object.
 - In each domain module, invoke the `MoiraeModule.forFeature` function in the `imports` array to register the module as a domain provider. See the Handlers section for how domains and handlers interact.
-
-## Usage
-
-Moirae core ships with only an in-memory message publisher and an in-memory event store, meaning all application data is lost on restart. Useful for a PoC but not as much otherwise. This is where the plugins come in. Add the appropriate plugin configuration to the root module and enable access to various third party message brokers and event stores.
-
-### Recommended Reading
-
-- [Martin Fowler on CQRS](https://martinfowler.com/bliki/CQRS.html)
-- [Martin Fowler on DDD](https://martinfowler.com/tags/domain%20driven%20design.html)
-- [Saga Pattern](https://microservices.io/patterns/data/saga.html)
-- [Udi Dahan on Race Conditions](https://udidahan.com/2010/08/31/race-conditions-dont-exist/)
-- [Yves Reynhout on Models](youtube.com/watch?v=7StN-vNjRSw)
 
 ### Control Flow
 

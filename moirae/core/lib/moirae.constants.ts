@@ -16,6 +16,7 @@ export const QUERY_METADATA = "__query_handler__";
 export const QUERY_PUBLISHER = "__query_publisher__";
 export const ROLLBACK_METADATA = "__rollback-event-metadata__";
 export const SAGA_METADATA = "__saga_handler__";
+export const STORE_OPTIONS = "__store_options__";
 
 export type PublisherToken =
   | typeof COMMAND_PUBLISHER

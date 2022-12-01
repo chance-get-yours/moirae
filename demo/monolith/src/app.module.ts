@@ -35,6 +35,7 @@ import { ProcessOrderSaga } from "./common/sagas/process-order.saga";
 import { InventoryModule } from "@demo/inventory";
 import { UserManagementModule } from "./user-management/user-management.module";
 import { GatewayModule } from "@demo/gateway";
+import { IEventStoreConfig, injectEventStoreDb } from "@moirae/eventstoredb";
 
 const moiraeConfigGenerator = (): IMoiraeConfig<
   ICacheConfig,
@@ -127,6 +128,14 @@ const moiraeConfigGenerator = (): IMoiraeConfig<
   }
 
   switch (process.env.STORE_TYPE) {
+    case "eventstoredb":
+      (config.store as unknown as IEventStoreConfig) = {
+        injector: injectEventStoreDb,
+        connectionString:
+          "esdb+discover://localhost:2113?tls=false&keepAliveTimeout=10000&keepAliveInterval=10000",
+        type: "eventstoredb",
+      };
+      break;
     case "typeorm":
       (config.store as unknown as ITypeORMStoreConfig) = {
         injector: injectTypeormStore,

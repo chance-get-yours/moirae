@@ -1,8 +1,8 @@
 import { InjectorFunction } from "./injector.interface";
 
-type StoreType = "memory" | "typeorm";
+type StoreType = "eventstoredb" | "memory" | "typeorm";
 
 export interface IStoreConfig {
-  injector: InjectorFunction
+  injector: InjectorFunction;
   type: StoreType;
 }

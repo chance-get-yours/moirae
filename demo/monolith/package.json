@@ -29,6 +29,7 @@
     "@moirae/rabbitmq": "*",
     "@moirae/redis": "*",
     "@moirae/typeorm": "*",
+    "@moirae/eventstoredb": "*",
     "@nestjs/common": "~9.1.6",
     "@nestjs/config": "^2.1.0",
     "@nestjs/core": "~9.1.6",

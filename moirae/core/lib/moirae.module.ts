@@ -32,6 +32,7 @@ import {
   PublisherToken,
   PUBLISHER_OPTIONS,
   QUERY_PUBLISHER,
+  STORE_OPTIONS,
 } from "./moirae.constants";
 import { MemoryPublisher } from "./publishers/memory.publisher";
 import { MemoryStore } from "./stores/memory.store";
@@ -139,6 +140,10 @@ export class MoiraeModule {
       {
         provide: PUBLISHER_OPTIONS,
         useValue: publisher,
+      },
+      {
+        provide: STORE_OPTIONS,
+        useValue: store,
       },
     ];
     const exports: InjectionToken[] = [PUBLISHER_OPTIONS, EVENT_PUBSUB_ENGINE];

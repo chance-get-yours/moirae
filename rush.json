@@ -328,6 +328,11 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@moirae/eventstoredb",
+      "projectFolder": "moirae/eventstoredb",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@moirae/node-plugin",
       "projectFolder": "moirae/node-plugin",
       "shouldPublish": true

@@ -81,6 +81,7 @@ export {
   PUBLISHER_OPTIONS,
   QUERY_PUBLISHER,
   PublisherToken,
+  STORE_OPTIONS,
 } from "./lib/moirae.constants";
 // modules
 export { MoiraeModule } from "./lib/moirae.module";

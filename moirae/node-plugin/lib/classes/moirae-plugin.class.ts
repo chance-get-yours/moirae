@@ -29,7 +29,7 @@ export class MoiraePlugin {
   private readonly _messengerService: MessengerService;
 
   constructor(config: MoiraePluginConfig) {
-    this._messengerService = new MessengerService();
+    this._messengerService = config.messengerService;
     DomainStore.getInstance().add(...config.domains);
     this._commandPublisher = config.getCommandPublisher();
     this._container = new Container();
@@ -52,10 +52,6 @@ export class MoiraePlugin {
 
   public getCommandBus(): CommandBus {
     return this._commandBus;
-  }
-
-  public getMessengerService(): MessengerService {
-    return this._messengerService;
   }
 
   public getQueryBus(): QueryBus {

@@ -1,7 +1,7 @@
 const express = require("express");
 const { RabbitMQConnection, RabbitMQPublisher } = require("@moirae/rabbitmq");
 const dotenv = require("dotenv");
-const { ObservableFactory } = require("@moirae/core");
+const { ObservableFactory, MessengerService } = require("@moirae/core");
 const { MoiraePlugin } = require("@moirae/node-plugin");
 const { HelloQuery } = require("../../src/secondary-app/queries/hello.query");
 
@@ -29,7 +29,12 @@ module.exports = async () => {
     query: rabbitMQConfig,
   };
 
-  const rmqConnection = new RabbitMQConnection(publisherConfig);
+  const messengerService = new MessengerService();
+
+  const rmqConnection = new RabbitMQConnection(
+    publisherConfig,
+    messengerService,
+  );
 
   const handler = {
     execute: () => "Hello World",
@@ -42,19 +47,23 @@ module.exports = async () => {
         new ObservableFactory(),
         publisherConfig,
         rmqConnection,
+        messengerService,
       ),
     getEventPublisher: () =>
       new RabbitMQPublisher(
         new ObservableFactory(),
         publisherConfig,
         rmqConnection,
+        messengerService,
       ),
     getQueryPublisher: () =>
       new RabbitMQPublisher(
         new ObservableFactory(),
         publisherConfig,
         rmqConnection,
+        messengerService,
       ),
+    messengerService,
   }).injectQueryHandler(handler, HelloQuery);
 
   return new Promise((res) => {

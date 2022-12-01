@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { ClassConstructor } from "class-transformer";
 import { randomUUID } from "crypto";
 import { EventEmitter } from "events";
-import { Message } from "../classes/base.message";
+import { Message } from "./messages/base.message";
 
 type HandlerFn<T extends Message> = (message: T) => void;
 

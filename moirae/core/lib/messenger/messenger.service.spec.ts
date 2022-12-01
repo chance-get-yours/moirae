@@ -1,5 +1,5 @@
 import { Test } from "@nestjs/testing";
-import { Message } from "../classes/base.message";
+import { Message } from "./messages/base.message";
 import { MessengerService } from "./messenger.service";
 
 describe("MessengerService", () => {

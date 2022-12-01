@@ -13,6 +13,7 @@ export { Distributor } from "./lib/classes/distributor.class";
 export { DomainStore } from "./lib/classes/domain-store.class";
 export { Event } from "./lib/classes/event.class";
 export { Explorer } from "./lib/classes/explorer.class";
+export { MessengerService } from "./lib/messenger/messenger.service";
 export { Query } from "./lib/classes/query.class";
 export { ResponseWrapper } from "./lib/classes/response.class";
 export { SagaManager } from "./lib/classes/saga-manager.class";
@@ -88,3 +89,6 @@ export { MoiraeModule } from "./lib/moirae.module";
 export { MemoryPublisher } from "./lib/publishers/memory.publisher";
 // testing
 export { mockAggregateFactory } from "./lib/testing/aggregate-factory.mock";
+
+// barrels
+export * from "./lib/messenger/messages";

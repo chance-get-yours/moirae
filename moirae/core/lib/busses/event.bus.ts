@@ -10,6 +10,8 @@ import { IEventHandler } from "../interfaces/event-handler.interface";
 import { IEventSource } from "../interfaces/event-source.interface";
 import { IEvent } from "../interfaces/event.interface";
 import { IPubSub } from "../interfaces/pub-sub.interface";
+import { EventBusReadyMessage } from "../messenger/messages";
+import { MessengerService } from "../messenger/messenger.service";
 import {
   ESState,
   EVENT_METADATA,
@@ -34,6 +36,7 @@ export class EventBus {
     private readonly _sagaManager: SagaManager,
     @Inject(EVENT_SOURCE) private readonly eventSource: IEventSource,
     @Inject(EVENT_PUBSUB_ENGINE) private readonly pubSub: IPubSub,
+    private readonly messengerService: MessengerService,
   ) {
     this._distributor = this._observableFactory.generateDistributor(
       randomUUID(),
@@ -100,6 +103,7 @@ export class EventBus {
     });
     this.eventSource.subscribe(this.executeLocal.bind(this));
     this._status.set(ESState.IDLE);
+    this.messengerService.publish(new EventBusReadyMessage());
   }
 
   public async publish(event: IEvent): Promise<void> {

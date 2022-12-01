@@ -17,6 +17,7 @@ import { ObservableFactory } from "../factories/observable.factory";
 import { IEventHandler } from "../interfaces/event-handler.interface";
 import { IEventSource } from "../interfaces/event-source.interface";
 import { IEvent } from "../interfaces/event.interface";
+import { MessengerService } from "../messenger/messenger.service";
 import {
   CACHE_PROVIDER,
   COMMAND_PUBLISHER,
@@ -68,6 +69,7 @@ describe("EventBus", () => {
         CommandBus,
         EventBus,
         Explorer,
+        MessengerService,
         ObservableFactory,
         SagaManager,
         {

@@ -6,6 +6,7 @@ import {
   ICommand,
   IHandler,
   IPublisher,
+  MessengerService,
   ObservableFactory,
   SagaManager,
 } from "@moirae/core";
@@ -17,6 +18,7 @@ export class CommandBus extends MoiraeCommandBus {
   private readonly container: Container;
   constructor(
     container: Container,
+    messengerService: MessengerService,
     observableFactory: ObservableFactory,
     publisher: IPublisher,
   ) {
@@ -25,6 +27,7 @@ export class CommandBus extends MoiraeCommandBus {
       observableFactory,
       publisher,
       new SagaManagerMock() as unknown as SagaManager,
+      messengerService,
     );
     this.container = container;
     this._publisher.role = COMMAND_PUBLISHER;

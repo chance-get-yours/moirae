@@ -5,6 +5,7 @@ import {
   IPublisher,
   IQuery,
   IQueryHandler,
+  MessengerService,
   ObservableFactory,
 } from "@moirae/core";
 import { ClassConstructor } from "class-transformer";
@@ -25,7 +26,10 @@ export class MoiraePlugin {
   private readonly _container: Container;
   private readonly _observableFactory: ObservableFactory;
 
+  private readonly _messengerService: MessengerService;
+
   constructor(config: MoiraePluginConfig) {
+    this._messengerService = new MessengerService();
     DomainStore.getInstance().add(...config.domains);
     this._commandPublisher = config.getCommandPublisher();
     this._container = new Container();
@@ -34,11 +38,13 @@ export class MoiraePlugin {
 
     this._commandBus = new CommandBus(
       this._container,
+      this._messengerService,
       this._observableFactory,
       this._commandPublisher,
     );
     this._queryBus = new QueryBus(
       this._container,
+      this._messengerService,
       this._observableFactory,
       this._queryPublisher,
     );
@@ -46,6 +52,10 @@ export class MoiraePlugin {
 
   public getCommandBus(): CommandBus {
     return this._commandBus;
+  }
+
+  public getMessengerService(): MessengerService {
+    return this._messengerService;
   }
 
   public getQueryBus(): QueryBus {

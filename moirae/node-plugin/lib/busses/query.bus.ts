@@ -4,6 +4,7 @@ import {
   IHandler,
   IPublisher,
   IQuery,
+  MessengerService,
   ObservableFactory,
   QueryBus as MoiraeQueryBus,
   QUERY_PUBLISHER,
@@ -15,10 +16,16 @@ export class QueryBus extends MoiraeQueryBus {
   private readonly container: Container;
   constructor(
     container: Container,
+    messengerService: MessengerService,
     observableFactory: ObservableFactory,
     publisher: IPublisher,
   ) {
-    super(container as unknown as Explorer, observableFactory, publisher);
+    super(
+      container as unknown as Explorer,
+      observableFactory,
+      publisher,
+      messengerService,
+    );
     this.container = container;
     this._publisher.role = QUERY_PUBLISHER;
   }

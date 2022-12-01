@@ -2,6 +2,7 @@ import { faker } from "@faker-js/faker";
 import {
   ICommandHandler,
   MemoryPublisher,
+  MessengerService,
   ObservableFactory,
 } from "@moirae/core";
 import { TestCommand } from "../../testing-classes/test.command";
@@ -32,6 +33,7 @@ describe("CommandBus", () => {
 
     bus = new CommandBus(
       container,
+      new MessengerService(),
       factory,
       new MemoryPublisher(factory, {
         nodeId: faker.datatype.uuid(),

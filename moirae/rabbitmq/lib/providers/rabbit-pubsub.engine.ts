@@ -3,6 +3,7 @@ import {
   EventProcessor,
   IEvent,
   IPubSub,
+  MessengerService,
   ObservableFactory,
   PUBLISHER_OPTIONS,
 } from "@moirae/core";
@@ -15,6 +16,7 @@ import {
 import { Channel, ConsumeMessage } from "amqplib";
 import { randomUUID } from "crypto";
 import { IRabbitMQPublisherConfig } from "../interfaces/rabbitmq-publisher.config";
+import { RabbitMQConnectionReOpenedMessage } from "../messages";
 import { RabbitMQConnection } from "./rabbitmq.connection";
 
 @Injectable()
@@ -32,11 +34,15 @@ export class RabbitPubSubEngine
     private readonly _connection: RabbitMQConnection,
     observableFactory: ObservableFactory,
     @Inject(PUBLISHER_OPTIONS) publisherOptions: IRabbitMQPublisherConfig,
+    private readonly messengerService: MessengerService,
   ) {
     super();
     this._distributor = observableFactory.generateDistributor(randomUUID());
     this._PUB_EXCHANGE = `${publisherOptions.event.namespaceRoot}-pubsub`;
     this._SUB_QUEUE = `${publisherOptions.event.namespaceRoot}-subqueue-${publisherOptions.nodeId}`;
+    this.messengerService.on(RabbitMQConnectionReOpenedMessage, () => {
+      this.onApplicationBootstrap();
+    });
   }
 
   public async beforeApplicationShutdown() {

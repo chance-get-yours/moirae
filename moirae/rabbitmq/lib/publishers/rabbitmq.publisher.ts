@@ -6,6 +6,7 @@ import {
   EVENT_PUBLISHER,
   IEventLike,
   IPublisher,
+  MessengerService,
   ObservableFactory,
   PUBLISHER_OPTIONS,
   QUERY_PUBLISHER,
@@ -16,6 +17,7 @@ import { IRabbitMQPublisherConfig } from "../interfaces/rabbitmq-publisher.confi
 import { IRabbitMQConfig } from "../interfaces/rabbitmq.config";
 import { RabbitMQConnection } from "../providers/rabbitmq.connection";
 import { sha1 } from "object-hash";
+import { RabbitMQConnectionOpenedMessage } from "../messages";
 
 @Injectable({ scope: Scope.TRANSIENT })
 export class RabbitMQPublisher
@@ -46,10 +48,14 @@ export class RabbitMQPublisher
     observableFactory: ObservableFactory,
     @Inject(PUBLISHER_OPTIONS) publisherOptions: IRabbitMQPublisherConfig,
     private readonly rabbitMQConnection: RabbitMQConnection,
+    private readonly messengerService: MessengerService,
   ) {
     super(observableFactory, publisherOptions);
     this._activeInbound = observableFactory.generateAsyncMap();
     this._workQueueMap = new Map();
+    this.messengerService.on(RabbitMQConnectionOpenedMessage, () => {
+      this.handleBootstrap();
+    });
   }
 
   private _generateWorkQueue(domain: string): string {

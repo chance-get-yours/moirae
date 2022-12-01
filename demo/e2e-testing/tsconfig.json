@@ -1,6 +1,6 @@
 {
   "extends": "../../tsconfig.json",
-  "include": ["tests", "setup"],
+  "include": ["tests", "setup", "utilities"],
   "compilerOptions": {
     "outDir": "./dist"
   }

@@ -3,16 +3,19 @@ import { INestApplication } from "@nestjs/common";
 import { WsResponse } from "@nestjs/websockets";
 import { randomUUID } from "crypto";
 import { EventEmitter } from "events";
+import { Application } from "express";
+import { AddressInfo } from "net";
 import { MessageEvent, WebSocket } from "ws";
+
 export class WsHandler {
   private readonly _distributor: Distributor<IEvent>;
   private readonly _socket: WebSocket;
   private _responses: IEvent<unknown>[];
 
-  constructor(app: INestApplication) {
+  constructor(app: Application) {
     this._distributor = new Distributor(new EventEmitter(), randomUUID());
     this._responses = [];
-    const address = app.getHttpServer().listen().address();
+    const address = app.listen().address() as unknown as AddressInfo;
     this._socket = new WebSocket(`ws://[${address.address}]:${address.port}`);
     this._socket.onmessage = (message: MessageEvent) => {
       const rawEvent: WsResponse<IEvent<unknown>> = JSON.parse(
@@ -65,7 +68,7 @@ export class WsHandler {
     this._socket.send(data);
   }
 
-  public static async fromApp(app: INestApplication): Promise<WsHandler> {
+  public static async fromApp(app: Application): Promise<WsHandler> {
     const handler = new WsHandler(app);
     await handler.awaitOpen();
     return handler;

@@ -2,7 +2,7 @@
   "name": "@demo/e2e-testing",
   "version": "0.0.0",
   "scripts": {
-    "test": "jest --config ./setup/jest.config.js"
+    "test": "jest --config ./setup/jest.config.js -w 1"
   },
   "devDependencies": {
     "@types/jest": "~29.2.3",
@@ -29,6 +29,9 @@
     "typeorm": "~0.3.10",
     "sqlite3": "^5.1.1",
     "@nestjs/platform-ws": "^9.1.2",
-    "@nestjs/websockets": "~9.1.6"
+    "@nestjs/websockets": "~9.1.6",
+    "ws": "^8.6.0",
+    "@types/ws": "^8.5.3",
+    "@faker-js/faker": "~7.6.0"
   }
 }

@@ -17,7 +17,7 @@ import { IRabbitMQPublisherConfig } from "../interfaces/rabbitmq-publisher.confi
 import { IRabbitMQConfig } from "../interfaces/rabbitmq.config";
 import { RabbitMQConnection } from "../providers/rabbitmq.connection";
 import { sha1 } from "object-hash";
-import { RabbitMQConnectionOpenedMessage } from "../messages";
+import { RabbitMQConnectionReOpenedMessage } from "../messages";
 
 @Injectable({ scope: Scope.TRANSIENT })
 export class RabbitMQPublisher
@@ -53,7 +53,7 @@ export class RabbitMQPublisher
     super(observableFactory, publisherOptions);
     this._activeInbound = observableFactory.generateAsyncMap();
     this._workQueueMap = new Map();
-    this.messengerService.on(RabbitMQConnectionOpenedMessage, () => {
+    this.messengerService.on(RabbitMQConnectionReOpenedMessage, () => {
       this.handleBootstrap();
     });
   }

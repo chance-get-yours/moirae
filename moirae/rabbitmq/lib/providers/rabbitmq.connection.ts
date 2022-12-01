@@ -71,10 +71,13 @@ export class RabbitMQConnection implements OnModuleInit, OnApplicationShutdown {
     this.messengerService.publish(new RabbitMQConnectionOpenedMessage());
     if (this._connectionOpenedOnce)
       this.messengerService.publish(new RabbitMQConnectionReOpenedMessage());
+
     this._connectionOpenedOnce = true;
+
     this._connection.on("error", (err) =>
       this.messengerService.publish(new RabbitMQConnectionErrorMessage(err)),
     );
+
     this._connection.on("close", (err) => {
       this.messengerService.publish(
         new RabbitMQConnectionClosedMessage(!!!err),

@@ -23,6 +23,7 @@ specifiers:
   '@rush-temp/node-plugin': file:./projects/node-plugin.tgz
   '@rush-temp/rabbitmq': file:./projects/rabbitmq.tgz
   '@rush-temp/redis': file:./projects/redis.tgz
+  '@rush-temp/saga': file:./projects/saga.tgz
   '@rush-temp/typeorm': file:./projects/typeorm.tgz
   '@swc/core': 1.2.205
   '@swc/jest': ^0.2.23
@@ -83,6 +84,7 @@ dependencies:
   '@rush-temp/node-plugin': file:projects/node-plugin.tgz_ts-node@10.9.1
   '@rush-temp/rabbitmq': file:projects/rabbitmq.tgz_42856aa97355ac28e3377442f3d1a154
   '@rush-temp/redis': file:projects/redis.tgz_b743b8e02b2394cdfdb76af7cc5dda2b
+  '@rush-temp/saga': file:projects/saga.tgz_2f340bf71fff67dfe98c7da41725d27e
   '@rush-temp/typeorm': file:projects/typeorm.tgz_e327ceae950747835fa546e3dc7fc4e4
   '@swc/core': 1.2.205
   '@swc/jest': 0.2.23_@swc+core@1.2.205
@@ -6807,6 +6809,34 @@ packages:
       - class-validator
       - encoding
       - node-notifier
+      - supports-color
+      - ts-node
+    dev: false
+
+  file:projects/saga.tgz_2f340bf71fff67dfe98c7da41725d27e:
+    resolution: {integrity: sha512-opR82igp5opGLPUQm2mgmePVMPOB1AlaWpZwJuYELTG4028w0H+ygj0tU7gvCEJKZSSVAsyyPzJtNaOn8AcEVQ==, tarball: file:projects/saga.tgz}
+    id: file:projects/saga.tgz
+    name: '@rush-temp/saga'
+    version: 0.0.0
+    dependencies:
+      '@nestjs/common': 9.1.6_bfb10c549401c4321799e32f853295f0
+      '@types/jest': 29.2.3
+      class-validator: 0.13.2
+      jest: 29.3.1_c45df3da2de79a6dfbacc1c31b99fc9c
+      rimraf: 3.0.2
+      ts-jest: 29.0.3_jest@29.3.1+typescript@4.9.3
+      typescript: 4.9.3
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@jest/types'
+      - '@types/node'
+      - babel-jest
+      - cache-manager
+      - class-transformer
+      - esbuild
+      - node-notifier
+      - reflect-metadata
+      - rxjs
       - supports-color
       - ts-node
     dev: false

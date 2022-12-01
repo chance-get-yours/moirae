@@ -8,6 +8,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { MoiraeModule } from "@moirae/core";
 import { Application } from "express";
 import { WsAdapter } from "@nestjs/platform-ws";
+import { SagaModule } from "@demo/saga";
 
 type TestableApplication = {
   server: Application;
@@ -31,6 +32,7 @@ async function generateMonolith(): Promise<TestableApplication> {
         .forRootAsync
         // moiraeConfigGenerator()
         (),
+      SagaModule,
       TypeOrmModule.forRoot({
         autoLoadEntities: true,
         database: process.env.NODE_ENV === "test" ? ":memory:" : "demo.db",

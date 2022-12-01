@@ -370,6 +370,10 @@
     {
       "packageName": "@demo/e2e-testing",
       "projectFolder": "demo/e2e-testing"
+    },
+    {
+      "packageName": "@demo/saga",
+      "projectFolder": "demo/saga"
     }
     // {
     //   /**

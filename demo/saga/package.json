@@ -1,0 +1,46 @@
+{
+  "name": "@demo/saga",
+  "version": "1.0.0",
+  "description": "Sagas",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "npm run prebuild && tsc -p tsconfig.build.json",
+    "prebuild": "rimraf ./dist",
+    "test": "jest --passWithNoTests"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@moirae/core": "*",
+    "class-validator": "~0.13.2",
+    "@nestjs/common": "~9.1.6",
+    "@demo/account": "~1.0.0",
+    "@demo/common": "~1.0.0",
+    "@demo/inventory": "~1.0.0"
+  },
+  "devDependencies": {
+    "typescript": "~4.9.3",
+    "ts-jest": "~29.0.3",
+    "@types/jest": "~29.2.3",
+    "jest": "~29.3.1",
+    "rimraf": "~3.0.2"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node",
+    "restoreMocks": true
+  }
+}

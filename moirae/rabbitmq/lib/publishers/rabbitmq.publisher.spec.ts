@@ -5,6 +5,7 @@ import {
   DomainStore,
   Event,
   IEvent,
+  MessengerService,
   ObservableFactory,
   PUBLISHER_OPTIONS,
   QUERY_PUBLISHER,
@@ -39,6 +40,7 @@ describe("RabbitMQPublisher", () => {
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [
+        MessengerService,
         RabbitMQPublisher,
         ObservableFactory,
         {

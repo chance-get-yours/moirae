@@ -9,6 +9,7 @@ import { ObservableFactory } from "../factories/observable.factory";
 import { IPublisher } from "../interfaces/publisher.interface";
 import { IQueryHandler } from "../interfaces/query-handler.interface";
 import { IQuery } from "../interfaces/query.interface";
+import { MessengerService } from "../messenger/messenger.service";
 import { PUBLISHER_OPTIONS, QUERY_PUBLISHER } from "../moirae.constants";
 import { MemoryPublisher } from "../publishers/memory.publisher";
 import { QueryBus } from "./query.bus";
@@ -41,6 +42,7 @@ describe("QueryBus", () => {
     const module = await Test.createTestingModule({
       providers: [
         Explorer,
+        MessengerService,
         ObservableFactory,
         QueryBus,
         {

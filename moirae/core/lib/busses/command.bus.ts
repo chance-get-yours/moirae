@@ -11,6 +11,8 @@ import { ICommandHandlerOptions } from "../interfaces/command-handler-options.in
 import { ICommand } from "../interfaces/command.interface";
 import { IMoiraeFilter } from "../interfaces/moirae-filter.interface";
 import { IPublisher } from "../interfaces/publisher.interface";
+import { CommandBusReadyMessage } from "../messenger/messages";
+import { MessengerService } from "../messenger/messenger.service";
 import {
   COMMAND_METADATA,
   COMMAND_PUBLISHER,
@@ -30,10 +32,16 @@ export class CommandBus extends BaseBus<ICommand> {
     observableFactory: ObservableFactory,
     @Inject(COMMAND_PUBLISHER) publisher: IPublisher,
     private readonly _sagaManager: SagaManager,
+    private readonly messengerService: MessengerService,
   ) {
     super(explorer, COMMAND_METADATA, observableFactory, publisher);
     this._publisher.role = COMMAND_PUBLISHER;
     this._errorHandlers = new Map();
+  }
+
+  public onApplicationBootstrap(): void {
+    super.onApplicationBootstrap();
+    this.messengerService.publish(new CommandBusReadyMessage());
   }
 
   /**

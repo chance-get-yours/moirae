@@ -1,4 +1,4 @@
-import { IPublisher } from "@moirae/core";
+import { IPublisher, MessengerService } from "@moirae/core";
 
 export interface MoiraePluginConfig {
   /**
@@ -10,4 +10,5 @@ export interface MoiraePluginConfig {
   getCommandPublisher: () => IPublisher;
   getEventPublisher: () => IPublisher;
   getQueryPublisher: () => IPublisher;
+  messengerService: MessengerService;
 }

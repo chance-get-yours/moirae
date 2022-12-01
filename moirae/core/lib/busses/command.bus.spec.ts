@@ -14,6 +14,7 @@ import { ICommandHandler } from "../interfaces/command-handler.interface";
 import { ICommand } from "../interfaces/command.interface";
 import { IMoiraeFilter } from "../interfaces/moirae-filter.interface";
 import { IPublisher } from "../interfaces/publisher.interface";
+import { MessengerService } from "../messenger/messenger.service";
 import {
   CACHE_PROVIDER,
   COMMAND_PUBLISHER,
@@ -56,6 +57,7 @@ describe("CommandBus", () => {
       providers: [
         CommandBus,
         Explorer,
+        MessengerService,
         ObservableFactory,
         TestFilter,
         SagaManager,

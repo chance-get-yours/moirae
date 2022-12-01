@@ -36,6 +36,7 @@ import {
 import { MemoryPublisher } from "./publishers/memory.publisher";
 import { MemoryStore } from "./stores/memory.store";
 import { DomainStore } from "./classes/domain-store.class";
+import { MessengerService } from "./messenger/messenger.service";
 
 @Module({})
 export class MoiraeModule {
@@ -168,6 +169,7 @@ export class MoiraeModule {
         CommandBus,
         EventBus,
         Explorer,
+        MessengerService,
         ObservableFactory,
         QueryBus,
         SagaManager,
@@ -183,6 +185,7 @@ export class MoiraeModule {
         AggregateFactory,
         CommandBus,
         EventBus,
+        MessengerService,
         QueryBus,
         ...exports,
         ...cacheExports,

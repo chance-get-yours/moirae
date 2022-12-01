@@ -12,7 +12,6 @@ export class FindInventoryByIdHandler
   constructor(private readonly service: InventoryService) {}
 
   public execute({ inventoryId }: FindInventoryByIdQuery): Promise<IInventory> {
-    Logger.error(inventoryId);
     return this.service.findOne(inventoryId);
   }
 }

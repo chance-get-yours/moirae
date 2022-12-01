@@ -7,6 +7,8 @@ import { ObservableFactory } from "../factories/observable.factory";
 import { ExecuteOptions } from "../interfaces/execute-options.interface";
 import { IPublisher } from "../interfaces/publisher.interface";
 import { IQuery } from "../interfaces/query.interface";
+import { QueryBusReadyMessage } from "../messenger/messages";
+import { MessengerService } from "../messenger/messenger.service";
 import { QUERY_METADATA, QUERY_PUBLISHER } from "../moirae.constants";
 
 /**
@@ -19,9 +21,15 @@ export class QueryBus extends BaseBus<IQuery> {
     explorer: Explorer,
     observableFactory: ObservableFactory,
     @Inject(QUERY_PUBLISHER) publisher: IPublisher,
+    private readonly messengerService: MessengerService,
   ) {
     super(explorer, QUERY_METADATA, observableFactory, publisher);
     this._publisher.role = QUERY_PUBLISHER;
+  }
+
+  public onApplicationBootstrap(): void {
+    super.onApplicationBootstrap();
+    this.messengerService.publish(new QueryBusReadyMessage());
   }
 
   /**

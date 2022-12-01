@@ -3,7 +3,7 @@ const { RabbitMQConnection, RabbitMQPublisher } = require("@moirae/rabbitmq");
 const dotenv = require("dotenv");
 const { ObservableFactory, MessengerService } = require("@moirae/core");
 const { MoiraePlugin } = require("@moirae/node-plugin");
-const { HelloQuery } = require("../../src/secondary-app/queries/hello.query");
+// const { HelloQuery } = require("../../src/secondary-app/queries/hello.query");
 
 module.exports = async () => {
   dotenv.config({ path: "../../.env" });
@@ -64,7 +64,8 @@ module.exports = async () => {
         messengerService,
       ),
     messengerService,
-  }).injectQueryHandler(handler, HelloQuery);
+  });
+  // .injectQueryHandler(handler, HelloQuery);
 
   return new Promise((res) => {
     const server = app.listen(0, "127.0.0.1", async () => {

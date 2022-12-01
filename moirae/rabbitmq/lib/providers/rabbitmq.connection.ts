@@ -41,12 +41,6 @@ export class RabbitMQConnection implements OnModuleInit, OnApplicationShutdown {
     private readonly messengerService: MessengerService,
   ) {
     this._connectionOpenedOnce = false;
-    this._closedSubscriptionId = this.messengerService.on(
-      RabbitMQConnectionClosedMessage,
-      async (message) => {
-        if (message.crashed) await this.onModuleInit();
-      },
-    );
   }
 
   /**
@@ -68,6 +62,12 @@ export class RabbitMQConnection implements OnModuleInit, OnApplicationShutdown {
     if (!amqplibConfig)
       throw new InvalidConfigurationError("Missing amqplib configuration");
     this._connection = await connect(amqplibConfig.amqplib);
+    this._closedSubscriptionId = this.messengerService.on(
+      RabbitMQConnectionClosedMessage,
+      async (message) => {
+        if (message.crashed) await this.onModuleInit();
+      },
+    );
     this.messengerService.publish(new RabbitMQConnectionOpenedMessage());
     if (this._connectionOpenedOnce)
       this.messengerService.publish(new RabbitMQConnectionReOpenedMessage());

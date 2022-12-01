@@ -1,4 +1,10 @@
 import {
+  InternalServerErrorException,
+  Logger,
+  NotFoundException,
+} from "@nestjs/common";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import {
   ICacheConfig,
   IMemoryCacheConfig,
   IMemoryPublisherConfig,
@@ -6,43 +12,29 @@ import {
   IMoiraeConfig,
   IPublisherConfig,
   IStoreConfig,
-  MoiraeModule,
 } from "@moirae/core";
 import { injectRedis, IRedisCacheConfig } from "@moirae/redis";
 import {
   CACHE_ENTITIES,
-  injectTypeormStore,
   EventStore,
-  ITypeORMStoreConfig,
   injectTypeormCache,
+  injectTypeormStore,
+  ITypeORMStoreConfig,
 } from "@moirae/typeorm";
 import {
   injectRabbitMQPublisher,
   IRabbitMQPublisherConfig,
 } from "@moirae/rabbitmq";
-import {
-  InternalServerErrorException,
-  Logger,
-  Module,
-  NotFoundException,
-} from "@nestjs/common";
-import { ConfigModule } from "@nestjs/config";
-import { TypeOrmModule } from "@nestjs/typeorm";
-import { AccountModule } from "@demo/account";
-import { AppController } from "./app.controller";
-import { AppService } from "./app.service";
-import { ProcessOrderSaga } from "./common/sagas/process-order.saga";
-import { InventoryModule } from "@demo/inventory";
-import { UserManagementModule } from "./user-management/user-management.module";
-import { GatewayModule } from "@demo/gateway";
 
-const moiraeConfigGenerator = (): IMoiraeConfig<
+export function moiraeConfigGenerator(
+  nodeId: string,
+): IMoiraeConfig<
   ICacheConfig,
   IStoreConfig,
   IPublisherConfig,
   IPublisherConfig,
   IPublisherConfig
-> => {
+> {
   const config: IMoiraeConfig<
     IMemoryCacheConfig,
     IMemoryStoreConfig,
@@ -65,7 +57,7 @@ const moiraeConfigGenerator = (): IMoiraeConfig<
         injector: undefined,
         type: "memory",
       },
-      nodeId: "demo-node",
+      nodeId,
       query: {
         injector: undefined,
         type: "memory",
@@ -75,7 +67,6 @@ const moiraeConfigGenerator = (): IMoiraeConfig<
       injector: undefined,
       type: "memory",
     },
-    sagas: [ProcessOrderSaga],
   };
   const typeormImports = [];
 
@@ -141,27 +132,4 @@ const moiraeConfigGenerator = (): IMoiraeConfig<
   if (typeormImports.length > 0)
     config.imports.push(TypeOrmModule.forFeature(typeormImports));
   return config;
-};
-
-@Module({
-  imports: [
-    AccountModule,
-    ConfigModule.forRoot({
-      envFilePath: "../../.env",
-    }),
-    InventoryModule,
-    GatewayModule,
-    MoiraeModule.forRootAsync(moiraeConfigGenerator()),
-    TypeOrmModule.forRoot({
-      autoLoadEntities: true,
-      database: process.env.NODE_ENV === "test" ? ":memory:" : "demo.db",
-      dropSchema: process.env.NODE_ENV === "test",
-      type: "sqlite",
-      synchronize: true,
-    }),
-    UserManagementModule,
-  ],
-  controllers: [AppController],
-  providers: [AppService],
-})
-export class AppModule {}
+}

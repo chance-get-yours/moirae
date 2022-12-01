@@ -5,6 +5,7 @@ import { MoiraeWsGateway } from "./moirae-ws.gateway";
 import { OrderController } from "./order.controller";
 import { TerminusModule } from "@nestjs/terminus";
 import { HealthController } from "./health.controller";
+import { MoiraeModule } from "moirae/core/dist";
 
 @Module({
   imports: [TerminusModule],

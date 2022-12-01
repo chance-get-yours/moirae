@@ -3,5 +3,8 @@
   "include": ["tests", "setup", "utilities"],
   "compilerOptions": {
     "outDir": "./dist"
+  },
+  "ts-node": {
+    "swc": true
   }
 }

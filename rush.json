@@ -348,10 +348,6 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@demo/monolith",
-      "projectFolder": "demo/monolith"
-    },
-    {
       "packageName": "@demo/common",
       "projectFolder": "demo/common"
     },

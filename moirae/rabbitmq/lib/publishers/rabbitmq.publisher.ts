@@ -11,7 +11,7 @@ import {
   PUBLISHER_OPTIONS,
   QUERY_PUBLISHER,
 } from "@moirae/core";
-import { Inject, Injectable, Scope } from "@nestjs/common";
+import { Inject, Injectable, Logger, Scope } from "@nestjs/common";
 import { Channel, Message } from "amqplib";
 import { IRabbitMQPublisherConfig } from "../interfaces/rabbitmq-publisher.config";
 import { IRabbitMQConfig } from "../interfaces/rabbitmq.config";
@@ -115,7 +115,11 @@ export class RabbitMQPublisher
     const queues: string[] = [];
     let domains = domainStore.getAll();
     if (this.role === EVENT_PUBLISHER) {
-      queues.push(this._generateWorkQueue(`events__${sha1({ domains })}`));
+      queues.push(
+        this._generateWorkQueue(
+          `events__${domains.length === 1 ? domains[0] : sha1({ domains })}`,
+        ),
+      );
       this._workQueueMap.set("all", {
         queueName: queues[0],
       });

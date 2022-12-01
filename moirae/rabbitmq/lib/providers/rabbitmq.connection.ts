@@ -75,9 +75,11 @@ export class RabbitMQConnection implements OnModuleInit, OnApplicationShutdown {
     this._connection.on("error", (err) =>
       this.messengerService.publish(new RabbitMQConnectionErrorMessage(err)),
     );
-    this._connection.on("close", (err) =>
-      this.messengerService.publish(new RabbitMQConnectionClosedMessage(!!err)),
-    );
+    this._connection.on("close", (err) => {
+      this.messengerService.publish(
+        new RabbitMQConnectionClosedMessage(!!!err),
+      );
+    });
   }
 
   /**
@@ -87,6 +89,7 @@ export class RabbitMQConnection implements OnModuleInit, OnApplicationShutdown {
     this.messengerService.unsubscribe(this._closedSubscriptionId);
     try {
       this._connection && (await this._connection.close());
+      this.messengerService.publish(new RabbitMQConnectionClosedMessage(false));
     } catch (err) {
       Logger.error(err);
     }

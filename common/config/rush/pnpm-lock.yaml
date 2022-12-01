@@ -9,6 +9,7 @@ specifiers:
   '@nestjs/platform-express': ^9.1.4
   '@nestjs/platform-ws': ^9.1.2
   '@nestjs/schematics': ^8.0.0
+  '@nestjs/terminus': ~9.1.4
   '@nestjs/testing': ~9.1.6
   '@nestjs/typeorm': ~9.0.1
   '@nestjs/websockets': ~9.1.6
@@ -68,14 +69,15 @@ dependencies:
   '@nestjs/platform-express': 9.1.6_f58e059a32aa24649186390665161f1b
   '@nestjs/platform-ws': 9.1.6_ae5fde268dbf7cda5a60f8865c1331b6
   '@nestjs/schematics': 8.0.11_typescript@4.9.3
+  '@nestjs/terminus': 9.1.4_9044451833326f36b03b9484243ce2f1
   '@nestjs/testing': 9.1.6_c32216314fab0897b371182dd32cc4ac
   '@nestjs/typeorm': 9.0.1_af64adc9cbf638f4c0dce622826d8ecb
   '@nestjs/websockets': 9.1.6_0047642c8a268f08cb65e9b0a3e5751f
   '@rush-temp/account': file:projects/account.tgz_cb9c685bf2bde432c8d323a83caf694c
   '@rush-temp/common': file:projects/common.tgz_c45df3da2de79a6dfbacc1c31b99fc9c
   '@rush-temp/core': file:projects/core.tgz_42856aa97355ac28e3377442f3d1a154
-  '@rush-temp/e2e-testing': file:projects/e2e-testing.tgz_c45df3da2de79a6dfbacc1c31b99fc9c
-  '@rush-temp/gateway': file:projects/gateway.tgz_6a60bc5af0a1fd3ccce90dfaee8c5797
+  '@rush-temp/e2e-testing': file:projects/e2e-testing.tgz_6c7a7dfb080bc2e0d0ea6c701f27fca5
+  '@rush-temp/gateway': file:projects/gateway.tgz_813eaf56e8d2482907e1f6eea0c90097
   '@rush-temp/inventory': file:projects/inventory.tgz_368ec5e091384a10546541916c3e36ad
   '@rush-temp/monolith': file:projects/monolith.tgz_@swc+core@1.2.205+redis@4.3.1
   '@rush-temp/node-plugin': file:projects/node-plugin.tgz_ts-node@10.9.1
@@ -1146,6 +1148,61 @@ packages:
       - chokidar
     dev: false
 
+  /@nestjs/terminus/9.1.4_9044451833326f36b03b9484243ce2f1:
+    resolution: {integrity: sha512-VUkafKRK6uWzwyHPind3RejxQAFJxPaXjDtvHQRaNdJ5Pk9wVD4e6e8KLGhcrPGC8ZDorqBLZABnECIcGzkodA==}
+    peerDependencies:
+      '@grpc/grpc-js': '*'
+      '@grpc/proto-loader': '*'
+      '@mikro-orm/core': '*'
+      '@mikro-orm/nestjs': '*'
+      '@nestjs/axios': '*'
+      '@nestjs/common': 9.x
+      '@nestjs/core': 9.x
+      '@nestjs/microservices': '*'
+      '@nestjs/mongoose': '*'
+      '@nestjs/sequelize': '*'
+      '@nestjs/typeorm': '*'
+      mongoose: '*'
+      reflect-metadata: 0.1.x
+      rxjs: 7.x
+      sequelize: '*'
+      typeorm: '*'
+    peerDependenciesMeta:
+      '@grpc/grpc-js':
+        optional: true
+      '@grpc/proto-loader':
+        optional: true
+      '@mikro-orm/core':
+        optional: true
+      '@mikro-orm/nestjs':
+        optional: true
+      '@nestjs/axios':
+        optional: true
+      '@nestjs/microservices':
+        optional: true
+      '@nestjs/mongoose':
+        optional: true
+      '@nestjs/sequelize':
+        optional: true
+      '@nestjs/typeorm':
+        optional: true
+      mongoose:
+        optional: true
+      sequelize:
+        optional: true
+      typeorm:
+        optional: true
+    dependencies:
+      '@nestjs/common': 9.1.6_bfb10c549401c4321799e32f853295f0
+      '@nestjs/core': 9.1.6_2220f727c430cb9219b61dfbfe504465
+      '@nestjs/typeorm': 9.0.1_af64adc9cbf638f4c0dce622826d8ecb
+      boxen: 5.1.2
+      check-disk-space: 3.3.1
+      reflect-metadata: 0.1.13
+      rxjs: 7.5.7
+      typeorm: 0.3.10_a4afafad481dcb6ec5a591b09cd57ccc
+    dev: false
+
   /@nestjs/testing/9.1.6_c32216314fab0897b371182dd32cc4ac:
     resolution: {integrity: sha512-3kdTgiv5DHRHMQ/befLWd/60LZWjOM2V+SwOLqGkITt1yjo+jpkDze8/f0ZXVGEa6pcWYZ5oeedbL2T1nyUKSQ==}
     peerDependencies:
@@ -2049,6 +2106,12 @@ packages:
       - supports-color
     dev: false
 
+  /ansi-align/3.0.1:
+    resolution: {integrity: sha512-IOfwwBF5iczOjp/WeY4YxyjqAFMQoZufdQWDd19SEExbVLNXqvpzSJ/M7Za4/sCPmQ0+GRquoA7bGcINcxew6w==}
+    dependencies:
+      string-width: 4.2.3
+    dev: false
+
   /ansi-colors/4.1.3:
     resolution: {integrity: sha512-/6w/C21Pm1A7aZitlI5Ni/2J6FFQN8i1Cvz3kHABAAbw93v/NlvKdVOqz7CCWz/3iv/JplRSEEZ83XION15ovw==}
     engines: {node: '>=6'}
@@ -2269,6 +2332,20 @@ packages:
       unpipe: 1.0.0
     dev: false
 
+  /boxen/5.1.2:
+    resolution: {integrity: sha512-9gYgQKXx+1nP8mP7CzFyaUARhg7D3n1dF/FnErWmu9l6JvGpNUN278h0aSb+QjoiKSWG+iZ3uHrcqk0qrY9RQQ==}
+    engines: {node: '>=10'}
+    dependencies:
+      ansi-align: 3.0.1
+      camelcase: 6.3.0
+      chalk: 4.1.2
+      cli-boxes: 2.2.1
+      string-width: 4.2.3
+      type-fest: 0.20.2
+      widest-line: 3.1.0
+      wrap-ansi: 7.0.0
+    dev: false
+
   /brace-expansion/1.1.11:
     resolution: {integrity: sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==}
     dependencies:
@@ -2426,6 +2503,11 @@ packages:
     resolution: {integrity: sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==}
     dev: false
 
+  /check-disk-space/3.3.1:
+    resolution: {integrity: sha512-iOrT8yCZjSnyNZ43476FE2rnssvgw5hnuwOM0hm8Nj1qa0v4ieUUEbCyxxsEliaoDUb/75yCOL71zkDiDBLbMQ==}
+    engines: {node: '>=12'}
+    dev: false
+
   /chokidar/3.5.3:
     resolution: {integrity: sha512-Dr3sfKRP6oTcjf2JmUmFJfeVMvXBdegxB0iVQ5eb2V10uFJUCAS8OByZdVAyVb8xXNz3GjjTgj9kLWsZTqE6kw==}
     engines: {node: '>= 8.10.0'}
@@ -2475,6 +2557,11 @@ packages:
     engines: {node: '>=6'}
     dev: false
     optional: true
+
+  /cli-boxes/2.2.1:
+    resolution: {integrity: sha512-y4coMcylgSCdVinjiDBuR8PCC2bLjyGTwEmPb9NHR/QaNU6EUOXcTY/s6VjGMD6ENSEaeQYHCY0GNGS5jfMwPw==}
+    engines: {node: '>=6'}
+    dev: false
 
   /cli-cursor/3.1.0:
     resolution: {integrity: sha512-I/zHAwsKf9FqGoXM4WWRACob9+SNukZTd94DWF57E4toouRulbCxcUh6RKUEOQlYTHJnzkPMySvPNaaSLNfLZw==}
@@ -6148,6 +6235,13 @@ packages:
       string-width: 4.2.3
     dev: false
 
+  /widest-line/3.1.0:
+    resolution: {integrity: sha512-NsmoXalsWVDMGupxZ5R08ka9flZjjiLvHVAWYOKtiKM8ujtZWr9cRffak+uSE48+Ob8ObalXpwyeUiyDD6QFgg==}
+    engines: {node: '>=8'}
+    dependencies:
+      string-width: 4.2.3
+    dev: false
+
   /windows-release/4.0.0:
     resolution: {integrity: sha512-OxmV4wzDKB1x7AZaZgXMVsdJ1qER1ed83ZrTYd5Bwq2HfJVg3DJS8nqlAG4sMoJ7mu8cuRmLEYyU13BKwctRAg==}
     engines: {node: '>=10'}
@@ -6286,7 +6380,7 @@ packages:
     dev: false
 
   file:projects/account.tgz_cb9c685bf2bde432c8d323a83caf694c:
-    resolution: {integrity: sha512-x448FMHwUErk0LdKq7Db8LEkv4S0BGjA629OCMXz/W3DPxHdAjutpjT7vuNheThKQzIeoozQIvFfy5kler8x1Q==, tarball: file:projects/account.tgz}
+    resolution: {integrity: sha512-HEIFTVN5ALSeJCmgU5a34ReJUzOFJTVgIl4jAGc7bi4ABE+II1TcdyDoqFkBmdUdhCqWHok4gPNUSDd9cwJaNg==, tarball: file:projects/account.tgz}
     id: file:projects/account.tgz
     name: '@rush-temp/account'
     version: 0.0.0
@@ -6393,34 +6487,70 @@ packages:
       - ts-node
     dev: false
 
-  file:projects/e2e-testing.tgz_c45df3da2de79a6dfbacc1c31b99fc9c:
-    resolution: {integrity: sha512-VSkxOAFvp3iq6dq+qtEPBbIFeps/cQooz3s3isT1jT5RJrzVP/dbvodOztRSPx302+fZbFqR4GVvXKZAF9ZX7Q==, tarball: file:projects/e2e-testing.tgz}
+  file:projects/e2e-testing.tgz_6c7a7dfb080bc2e0d0ea6c701f27fca5:
+    resolution: {integrity: sha512-7SpiyMIun8RsbI34G+9xtW3cMfJU6TJLezp9PwqFA9SLrYNHopOZMYl5pJ3cmpG+deRbw/ZU9C7CVRJL2hIMiw==, tarball: file:projects/e2e-testing.tgz}
     id: file:projects/e2e-testing.tgz
     name: '@rush-temp/e2e-testing'
     version: 0.0.0
     dependencies:
+      '@nestjs/common': 9.1.6_bfb10c549401c4321799e32f853295f0
+      '@nestjs/config': 2.2.0_c26f80aaab984fa1edc8ab61d24efb72
+      '@nestjs/core': 9.1.6_2220f727c430cb9219b61dfbfe504465
+      '@nestjs/platform-ws': 9.1.6_ae5fde268dbf7cda5a60f8865c1331b6
+      '@nestjs/typeorm': 9.0.1_af64adc9cbf638f4c0dce622826d8ecb
+      '@nestjs/websockets': 9.1.6_0047642c8a268f08cb65e9b0a3e5751f
       '@swc/core': 1.2.205
       '@swc/jest': 0.2.23_@swc+core@1.2.205
+      '@types/express': 4.17.14
       '@types/jest': 29.2.3
       '@types/supertest': 2.0.12
       jest: 29.3.1_c45df3da2de79a6dfbacc1c31b99fc9c
+      sqlite3: 5.1.2
       supertest: 6.3.1
+      typeorm: 0.3.10_a4afafad481dcb6ec5a591b09cd57ccc
       typescript: 4.9.3
     transitivePeerDependencies:
+      - '@google-cloud/spanner'
+      - '@nestjs/microservices'
+      - '@nestjs/platform-express'
+      - '@nestjs/platform-socket.io'
+      - '@sap/hana-client'
       - '@types/node'
+      - better-sqlite3
+      - bufferutil
+      - cache-manager
+      - class-transformer
+      - class-validator
+      - encoding
+      - hdb-pool
+      - ioredis
+      - mongodb
+      - mssql
+      - mysql2
       - node-notifier
+      - oracledb
+      - pg
+      - pg-native
+      - pg-query-stream
+      - redis
+      - reflect-metadata
+      - rxjs
+      - sql.js
       - supports-color
       - ts-node
+      - typeorm-aurora-data-api-driver
+      - utf-8-validate
     dev: false
 
-  file:projects/gateway.tgz_6a60bc5af0a1fd3ccce90dfaee8c5797:
-    resolution: {integrity: sha512-t7SrceJVhaCCAZQWA5khNrMJzSJQSqdWzIK07kGhNQWvB+vH8BfA1HrGKgrZPDf4u448ErffptI4jcmFCJwWiw==, tarball: file:projects/gateway.tgz}
+  file:projects/gateway.tgz_813eaf56e8d2482907e1f6eea0c90097:
+    resolution: {integrity: sha512-rt2mZsqSur468/prQnj+qGVdIWXLyrc2O4BygzW4z8xN1c7XXcoao18qJ38CVad0D7Gdsx/c6znksmdJAMigmw==, tarball: file:projects/gateway.tgz}
     id: file:projects/gateway.tgz
     name: '@rush-temp/gateway'
     version: 0.0.0
     dependencies:
       '@nestjs/common': 9.1.6_bfb10c549401c4321799e32f853295f0
       '@nestjs/core': 9.1.6_2220f727c430cb9219b61dfbfe504465
+      '@nestjs/terminus': 9.1.4_9044451833326f36b03b9484243ce2f1
       '@nestjs/websockets': 9.1.6_0047642c8a268f08cb65e9b0a3e5751f
       '@types/jest': 29.2.3
       class-validator: 0.13.2
@@ -6429,21 +6559,32 @@ packages:
       rxjs: 7.5.7
       typescript: 4.9.3
     transitivePeerDependencies:
+      - '@grpc/grpc-js'
+      - '@grpc/proto-loader'
+      - '@mikro-orm/core'
+      - '@mikro-orm/nestjs'
+      - '@nestjs/axios'
       - '@nestjs/microservices'
+      - '@nestjs/mongoose'
       - '@nestjs/platform-express'
       - '@nestjs/platform-socket.io'
+      - '@nestjs/sequelize'
+      - '@nestjs/typeorm'
       - '@types/node'
       - cache-manager
       - class-transformer
       - encoding
+      - mongoose
       - node-notifier
       - reflect-metadata
+      - sequelize
       - supports-color
       - ts-node
+      - typeorm
     dev: false
 
   file:projects/inventory.tgz_368ec5e091384a10546541916c3e36ad:
-    resolution: {integrity: sha512-YK7SEPwo6jJcB+shyVLbwbpt/yL5P5Hng0Xrorqh9KvfXUH/rdFNG1BSX38wZrdQcfxZ4+1GojkOsW7E5IoEFQ==, tarball: file:projects/inventory.tgz}
+    resolution: {integrity: sha512-uV7++g5aLhhdeLk/djllg2eceL+kNTjCg/IIBKQ6ABPJQYSGC82XOSh2gQl4NrVIqsQvbmS3zQ7uW3hq4fPIuQ==, tarball: file:projects/inventory.tgz}
     id: file:projects/inventory.tgz
     name: '@rush-temp/inventory'
     version: 0.0.0
@@ -6491,7 +6632,7 @@ packages:
     dev: false
 
   file:projects/monolith.tgz_@swc+core@1.2.205+redis@4.3.1:
-    resolution: {integrity: sha512-h/CUJ97wh+fNSDoSsYeWTghkDaDFhnfEewU5vRdAZVPd2XhrpSWj+u708IuIdqYISEbcBM/gDJ6VDKJh9/AQmQ==, tarball: file:projects/monolith.tgz}
+    resolution: {integrity: sha512-LL6ieQmwJ5yfPTYC9KV4d6Q7AweYkoXFjIg+r3F2wx0FMD0SYcbKaAAmAEO9uFWJ1lkgqHIoRUilC8X2RR4aLg==, tarball: file:projects/monolith.tgz}
     id: file:projects/monolith.tgz
     name: '@rush-temp/monolith'
     version: 0.0.0

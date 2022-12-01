@@ -29,7 +29,7 @@
     "restoreMocks": true
   },
   "dependencies": {
-    "@demo/common": "*",
+    "@demo/common": "~1.0.0",
     "@nestjs/common": "~9.1.6",
     "@nestjs/core": "~9.1.6",
     "@moirae/core": "*",

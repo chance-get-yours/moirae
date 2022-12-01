@@ -29,15 +29,16 @@
     "restoreMocks": true
   },
   "dependencies": {
-    "@demo/account": "*",
-    "@demo/common": "*",
-    "@demo/inventory": "*",
+    "@demo/account": "~1.0.0",
+    "@demo/common": "~1.0.0",
+    "@demo/inventory": "~1.0.0",
     "@nestjs/common": "~9.1.6",
     "@nestjs/core": "~9.1.6",
     "@moirae/core": "*",
     "rxjs": "^7.5.7",
     "@nestjs/websockets": "~9.1.6",
-    "class-validator": "~0.13.2"
+    "class-validator": "~0.13.2",
+    "@nestjs/terminus": "~9.1.4"
   },
   "devDependencies": {
     "@types/jest": "~29.2.3",

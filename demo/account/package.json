@@ -11,8 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@demo/common": "*",
-    "@demo/inventory": "*",
+    "@demo/common": "~1.0.0",
+    "@demo/inventory": "~1.0.0",
     "@moirae/core": "*",
     "typeorm": "~0.3.10",
     "@nestjs/typeorm": "~9.0.1",

@@ -2,6 +2,7 @@ import { Inject, Injectable } from "@nestjs/common";
 import {
   BasePublisher,
   DomainStore,
+  DOMAIN_STORE,
   IEvent,
   IPublisher,
   ObservableFactory,
@@ -31,6 +32,7 @@ export class EventStoreDbPublisher
     private readonly connection: EventStoreDBConnection,
     @Inject(PUBLISHER_OPTIONS) publisherOptions: IEventStorePublisherConfig,
     observableFactory: ObservableFactory,
+    @Inject(DOMAIN_STORE) private readonly domainStore: DomainStore,
   ) {
     super(observableFactory, publisherOptions);
     this._activeRequests = new Map();
@@ -44,7 +46,6 @@ export class EventStoreDbPublisher
     throw new Error("Method not implemented.");
   }
   protected async handleBootstrap(): Promise<void> {
-    const domainStore = DomainStore.getInstance();
     await this.connection.connection.createPersistentSubscriptionToAll(
       "",
       persistentSubscriptionToAllSettingsFromDefaults(),

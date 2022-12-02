@@ -33,7 +33,7 @@ export class EventStoreDbStore
         if (!acc[cur.$streamId]) acc[cur.$streamId] = [];
         return {
           ...acc,
-          [cur.$streamId]: [...acc[cur.$streamId], cur],
+          [cur.$streamId]: acc[cur.$streamId].concat(cur),
         };
       }, {});
 
@@ -51,6 +51,7 @@ export class EventStoreDbStore
       this.streamNameFromId(streamId),
     );
     const output = new Array<IEvent>();
+
     try {
       for await (const { event } of raw) {
         output.push(this.parseEvent(event.data as string));

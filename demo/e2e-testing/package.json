@@ -4,7 +4,8 @@
   "scripts": {
     "test": "jest --config ./setup/jest.config.js -w 1",
     "test:cluster": "cross-env MODE=cluster npm run test",
-    "test:monolith": "cross-env MODE=monolith npm run test"
+    "test:monolith": "cross-env MODE=monolith npm run test",
+    "build": ""
   },
   "devDependencies": {
     "@types/jest": "~29.2.3",

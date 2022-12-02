@@ -90,9 +90,9 @@ jobs:
       - name: Rush Install
         run: node common/scripts/install-run-rush.js install
       - name: Rush Build Monolith
-        run: node common/scripts/install-run-rush.js build -T @demo/e2e-tests
+        run: node common/scripts/install-run-rush.js build -T @demo/e2e-testing
       - name: Run monolith
-        run: env CACHE_TYPE=${{ matrix.cache }} env PUB_TYPE=${{ matrix.publisher }} env STORE_TYPE=${{ matrix.store }} npm run test:e2e --prefix demo/e2e-tests
+        run: env CACHE_TYPE=${{ matrix.cache }} env PUB_TYPE=${{ matrix.publisher }} env STORE_TYPE=${{ matrix.store }} npm run test:e2e --prefix demo/e2e-testing
   demo-cluster:
     runs-on: ubuntu-latest
     needs: test-packages
@@ -124,6 +124,6 @@ jobs:
       - name: Rush Install
         run: node common/scripts/install-run-rush.js install
       - name: Rush Build Monolith
-        run: node common/scripts/install-run-rush.js build -T @demo/e2e-tests
+        run: node common/scripts/install-run-rush.js build -T @demo/e2e-testing
       - name: Run monolith
-        run: env CACHE_TYPE=${{ matrix.cache }} env PUB_TYPE=${{ matrix.publisher }} env STORE_TYPE=${{ matrix.store }} npm run test:e2e --prefix demo/e2e-tests
+        run: env CACHE_TYPE=${{ matrix.cache }} env PUB_TYPE=${{ matrix.publisher }} env STORE_TYPE=${{ matrix.store }} npm run test:e2e --prefix demo/e2e-testing

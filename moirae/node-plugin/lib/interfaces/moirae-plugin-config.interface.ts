@@ -1,4 +1,9 @@
-import { IPublisher, MessengerService } from "@moirae/core";
+import { DomainStore, IPublisher, MessengerService } from "@moirae/core";
+
+export interface MoiraePublisherConstructorParams {
+  domainStore: DomainStore;
+  messengerService: MessengerService;
+}
 
 export interface MoiraePluginConfig {
   /**
@@ -7,8 +12,8 @@ export interface MoiraePluginConfig {
    * See {@link @moirae/core!MoiraeModule.forFeature}
    */
   domains: string[];
-  getCommandPublisher: () => IPublisher;
-  getEventPublisher: () => IPublisher;
-  getQueryPublisher: () => IPublisher;
-  messengerService: MessengerService;
+  getCommandPublisher: (params: MoiraePublisherConstructorParams) => IPublisher;
+  getEventPublisher: (params: MoiraePublisherConstructorParams) => IPublisher;
+  getQueryPublisher: (params: MoiraePublisherConstructorParams) => IPublisher;
+  messengerService?: MessengerService;
 }

@@ -2,6 +2,7 @@ import {
   AsyncMap,
   BasePublisher,
   DomainStore,
+  DOMAIN_STORE,
   ESState,
   EVENT_PUBLISHER,
   IEventLike,
@@ -11,7 +12,7 @@ import {
   PUBLISHER_OPTIONS,
   QUERY_PUBLISHER,
 } from "@moirae/core";
-import { Inject, Injectable, Scope } from "@nestjs/common";
+import { Inject, Injectable, Logger, Scope } from "@nestjs/common";
 import { Channel, Message } from "amqplib";
 import { IRabbitMQPublisherConfig } from "../interfaces/rabbitmq-publisher.config";
 import { IRabbitMQConfig } from "../interfaces/rabbitmq.config";
@@ -49,6 +50,7 @@ export class RabbitMQPublisher
     @Inject(PUBLISHER_OPTIONS) publisherOptions: IRabbitMQPublisherConfig,
     private readonly rabbitMQConnection: RabbitMQConnection,
     private readonly messengerService: MessengerService,
+    @Inject(DOMAIN_STORE) private readonly domainStore: DomainStore,
   ) {
     super(observableFactory, publisherOptions);
     this._activeInbound = observableFactory.generateAsyncMap();
@@ -71,7 +73,6 @@ export class RabbitMQPublisher
   }
 
   protected async handleBootstrap(): Promise<void> {
-    const domainStore = DomainStore.getInstance();
     const config = this.getRoleConfig<IRabbitMQConfig>();
 
     this._RESPONSE_EXCHANGE = `${config.namespaceRoot}-responseExchange-${this.role}`;
@@ -112,18 +113,18 @@ export class RabbitMQPublisher
       this.role === EVENT_PUBLISHER ? "fanout" : "topic",
     );
 
-    const queues: string[] = [];
-    let domains = domainStore.getAll();
+    let domains = this.domainStore.getAll();
     if (this.role === EVENT_PUBLISHER) {
-      queues.push(this._generateWorkQueue(`events__${sha1({ domains })}`));
+      const queue = this._generateWorkQueue(
+        `events__${domains.length === 1 ? domains[0] : sha1({ domains })}`,
+      );
       this._workQueueMap.set("all", {
-        queueName: queues[0],
+        queueName: queue,
       });
       domains = ["all"];
     } else {
       domains.forEach((d) => {
         this._workQueueMap.set(d, { queueName: this._generateWorkQueue(d) });
-        queues.push(this._workQueueMap.get(d).queueName);
       });
     }
 

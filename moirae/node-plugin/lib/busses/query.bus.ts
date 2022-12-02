@@ -1,4 +1,5 @@
 import {
+  DomainStore,
   ESState,
   Explorer,
   IHandler,
@@ -19,12 +20,14 @@ export class QueryBus extends MoiraeQueryBus {
     messengerService: MessengerService,
     observableFactory: ObservableFactory,
     publisher: IPublisher,
+    domainStore: DomainStore,
   ) {
     super(
       container as unknown as Explorer,
       observableFactory,
       publisher,
       messengerService,
+      domainStore,
     );
     this.container = container;
     this._publisher.role = QUERY_PUBLISHER;

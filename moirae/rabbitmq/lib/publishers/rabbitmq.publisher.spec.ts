@@ -3,6 +3,7 @@ import {
   AsyncMap,
   Distributor,
   DomainStore,
+  DOMAIN_STORE,
   Event,
   IEvent,
   MessengerService,
@@ -24,6 +25,7 @@ import { TestEvent } from "../../testing/test-event.class";
 describe("RabbitMQPublisher", () => {
   let publisher: RabbitMQPublisher;
   let connection: RabbitMQConnection;
+  let store: DomainStore;
 
   const options: IRabbitMQPublisherConfig = {
     command: {} as IRabbitMQConfig,
@@ -44,6 +46,10 @@ describe("RabbitMQPublisher", () => {
         RabbitMQPublisher,
         ObservableFactory,
         {
+          provide: DOMAIN_STORE,
+          useClass: DomainStore,
+        },
+        {
           provide: RabbitMQConnection,
           useFactory: () => ({ connection: createMockConnection() }),
         },
@@ -57,10 +63,8 @@ describe("RabbitMQPublisher", () => {
     publisher = await module.resolve(RabbitMQPublisher);
     publisher.role = QUERY_PUBLISHER;
     connection = module.get(RabbitMQConnection);
-  });
 
-  afterEach(() => {
-    DomainStore.getInstance().clear();
+    store = module.get(DOMAIN_STORE);
   });
 
   it("will be defined", () => {
@@ -133,7 +137,7 @@ describe("RabbitMQPublisher", () => {
     it("will create the work channel", async () => {
       const workChannel = createMockChannel();
       const domain = faker.random.word();
-      DomainStore.getInstance().add(domain);
+      store.add(domain);
 
       jest
         .spyOn(connection.connection, "createChannel")
@@ -204,7 +208,7 @@ describe("RabbitMQPublisher", () => {
     let work: Channel;
     beforeEach(() => {
       const domain = faker.random.word();
-      DomainStore.getInstance().add(domain);
+      store.add(domain);
       response = createMockChannel();
       work = createMockChannel();
 

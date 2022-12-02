@@ -4,6 +4,7 @@ import { Test } from "@nestjs/testing";
 import { TestCommand } from "../../testing-classes/test.command";
 import { TestEvent } from "../../testing-classes/test.event";
 import { MemoryCache } from "../caches/memory.cache";
+import { RegisterType } from "../decorators/register-type.decorator";
 import { SagaStep } from "../decorators/saga-step.decorator";
 import { IEvent } from "../interfaces/event.interface";
 import { IRollbackCommand } from "../interfaces/rollback-command.interface";
@@ -17,6 +18,7 @@ class UnhandledEvent extends Event implements IEvent {
   $data = {};
 }
 
+@RegisterType()
 export class TestRollbackCommand extends Command implements IRollbackCommand {
   public readonly $data: { streamId: string; correlationId: string };
   public $version = 1;

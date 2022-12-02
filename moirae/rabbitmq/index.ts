@@ -5,3 +5,6 @@ export type { IRabbitMQPublisherConfig } from "./lib/interfaces/rabbitmq-publish
 // providers
 export { RabbitMQConnection } from "./lib/providers/rabbitmq.connection";
 export { RabbitMQPublisher } from "./lib/publishers/rabbitmq.publisher";
+
+// barrels
+export * from "./lib/messages";

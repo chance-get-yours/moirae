@@ -1,7 +1,9 @@
 import { faker } from "@faker-js/faker";
 import {
+  DomainStore,
   IQueryHandler,
   MemoryPublisher,
+  MessengerService,
   ObservableFactory,
 } from "@moirae/core";
 import { TestQuery } from "../../testing-classes/test.query";
@@ -32,10 +34,12 @@ describe("QueryBus", () => {
 
     bus = new QueryBus(
       container,
+      new MessengerService(),
       factory,
       new MemoryPublisher(factory, {
         nodeId: faker.datatype.uuid(),
       }),
+      new DomainStore(),
     );
 
     bus.onApplicationBootstrap();

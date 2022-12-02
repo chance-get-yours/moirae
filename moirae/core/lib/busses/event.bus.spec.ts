@@ -5,6 +5,7 @@ import { randomUUID } from "crypto";
 import { TestCommand } from "../../testing-classes/test.command";
 import { TestEvent } from "../../testing-classes/test.event";
 import { MemoryCache } from "../caches/memory.cache";
+import { DomainStore } from "../classes/domain-store.class";
 import { Event } from "../classes/event.class";
 import { Explorer } from "../classes/explorer.class";
 import { SagaManager } from "../classes/saga-manager.class";
@@ -17,9 +18,11 @@ import { ObservableFactory } from "../factories/observable.factory";
 import { IEventHandler } from "../interfaces/event-handler.interface";
 import { IEventSource } from "../interfaces/event-source.interface";
 import { IEvent } from "../interfaces/event.interface";
+import { MessengerService } from "../messenger/messenger.service";
 import {
   CACHE_PROVIDER,
   COMMAND_PUBLISHER,
+  DOMAIN_STORE,
   EVENT_PUBLISHER,
   EVENT_PUBSUB_ENGINE,
   EVENT_SOURCE,
@@ -68,11 +71,16 @@ describe("EventBus", () => {
         CommandBus,
         EventBus,
         Explorer,
+        MessengerService,
         ObservableFactory,
         SagaManager,
         {
           provide: CACHE_PROVIDER,
           useClass: MemoryCache,
+        },
+        {
+          provide: DOMAIN_STORE,
+          useClass: DomainStore,
         },
         {
           provide: EVENT_SOURCE,

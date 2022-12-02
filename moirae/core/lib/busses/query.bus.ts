@@ -7,7 +7,13 @@ import { ObservableFactory } from "../factories/observable.factory";
 import { ExecuteOptions } from "../interfaces/execute-options.interface";
 import { IPublisher } from "../interfaces/publisher.interface";
 import { IQuery } from "../interfaces/query.interface";
-import { QUERY_METADATA, QUERY_PUBLISHER } from "../moirae.constants";
+import { QueryBusReadyMessage } from "../messenger/messages";
+import { MessengerService } from "../messenger/messenger.service";
+import {
+  DOMAIN_STORE,
+  QUERY_METADATA,
+  QUERY_PUBLISHER,
+} from "../moirae.constants";
 
 /**
  * Provide the ability to run queries either locally or on remote systems
@@ -19,9 +25,16 @@ export class QueryBus extends BaseBus<IQuery> {
     explorer: Explorer,
     observableFactory: ObservableFactory,
     @Inject(QUERY_PUBLISHER) publisher: IPublisher,
+    private readonly messengerService: MessengerService,
+    @Inject(DOMAIN_STORE) private readonly domainsStore: DomainStore,
   ) {
     super(explorer, QUERY_METADATA, observableFactory, publisher);
     this._publisher.role = QUERY_PUBLISHER;
+  }
+
+  public onApplicationBootstrap(): void {
+    super.onApplicationBootstrap();
+    this.messengerService.publish(new QueryBusReadyMessage());
   }
 
   /**
@@ -43,7 +56,7 @@ export class QueryBus extends BaseBus<IQuery> {
 
     let res: TRes;
 
-    if (DomainStore.getInstance().has(query.$executionDomain)) {
+    if (this.domainsStore.has(query.$executionDomain)) {
       res = (await this.executeLocal(
         query,
         options as Record<string, unknown>,

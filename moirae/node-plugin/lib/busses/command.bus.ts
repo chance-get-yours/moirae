@@ -6,9 +6,11 @@ import {
   ICommand,
   IHandler,
   IPublisher,
+  MessengerService,
   ObservableFactory,
   SagaManager,
 } from "@moirae/core";
+import { DomainStore } from "@moirae/core";
 import { Container } from "../classes/container.class";
 import { SagaManagerMock } from "../classes/saga-manager-mock.class";
 import { RegisterCommandHandlerInput } from "../interfaces/register-container-input.interface";
@@ -17,14 +19,18 @@ export class CommandBus extends MoiraeCommandBus {
   private readonly container: Container;
   constructor(
     container: Container,
+    messengerService: MessengerService,
     observableFactory: ObservableFactory,
     publisher: IPublisher,
+    domainStore: DomainStore,
   ) {
     super(
       container as unknown as Explorer,
       observableFactory,
       publisher,
       new SagaManagerMock() as unknown as SagaManager,
+      messengerService,
+      domainStore,
     );
     this.container = container;
     this._publisher.role = COMMAND_PUBLISHER;

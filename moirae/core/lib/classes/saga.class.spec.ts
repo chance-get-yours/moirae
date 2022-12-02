@@ -4,6 +4,7 @@ import { Test } from "@nestjs/testing";
 import { TestCommand } from "../../testing-classes/test.command";
 import { TestEvent } from "../../testing-classes/test.event";
 import { MemoryCache } from "../caches/memory.cache";
+import { RegisterType } from "../decorators/register-type.decorator";
 import { SagaStep } from "../decorators/saga-step.decorator";
 import { IEvent } from "../interfaces/event.interface";
 import { IRollbackCommand } from "../interfaces/rollback-command.interface";
@@ -17,6 +18,7 @@ class UnhandledEvent extends Event implements IEvent {
   $data = {};
 }
 
+@RegisterType()
 export class TestRollbackCommand extends Command implements IRollbackCommand {
   public readonly $data: { streamId: string; correlationId: string };
   public $version = 1;
@@ -67,24 +69,6 @@ describe("Saga", () => {
     it("will return an empty array given an unhandled event", async () => {
       const event = new UnhandledEvent();
       expect(await saga.process(event)).toMatchObject([]);
-    });
-  });
-
-  describe("rollback", () => {
-    it("will emit a TestRollbackCommand for the correlationId", async () => {
-      const event = new TestEvent();
-      event.$correlationId = faker.datatype.uuid();
-      await saga.process(event);
-
-      expect(await saga.rollback(event.$correlationId)).toMatchObject([
-        expect.objectContaining({
-          $data: {
-            correlationId: event.$correlationId,
-            streamId: event.$streamId,
-          },
-          $name: TestRollbackCommand.name,
-        }),
-      ]);
     });
   });
 });

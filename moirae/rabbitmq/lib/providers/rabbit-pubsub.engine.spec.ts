@@ -1,6 +1,7 @@
 import { faker } from "@faker-js/faker";
 import {
   IPublisherMeta,
+  MessengerService,
   ObservableFactory,
   PUBLISHER_OPTIONS,
 } from "@moirae/core";
@@ -30,6 +31,7 @@ describe("RabbitPubSubEngine", () => {
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [
+        MessengerService,
         RabbitPubSubEngine,
         ObservableFactory,
         {

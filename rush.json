@@ -70,7 +70,7 @@
    * version. In those cases, you will need to add an entry to the "allowedAlternativeVersions"
    * section of the common-versions.json.
    */
-  // "ensureConsistentVersions": true,
+  "ensureConsistentVersions": true,
 
   /**
    * Large monorepos can become intimidating for newcomers if project folder paths don't follow
@@ -353,10 +353,6 @@
       "shouldPublish": true
     },
     {
-      "packageName": "@demo/monolith",
-      "projectFolder": "demo/monolith"
-    },
-    {
       "packageName": "@demo/common",
       "projectFolder": "demo/common"
     },
@@ -371,6 +367,14 @@
     {
       "packageName": "@demo/inventory",
       "projectFolder": "demo/inventory"
+    },
+    {
+      "packageName": "@demo/e2e-testing",
+      "projectFolder": "demo/e2e-testing"
+    },
+    {
+      "packageName": "@demo/saga",
+      "projectFolder": "demo/saga"
     }
     // {
     //   /**

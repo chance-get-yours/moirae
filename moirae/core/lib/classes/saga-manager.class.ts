@@ -2,7 +2,13 @@ import { Inject, Injectable, OnApplicationBootstrap } from "@nestjs/common";
 import { ICache } from "../interfaces/cache.interface";
 import { ICommand } from "../interfaces/command.interface";
 import { IEvent } from "../interfaces/event.interface";
-import { CACHE_PROVIDER, SAGA_METADATA } from "../moirae.constants";
+import { IRollbackCommand } from "../interfaces/rollback-command.interface";
+import {
+  CACHE_PROVIDER,
+  CORRELATION_PREFIX,
+  SAGA_METADATA,
+} from "../moirae.constants";
+import { ConstructorStorage } from "./constructor-storage.class";
 import { Explorer } from "./explorer.class";
 import { Saga } from "./saga.class";
 
@@ -39,8 +45,13 @@ export class SagaManager implements OnApplicationBootstrap {
   }
 
   public async rollbackSagas(correlationId: string): Promise<ICommand[]> {
-    return (
-      await Promise.all(this._sagas.map((saga) => saga.rollback(correlationId)))
-    ).flat();
+    const commandArrays = await this._cache.readFromSet<string>(
+      `${CORRELATION_PREFIX}__${correlationId}`,
+    );
+    return commandArrays.flat().map((commandKey: string) => {
+      const [name, id] = commandKey.split(":");
+      const Constructor = ConstructorStorage.getInstance().get(name);
+      return new Constructor(id, correlationId) as IRollbackCommand;
+    });
   }
 }

@@ -45,7 +45,7 @@ jobs:
     strategy:
       matrix:
         node_version: [16.x]
-        package: [account, common, gateway, inventory, monolith]
+        package: [account, common, gateway, inventory]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -59,7 +59,7 @@ jobs:
         run: node common/scripts/install-run-rush.js build -T @demo/${{ matrix.package }}
       - name: Test Package ${{ matrix.package }}
         run: npm run test --prefix demo/${{ matrix.package }}
-  demo-e2e:
+  demo-monolith:
     runs-on: ubuntu-latest
     needs: test-packages
     strategy:
@@ -71,6 +71,7 @@ jobs:
     env:
       RABBIT_MQ_HOST: localhost
       RABBIT_MQ_PORT: 5672
+      MODE: monolith
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -89,9 +90,40 @@ jobs:
       - name: Rush Install
         run: node common/scripts/install-run-rush.js install
       - name: Rush Build Monolith
-        run: node common/scripts/install-run-rush.js build -T @demo/monolith
+        run: node common/scripts/install-run-rush.js build -T @demo/e2e-testing
       - name: Run monolith
-        run: env CACHE_TYPE=${{ matrix.cache }} env PUB_TYPE=${{ matrix.publisher }} env STORE_TYPE=${{ matrix.store }} npm run test:e2e --prefix demo/monolith
-      # - name: Run distributed
-  #     - name: E2E test demo-app
-  #       run: env CACHE_TYPE=${{ matrix.cache }} env PUB_TYPE=${{ matrix.publisher }} env STORE_TYPE=${{ matrix.store }} yarn workspace demo-app test:e2e
+        run: env CACHE_TYPE=${{ matrix.cache }} env PUB_TYPE=${{ matrix.publisher }} env STORE_TYPE=${{ matrix.store }} npm run test --prefix demo/e2e-testing
+  demo-cluster:
+    runs-on: ubuntu-latest
+    needs: test-packages
+    strategy:
+      matrix:
+        cache: [redis]
+        node-version: [16.x]
+        publisher: [rabbitmq]
+        store: [typeorm]
+    env:
+      RABBIT_MQ_HOST: localhost
+      RABBIT_MQ_PORT: 5672
+      MODE: cluster
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: RabbitMQ in GitHub Actions
+        if: ${{ matrix.publisher == 'rabbitmq' }}
+        uses: Namoshek/rabbitmq-github-action@v1.1.0
+        with:
+          ports: 5672:5672
+      - name: actions-setup-redis
+        if: ${{ matrix.cache == 'redis' }}
+        uses: shogo82148/actions-setup-redis@v1.15.4
+      - name: Setup Node
+        uses: actions/setup-node@v3.1.1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Rush Install
+        run: node common/scripts/install-run-rush.js install
+      - name: Rush Build Monolith
+        run: node common/scripts/install-run-rush.js build -T @demo/e2e-testing
+      - name: Run monolith
+        run: env CACHE_TYPE=${{ matrix.cache }} env PUB_TYPE=${{ matrix.publisher }} env STORE_TYPE=${{ matrix.store }} npm run test --prefix demo/e2e-testing

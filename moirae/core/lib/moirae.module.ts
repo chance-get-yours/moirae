@@ -1,5 +1,6 @@
 import {
   DynamicModule,
+  Inject,
   InjectionToken,
   Module,
   Provider,
@@ -26,6 +27,7 @@ import {
   CACHE_OPTIONS,
   CACHE_PROVIDER,
   COMMAND_PUBLISHER,
+  DOMAIN_STORE,
   EVENT_PUBLISHER,
   EVENT_PUBSUB_ENGINE,
   EVENT_SOURCE,
@@ -37,6 +39,8 @@ import {
 import { MemoryPublisher } from "./publishers/memory.publisher";
 import { MemoryStore } from "./stores/memory.store";
 import { DomainStore } from "./classes/domain-store.class";
+import { MessengerService } from "./messenger/messenger.service";
+import { sha1 } from "object-hash";
 
 @Module({})
 export class MoiraeModule {
@@ -45,9 +49,18 @@ export class MoiraeModule {
    * and queries to the correct system in either a monolithic or microservice-based system.
    */
   public static forFeature(domains: string[]): DynamicModule {
-    DomainStore.getInstance().add(...domains);
     return {
       module: MoiraeModule,
+      providers: [
+        {
+          provide: `DOMAIN_PROVIDER_${sha1({ domains })}`,
+          inject: [DOMAIN_STORE],
+          useFactory(store: DomainStore) {
+            store.add(...domains);
+            // return store;
+          },
+        },
+      ],
     };
   }
 
@@ -173,6 +186,7 @@ export class MoiraeModule {
         CommandBus,
         EventBus,
         Explorer,
+        MessengerService,
         ObservableFactory,
         QueryBus,
         SagaManager,
@@ -183,11 +197,16 @@ export class MoiraeModule {
         ...eventProviders,
         ...queryProviders,
         ...storeProviders,
+        {
+          provide: DOMAIN_STORE,
+          useClass: DomainStore,
+        },
       ],
       exports: [
         AggregateFactory,
         CommandBus,
         EventBus,
+        MessengerService,
         QueryBus,
         ...exports,
         ...cacheExports,
@@ -195,6 +214,7 @@ export class MoiraeModule {
         ...eventExports,
         ...queryExports,
         ...storeExports,
+        DOMAIN_STORE,
       ],
     };
   }

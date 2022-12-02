@@ -4,6 +4,7 @@ export const CACHE_PROVIDER = "__cache-provider__";
 export const COMMAND_METADATA = "__command_handler__";
 export const COMMAND_PUBLISHER = "__command_publisher__";
 export const CORRELATION_PREFIX = "moirae__correlation";
+export const DOMAIN_STORE = "__domain_store__";
 export const EVENT_METADATA = "__event_handler__";
 export const EVENT_PUBSUB_ENGINE = "__event-pubsub-engine__";
 export const EVENT_PUBLISHER = "__event_publisher__";

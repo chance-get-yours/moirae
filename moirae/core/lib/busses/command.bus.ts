@@ -11,9 +11,12 @@ import { ICommandHandlerOptions } from "../interfaces/command-handler-options.in
 import { ICommand } from "../interfaces/command.interface";
 import { IMoiraeFilter } from "../interfaces/moirae-filter.interface";
 import { IPublisher } from "../interfaces/publisher.interface";
+import { CommandBusReadyMessage } from "../messenger/messages";
+import { MessengerService } from "../messenger/messenger.service";
 import {
   COMMAND_METADATA,
   COMMAND_PUBLISHER,
+  DOMAIN_STORE,
   ESState,
   EXCEPTION_METADATA,
 } from "../moirae.constants";
@@ -30,10 +33,17 @@ export class CommandBus extends BaseBus<ICommand> {
     observableFactory: ObservableFactory,
     @Inject(COMMAND_PUBLISHER) publisher: IPublisher,
     private readonly _sagaManager: SagaManager,
+    private readonly messengerService: MessengerService,
+    @Inject(DOMAIN_STORE) private readonly domainStore: DomainStore,
   ) {
     super(explorer, COMMAND_METADATA, observableFactory, publisher);
     this._publisher.role = COMMAND_PUBLISHER;
     this._errorHandlers = new Map();
+  }
+
+  public onApplicationBootstrap(): void {
+    super.onApplicationBootstrap();
+    this.messengerService.publish(new CommandBusReadyMessage());
   }
 
   /**
@@ -52,7 +62,7 @@ export class CommandBus extends BaseBus<ICommand> {
   public async execute(command: ICommand): Promise<CommandResponse> {
     if (!command.$correlationId) command.$correlationId = randomUUID();
     if (!command.STREAM_ID) command.STREAM_ID = randomUUID();
-    if (DomainStore.getInstance().has(command.$executionDomain)) {
+    if (this.domainStore.has(command.$executionDomain)) {
       this.executeLocal(command);
     } else {
       await this._publisher.publish(command);
@@ -63,16 +73,15 @@ export class CommandBus extends BaseBus<ICommand> {
   protected async executeLocal(command: ICommand): Promise<void> {
     this._status.set(ESState.ACTIVE);
 
-    const _streamId = command.STREAM_ID || randomUUID();
-
     const res: unknown = await super.executeLocal(command, {
-      streamId: _streamId,
+      streamId: command.STREAM_ID || randomUUID(),
     } as ICommandHandlerOptions);
 
     if (res instanceof Error) {
       const rollbackCommands = await this._sagaManager.rollbackSagas(
         command.$correlationId,
       );
+
       await Promise.all(rollbackCommands.map((c) => this.publish(c)));
       if (this._errorHandlers.has(res.name))
         await this._errorHandlers.get(res.name).catch(command, res);

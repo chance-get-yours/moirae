@@ -14,9 +14,11 @@ import { ICommandHandler } from "../interfaces/command-handler.interface";
 import { ICommand } from "../interfaces/command.interface";
 import { IMoiraeFilter } from "../interfaces/moirae-filter.interface";
 import { IPublisher } from "../interfaces/publisher.interface";
+import { MessengerService } from "../messenger/messenger.service";
 import {
   CACHE_PROVIDER,
   COMMAND_PUBLISHER,
+  DOMAIN_STORE,
   PUBLISHER_OPTIONS,
 } from "../moirae.constants";
 import { MemoryPublisher } from "../publishers/memory.publisher";
@@ -50,18 +52,24 @@ describe("CommandBus", () => {
   let publisher: IPublisher;
   let sagaManager: SagaManager;
   let errorHandler: TestFilter;
+  let store: DomainStore;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [
         CommandBus,
         Explorer,
+        MessengerService,
         ObservableFactory,
         TestFilter,
         SagaManager,
         {
           provide: CACHE_PROVIDER,
           useClass: MemoryCache,
+        },
+        {
+          provide: DOMAIN_STORE,
+          useClass: DomainStore,
         },
         {
           provide: COMMAND_PUBLISHER,
@@ -81,6 +89,8 @@ describe("CommandBus", () => {
     sagaManager = module.get(SagaManager);
     errorHandler = module.get(TestFilter);
 
+    store = module.get(DOMAIN_STORE);
+
     await publisher["onApplicationBootstrap"]();
     sagaManager.onApplicationBootstrap();
     bus.onApplicationBootstrap();
@@ -95,7 +105,7 @@ describe("CommandBus", () => {
       const command = new TestCommand();
       command.$executionDomain = faker.random.word();
 
-      DomainStore.getInstance().add(command.$executionDomain);
+      store.add(command.$executionDomain);
 
       const handlerSpy = jest.spyOn(handler, "execute");
       expect(await bus["executeLocal"](command)).toBeUndefined();
@@ -120,7 +130,7 @@ describe("CommandBus", () => {
     it("will call executeLocal on a local command and return a generic response", async () => {
       const command = new TestCommand();
       command.$executionDomain = faker.random.word();
-      DomainStore.getInstance().add(command.$executionDomain);
+      store.add(command.$executionDomain);
 
       const localSpy = jest.spyOn(bus, "executeLocal" as never);
       const publishSpy = jest.spyOn(publisher, "publish");

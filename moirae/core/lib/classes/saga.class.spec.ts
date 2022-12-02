@@ -69,22 +69,4 @@ describe("Saga", () => {
       expect(await saga.process(event)).toMatchObject([]);
     });
   });
-
-  describe("rollback", () => {
-    it("will emit a TestRollbackCommand for the correlationId", async () => {
-      const event = new TestEvent();
-      event.$correlationId = faker.datatype.uuid();
-      await saga.process(event);
-
-      expect(await saga.rollback(event.$correlationId)).toMatchObject([
-        expect.objectContaining({
-          $data: {
-            correlationId: event.$correlationId,
-            streamId: event.$streamId,
-          },
-          $name: TestRollbackCommand.name,
-        }),
-      ]);
-    });
-  });
 });

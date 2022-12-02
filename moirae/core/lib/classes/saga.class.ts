@@ -8,6 +8,7 @@ import {
   IRollbackCommandConstructor,
 } from "../interfaces/rollback-command.interface";
 import { CORRELATION_PREFIX, SAGA_METADATA } from "../moirae.constants";
+import { ConstructorStorage } from "./constructor-storage.class";
 
 interface SagaMetadataPayload {
   event: ClassConstructor<IEvent>;
@@ -56,8 +57,8 @@ export abstract class Saga implements OnApplicationBootstrap {
   ): Promise<void> {
     if (!this._cacheController) throw new Error();
     await this._cacheController.addToSet(
-      `${CORRELATION_PREFIX}__${correlationId}__${commandConstructor.name}`,
-      streamId,
+      `${CORRELATION_PREFIX}__${correlationId}`,
+      `${commandConstructor.name}:${streamId}`,
     );
   }
 
@@ -81,21 +82,5 @@ export abstract class Saga implements OnApplicationBootstrap {
       commands.push(..._commands);
     }
     return commands;
-  }
-
-  /**
-   * Rollback a specific transaction by correlationId.
-   */
-  public async rollback(correlationId: string): Promise<IRollbackCommand[]> {
-    const constructors = [...this._commandConstructors.entries()];
-    const commandArrays = await Promise.all(
-      constructors.map(async ([commandName, Constructor]) => {
-        const streamIds = await this._cacheController.readFromSet<string>(
-          `${CORRELATION_PREFIX}__${correlationId}__${commandName}`,
-        );
-        return streamIds.map((id) => new Constructor(id, correlationId));
-      }),
-    );
-    return commandArrays.flat();
   }
 }

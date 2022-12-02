@@ -73,16 +73,15 @@ export class CommandBus extends BaseBus<ICommand> {
   protected async executeLocal(command: ICommand): Promise<void> {
     this._status.set(ESState.ACTIVE);
 
-    const _streamId = command.STREAM_ID || randomUUID();
-
     const res: unknown = await super.executeLocal(command, {
-      streamId: _streamId,
+      streamId: command.STREAM_ID || randomUUID(),
     } as ICommandHandlerOptions);
 
     if (res instanceof Error) {
       const rollbackCommands = await this._sagaManager.rollbackSagas(
         command.$correlationId,
       );
+
       await Promise.all(rollbackCommands.map((c) => this.publish(c)));
       if (this._errorHandlers.has(res.name))
         await this._errorHandlers.get(res.name).catch(command, res);

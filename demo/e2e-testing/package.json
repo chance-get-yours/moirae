@@ -15,6 +15,7 @@
     "@moirae/redis": "*",
     "@moirae/typeorm": "*",
     "@moirae/node-plugin": "*",
+    "@moirae/eventstoredb": "*",
     "@swc/core": "1.2.205",
     "@swc/jest": "^0.2.23",
     "supertest": "^6.3.0",

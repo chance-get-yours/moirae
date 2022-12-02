@@ -98,7 +98,7 @@ jobs:
     needs: test-packages
     strategy:
       matrix:
-        cache: [redis, typeorm]
+        cache: [redis]
         node-version: [16.x]
         publisher: [rabbitmq]
         store: [typeorm]

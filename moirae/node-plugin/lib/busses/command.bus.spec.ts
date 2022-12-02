@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
 import {
+  DomainStore,
   ICommandHandler,
   MemoryPublisher,
   MessengerService,
@@ -38,6 +39,7 @@ describe("CommandBus", () => {
       new MemoryPublisher(factory, {
         nodeId: faker.datatype.uuid(),
       }),
+      new DomainStore(),
     );
 
     bus.onApplicationBootstrap();

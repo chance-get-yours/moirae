@@ -24,34 +24,48 @@ export class MoiraePlugin {
   private readonly _queryPublisher: IPublisher;
 
   private readonly _container: Container;
+  private readonly _domainStore: DomainStore;
   private readonly _observableFactory: ObservableFactory;
 
   private readonly _messengerService: MessengerService;
 
   constructor(config: MoiraePluginConfig) {
-    this._messengerService = config.messengerService;
-    DomainStore.getInstance().add(...config.domains);
-    this._commandPublisher = config.getCommandPublisher();
+    this._domainStore = new DomainStore();
+    this._messengerService = config.messengerService || new MessengerService();
+    this._domainStore.add(...config.domains);
+    this._commandPublisher = config.getCommandPublisher({
+      domainStore: this._domainStore,
+      messengerService: this._messengerService,
+    });
     this._container = new Container();
     this._observableFactory = new ObservableFactory();
-    this._queryPublisher = config.getQueryPublisher();
+    this._queryPublisher = config.getQueryPublisher({
+      domainStore: this._domainStore,
+      messengerService: this._messengerService,
+    });
 
     this._commandBus = new CommandBus(
       this._container,
       this._messengerService,
       this._observableFactory,
       this._commandPublisher,
+      this._domainStore,
     );
     this._queryBus = new QueryBus(
       this._container,
       this._messengerService,
       this._observableFactory,
       this._queryPublisher,
+      this._domainStore,
     );
   }
 
   public getCommandBus(): CommandBus {
     return this._commandBus;
+  }
+
+  public getMessengerService(): MessengerService {
+    return this._messengerService;
   }
 
   public getQueryBus(): QueryBus {

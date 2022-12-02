@@ -42,26 +42,29 @@ module.exports = async () => {
 
   const moirae = new MoiraePlugin({
     domains: ["second_app"],
-    getCommandPublisher: () =>
+    getCommandPublisher: ({ domainStore, messengerService }) =>
       new RabbitMQPublisher(
         new ObservableFactory(),
         publisherConfig,
         rmqConnection,
         messengerService,
+        domainStore,
       ),
-    getEventPublisher: () =>
+    getEventPublisher: ({ domainStore, messengerService }) =>
       new RabbitMQPublisher(
         new ObservableFactory(),
         publisherConfig,
         rmqConnection,
         messengerService,
+        domainStore,
       ),
-    getQueryPublisher: () =>
+    getQueryPublisher: ({ domainStore, messengerService }) =>
       new RabbitMQPublisher(
         new ObservableFactory(),
         publisherConfig,
         rmqConnection,
         messengerService,
+        domainStore,
       ),
     messengerService,
   });

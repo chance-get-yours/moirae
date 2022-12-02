@@ -16,6 +16,7 @@ import { MessengerService } from "../messenger/messenger.service";
 import {
   COMMAND_METADATA,
   COMMAND_PUBLISHER,
+  DOMAIN_STORE,
   ESState,
   EXCEPTION_METADATA,
 } from "../moirae.constants";
@@ -33,6 +34,7 @@ export class CommandBus extends BaseBus<ICommand> {
     @Inject(COMMAND_PUBLISHER) publisher: IPublisher,
     private readonly _sagaManager: SagaManager,
     private readonly messengerService: MessengerService,
+    @Inject(DOMAIN_STORE) private readonly domainStore: DomainStore,
   ) {
     super(explorer, COMMAND_METADATA, observableFactory, publisher);
     this._publisher.role = COMMAND_PUBLISHER;
@@ -60,7 +62,7 @@ export class CommandBus extends BaseBus<ICommand> {
   public async execute(command: ICommand): Promise<CommandResponse> {
     if (!command.$correlationId) command.$correlationId = randomUUID();
     if (!command.STREAM_ID) command.STREAM_ID = randomUUID();
-    if (DomainStore.getInstance().has(command.$executionDomain)) {
+    if (this.domainStore.has(command.$executionDomain)) {
       this.executeLocal(command);
     } else {
       await this._publisher.publish(command);

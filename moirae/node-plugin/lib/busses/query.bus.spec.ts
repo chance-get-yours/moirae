@@ -1,5 +1,6 @@
 import { faker } from "@faker-js/faker";
 import {
+  DomainStore,
   IQueryHandler,
   MemoryPublisher,
   MessengerService,
@@ -38,6 +39,7 @@ describe("QueryBus", () => {
       new MemoryPublisher(factory, {
         nodeId: faker.datatype.uuid(),
       }),
+      new DomainStore(),
     );
 
     bus.onApplicationBootstrap();

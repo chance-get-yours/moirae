@@ -10,7 +10,11 @@ import { IPublisher } from "../interfaces/publisher.interface";
 import { IQueryHandler } from "../interfaces/query-handler.interface";
 import { IQuery } from "../interfaces/query.interface";
 import { MessengerService } from "../messenger/messenger.service";
-import { PUBLISHER_OPTIONS, QUERY_PUBLISHER } from "../moirae.constants";
+import {
+  DOMAIN_STORE,
+  PUBLISHER_OPTIONS,
+  QUERY_PUBLISHER,
+} from "../moirae.constants";
 import { MemoryPublisher } from "../publishers/memory.publisher";
 import { QueryBus } from "./query.bus";
 
@@ -37,6 +41,7 @@ describe("QueryBus", () => {
   let bus: QueryBus;
   let handler: TestHandler;
   let publisher: IPublisher;
+  let store: DomainStore;
 
   beforeEach(async () => {
     const module = await Test.createTestingModule({
@@ -45,6 +50,10 @@ describe("QueryBus", () => {
         MessengerService,
         ObservableFactory,
         QueryBus,
+        {
+          provide: DOMAIN_STORE,
+          useClass: DomainStore,
+        },
         {
           provide: QUERY_PUBLISHER,
           useClass: MemoryPublisher,
@@ -60,6 +69,8 @@ describe("QueryBus", () => {
     bus = module.get(QueryBus);
     handler = module.get(TestHandler);
     publisher = bus["_publisher"];
+
+    store = module.get(DOMAIN_STORE);
 
     await publisher["onApplicationBootstrap"]();
     bus.onApplicationBootstrap();
@@ -90,7 +101,7 @@ describe("QueryBus", () => {
       const publishSpy = jest.spyOn(publisher, "publish");
       const query = new TestQuery();
       query.$executionDomain = faker.random.word();
-      DomainStore.getInstance().add(query.$executionDomain);
+      store.add(query.$executionDomain);
 
       expect(await bus.execute(query)).toStrictEqual(new QueryResponse());
       expect(localSpy).toHaveBeenCalledWith(query, {});

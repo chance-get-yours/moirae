@@ -17,6 +17,18 @@ Moirae consists of a single Core module and a series of plugins to support inter
 
 The name "Moirae" comes from the Fates of Greek mythology. https://en.wikipedia.org/wiki/Moirai
 
+## Recommended Reading
+
+- [Martin Fowler on CQRS](https://martinfowler.com/bliki/CQRS.html)
+- [Martin Fowler on DDD](https://martinfowler.com/tags/domain%20driven%20design.html)
+- [Martin Fowler on Event Sourcing](https://martinfowler.com/eaaDev/EventSourcing.html)
+- [Saga Pattern](https://microservices.io/patterns/data/saga.html)
+- [Udi Dahan on Race Conditions](https://udidahan.com/2010/08/31/race-conditions-dont-exist/)
+- [Yves Reynhout on Models](youtube.com/watch?v=7StN-vNjRSw)
+- [Microsoft on CQRS](https://learn.microsoft.com/en-us/azure/architecture/patterns/cqrs)
+- [Microservices.io on EventSourcing](https://microservices.io/patterns/data/event-sourcing.html)
+- [Greg Young: Versioning in an Event Sourced System](https://leanpub.com/esversioning/read)
+
 ## Structure
 
 ### Core

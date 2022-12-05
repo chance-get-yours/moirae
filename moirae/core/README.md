@@ -6,7 +6,6 @@ The [demo application](https://github.com/chance-get-yours/moirae/tree/main/demo
 
 **Table of Contents**
 
-- [Recommended Reading](#recommended-reading)
 - [Installation](#installation)
 - [Usage](#usage)
   - [Configuration](#configuration)
@@ -15,14 +14,6 @@ The [demo application](https://github.com/chance-get-yours/moirae/tree/main/demo
     - [Events](#events)
   - [Uniqueness](#uniqueness)
 - [Recommended Patterns](#recommended-patterns)
-
-## Recommended Reading
-
-- [Martin Fowler on CQRS](https://martinfowler.com/bliki/CQRS.html)
-- [Martin Fowler on DDD](https://martinfowler.com/tags/domain%20driven%20design.html)
-- [Saga Pattern](https://microservices.io/patterns/data/saga.html)
-- [Udi Dahan on Race Conditions](https://udidahan.com/2010/08/31/race-conditions-dont-exist/)
-- [Yves Reynhout on Models](youtube.com/watch?v=7StN-vNjRSw)
 
 ## Installation
 

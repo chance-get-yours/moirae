@@ -38,6 +38,10 @@ export class EventStoreDbPublisher
     this._activeRequests = new Map();
   }
 
+  /**
+   * @deprecated This method is here to satisfy the interface but should
+   * never be called as EventStoreDB will never send a response
+   */
   awaitResponse(_: string): Promise<ResponseWrapper<unknown>> {
     throw new Error("Method not implemented.");
   }
